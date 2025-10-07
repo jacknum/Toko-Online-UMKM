@@ -53,13 +53,19 @@
             text-decoration: none;
             transition: all 0.3s;
             border-left: 3px solid transparent;
+            position: relative;
         }
 
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
             color: white;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15);
             border-left: 3px solid white;
+        }
+
+        /* Hapus dot indicator */
+        .sidebar-menu a.active::before {
+            display: none;
         }
 
         .sidebar-menu i {
@@ -475,17 +481,14 @@
             }
         }
 
-
         /* Animation for auth buttons */
         @keyframes pulse {
             0% {
                 transform: scale(1);
             }
-
             50% {
                 transform: scale(1.05);
             }
-
             100% {
                 transform: scale(1);
             }
@@ -505,12 +508,24 @@
             <h3>Nama Perusahaan</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span></a>
-            <a href="#"><i class="fas fa-box"></i> <span class="menu-text">Produk Saya</span></a>
-            <a href="#"><i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span></a>
-            <a href="#"><i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span></a>
-            <a href="#"><i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span></a>
-            <a href="#"><i class="fas fa-cog"></i> <span class="menu-text">Pengaturan</span></a>
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->is('/') ? 'active' : '' }}" data-route="dashboard">
+                <i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}" data-route="products">
+                <i class="fas fa-box"></i> <span class="menu-text">Produk Saya</span>
+            </a>
+            <a href="#" class="{{ request()->is('orders*') ? 'active' : '' }}" data-route="orders">
+                <i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span>
+            </a>
+            <a href="#" class="{{ request()->is('outgoing*') ? 'active' : '' }}" data-route="outgoing">
+                <i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span>
+            </a>
+            <a href="#" class="{{ request()->is('payments*') ? 'active' : '' }}" data-route="payments">
+                <i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span>
+            </a>
+            <a href="#" class="{{ request()->is('settings*') ? 'active' : '' }}" data-route="settings">
+                <i class="fas fa-cog"></i> <span class="menu-text">Pengaturan</span>
+            </a>
         </div>
     </div>
 
@@ -561,25 +576,6 @@
             </div>
         </nav>
 
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h1 class="h3 mb-0">Dashboard</h1>
-                    <p class="mb-0 text-muted">Ringkasan performa toko online Anda</p>
-                </div>
-                <div class="col-auto">
-                    <div class="card report-card" onclick="generateReport()">
-                        <div class="card-body text-center">
-                            <i class="fas fa-download fa-2x mb-3"></i>
-                            <h5>Generate Report</h5>
-                            <p class="small mb-0">Download laporan lengkap</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Page Content -->
         <div class="container-fluid">
             @yield('content')
@@ -616,6 +612,9 @@
                 e.preventDefault();
                 logout();
             });
+
+            // Active menu highlighting
+            highlightActiveMenu();
         });
 
         function checkAuthStatus() {
@@ -673,6 +672,55 @@
                 document.body.removeChild(link);
             }, 2000);
         }
+
+        function highlightActiveMenu() {
+            const currentPath = window.location.pathname;
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            
+            menuItems.forEach(item => {
+                // Remove active class from all items
+                item.classList.remove('active');
+                
+                // Check if current path matches the menu item's href
+                const itemHref = item.getAttribute('href');
+                if (itemHref) {
+                    // Handle both absolute and relative paths
+                    const hrefPath = itemHref.startsWith('/') ? itemHref : new URL(itemHref, window.location.origin).pathname;
+                    if (currentPath === hrefPath) {
+                        item.classList.add('active');
+                    }
+                }
+                
+                // Check for route patterns
+                const route = item.getAttribute('data-route');
+                if (route) {
+                    if (route === 'dashboard' && (currentPath === '/' || currentPath === '/dashboard')) {
+                        item.classList.add('active');
+                    } else if (route === 'products' && currentPath.includes('/products')) {
+                        item.classList.add('active');
+                    } else if (route === 'orders' && currentPath.includes('/orders')) {
+                        item.classList.add('active');
+                    } else if (route === 'outgoing' && currentPath.includes('/outgoing')) {
+                        item.classList.add('active');
+                    } else if (route === 'payments' && currentPath.includes('/payments')) {
+                        item.classList.add('active');
+                    } else if (route === 'settings' && currentPath.includes('/settings')) {
+                        item.classList.add('active');
+                    }
+                }
+            });
+        }
+
+        // Add click event to menu items for immediate feedback
+        document.querySelectorAll('.sidebar-menu a').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-menu a').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Highlight menu on page load
+        highlightActiveMenu();
     </script>
 
     @yield('scripts')

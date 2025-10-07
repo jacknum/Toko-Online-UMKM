@@ -3,6 +3,26 @@
 @section('title', 'Dashboard')
 
 @section('content')
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="h3 mb-0">Dashboard</h1>
+                    <p class="mb-0 text-muted">Ringkasan performa toko online Anda</p>
+                </div>
+                <div class="col-auto">
+                    <div class="card report-card" onclick="generateReport()">
+                        <div class="card-body text-center">
+                            <i class="fas fa-download fa-2x mb-3"></i>
+                            <h5>Generate Report</h5>
+                            <p class="small mb-0">Download laporan lengkap</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     <!-- Stats Cards -->
     <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
