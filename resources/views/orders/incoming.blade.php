@@ -151,14 +151,14 @@
                                 </button>
                                 
                                 @if($order->status == 'pending')
-                                    <button class="btn btn-sm btn-outline-success" onclick="acceptOrder({{ $order->id }})" title="Terima">
+                                    <button class="btn btn-sm btn-outline-success" onclick="showAcceptModal({{ $order->id }}, '{{ $order->product_name }}')" title="Terima">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger" onclick="rejectOrder({{ $order->id }})" title="Tolak">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="showRejectModal({{ $order->id }}, '{{ $order->product_name }}')" title="Tolak">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 @elseif($order->status == 'confirmed')
-                                    <button class="btn btn-sm btn-outline-info" onclick="processOrder({{ $order->id }})" title="Proses">
+                                    <button class="btn btn-sm btn-outline-info" onclick="showProcessModal({{ $order->id }}, '{{ $order->product_name }}')" title="Proses">
                                         <i class="fas fa-cog"></i>
                                     </button>
                                 @elseif($order->status == 'shipped')
@@ -190,21 +190,202 @@
         </nav>
     </div>
 </div>
+
+<!-- Modal Konfirmasi Terima Pesanan -->
+<div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h5 class="modal-title" id="acceptModalLabel">Konfirmasi Terima Pesanan</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menerima pesanan ini?</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Produk:</strong> <span id="acceptProductName"></span>
+                </div>
+                <p class="small text-muted mb-0">
+                    Pesanan akan dipindahkan ke status "Dikonfirmasi" dan siap untuk diproses.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <button type="button" class="btn btn-success" id="confirmAcceptBtn">
+                    <i class="fas fa-check me-2"></i>Ya, Terima Pesanan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Tolak Pesanan -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <h5 class="modal-title" id="rejectModalLabel">Konfirmasi Tolak Pesanan</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menolak pesanan ini?</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Produk:</strong> <span id="rejectProductName"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="rejectReason" class="form-label">Alasan Penolakan (Opsional)</label>
+                    <textarea class="form-control" id="rejectReason" rows="3" placeholder="Masukkan alasan penolakan..."></textarea>
+                </div>
+                <p class="small text-danger mb-0">
+                    <i class="fas fa-exclamation-circle me-1"></i>
+                    Tindakan ini tidak dapat dibatalkan.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmRejectBtn">
+                    <i class="fas fa-times me-2"></i>Ya, Tolak Pesanan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Proses Pesanan -->
+<div class="modal fade" id="processModal" tabindex="-1" aria-labelledby="processModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h5 class="modal-title" id="processModalLabel">Proses Pengiriman</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda ingin memproses pesanan ini untuk pengiriman?</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-box me-2"></i>
+                    <strong>Produk:</strong> <span id="processProductName"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="trackingNumber" class="form-label">Nomor Resi</label>
+                    <input type="text" class="form-control" id="trackingNumber" placeholder="Masukkan nomor resi...">
+                </div>
+                <div class="mb-3">
+                    <label for="shippingService" class="form-label">Layanan Pengiriman</label>
+                    <select class="form-select" id="shippingService">
+                        <option value="">Pilih layanan...</option>
+                        <option value="jne">JNE</option>
+                        <option value="tiki">TIKI</option>
+                        <option value="pos">POS Indonesia</option>
+                        <option value="jnt">J&T Express</option>
+                        <option value="sicepat">SiCepat</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <button type="button" class="btn btn-info" id="confirmProcessBtn">
+                    <i class="fas fa-shipping-fast me-2"></i>Proses Pengiriman
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="mb-2">Memproses...</h5>
+                <p class="text-muted mb-0">Sedang memproses permintaan Anda</p>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('styles')
+<style>
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: none;
+    }
+    
+    .modal-header {
+        padding: 1.5rem 1.5rem 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 0 1.5rem 1rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem 1.5rem;
+    }
+    
+    .modal-title {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .alert {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 15px;
+    }
+    
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+</style>
 @endsection
 
 @section('scripts')
 <script>
+    let currentOrderId = null;
+    let currentOrderName = null;
+    
     // Fungsi untuk mengelola filter pesanan
     document.querySelectorAll('[data-filter]').forEach(button => {
         button.addEventListener('click', function() {
-            // Hapus kelas active dari semua tombol filter
             document.querySelectorAll('[data-filter]').forEach(btn => {
                 btn.classList.remove('active');
                 btn.classList.remove('btn-primary');
                 btn.classList.add('btn-outline-primary');
             });
             
-            // Tambahkan kelas active ke tombol yang diklik
             this.classList.add('active');
             this.classList.remove('btn-outline-primary');
             this.classList.add('btn-primary');
@@ -225,65 +406,74 @@
         });
     }
     
-    // Fungsi untuk menangani aksi pada pesanan
-    function showOrderDetail(orderId) {
-        // Redirect ke halaman detail pesanan
-        window.location.href = `/orders/${orderId}`;
+    // Modal Functions
+    function showAcceptModal(orderId, productName) {
+        currentOrderId = orderId;
+        currentOrderName = productName;
+        
+        document.getElementById('acceptProductName').textContent = productName;
+        
+        const modal = new bootstrap.Modal(document.getElementById('acceptModal'));
+        modal.show();
     }
     
-    function acceptOrder(orderId) {
-        if (confirm('Apakah Anda yakin ingin menerima pesanan ini?')) {
-            // AJAX request untuk menerima pesanan
-            fetch(`/orders/${orderId}/accept`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert('success', data.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            })
-            .catch(error => {
-                showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
-            });
-        }
+    function showRejectModal(orderId, productName) {
+        currentOrderId = orderId;
+        currentOrderName = productName;
+        
+        document.getElementById('rejectProductName').textContent = productName;
+        document.getElementById('rejectReason').value = '';
+        
+        const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+        modal.show();
     }
     
-    function rejectOrder(orderId) {
-        if (confirm('Apakah Anda yakin ingin menolak pesanan ini?')) {
-            // AJAX request untuk menolak pesanan
-            fetch(`/orders/${orderId}/reject`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert('success', data.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            })
-            .catch(error => {
-                showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
-            });
-        }
+    function showProcessModal(orderId, productName) {
+        currentOrderId = orderId;
+        currentOrderName = productName;
+        
+        document.getElementById('processProductName').textContent = productName;
+        document.getElementById('trackingNumber').value = '';
+        document.getElementById('shippingService').value = '';
+        
+        const modal = new bootstrap.Modal(document.getElementById('processModal'));
+        modal.show();
     }
     
-    function processOrder(orderId) {
-        // AJAX request untuk memproses pesanan
-        fetch(`/orders/${orderId}/process`, {
+    function showLoadingModal() {
+        const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        modal.show();
+        return modal;
+    }
+    
+    // Event Listeners untuk Modal Buttons
+    document.getElementById('confirmAcceptBtn').addEventListener('click', function() {
+        const loadingModal = showLoadingModal();
+        bootstrap.Modal.getInstance(document.getElementById('acceptModal')).hide();
+        
+        acceptOrder(currentOrderId, loadingModal);
+    });
+    
+    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+        const rejectReason = document.getElementById('rejectReason').value;
+        const loadingModal = showLoadingModal();
+        bootstrap.Modal.getInstance(document.getElementById('rejectModal')).hide();
+        
+        rejectOrder(currentOrderId, rejectReason, loadingModal);
+    });
+    
+    document.getElementById('confirmProcessBtn').addEventListener('click', function() {
+        const trackingNumber = document.getElementById('trackingNumber').value;
+        const shippingService = document.getElementById('shippingService').value;
+        const loadingModal = showLoadingModal();
+        bootstrap.Modal.getInstance(document.getElementById('processModal')).hide();
+        
+        processOrder(currentOrderId, trackingNumber, shippingService, loadingModal);
+    });
+    
+    // AJAX Functions
+    function acceptOrder(orderId, loadingModal) {
+        fetch(`/orders/${orderId}/accept`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -292,20 +482,84 @@
         })
         .then(response => response.json())
         .then(data => {
+            loadingModal.hide();
             if (data.success) {
                 showAlert('success', data.message);
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
+                setTimeout(() => location.reload(), 1500);
             }
         })
         .catch(error => {
+            loadingModal.hide();
             showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
         });
     }
     
+    function rejectOrder(orderId, reason, loadingModal) {
+        fetch(`/orders/${orderId}/reject`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reason: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingModal.hide();
+            if (data.success) {
+                showAlert('success', data.message);
+                setTimeout(() => location.reload(), 1500);
+            }
+        })
+        .catch(error => {
+            loadingModal.hide();
+            showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
+        });
+    }
+    
+    function processOrder(orderId, trackingNumber, shippingService, loadingModal) {
+        if (!trackingNumber.trim()) {
+            loadingModal.hide();
+            showAlert('warning', 'Harap masukkan nomor resi');
+            return;
+        }
+        
+        if (!shippingService.trim()) {
+            loadingModal.hide();
+            showAlert('warning', 'Harap pilih layanan pengiriman');
+            return;
+        }
+        
+        fetch(`/orders/${orderId}/process`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tracking_number: trackingNumber,
+                shipping_service: shippingService
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingModal.hide();
+            if (data.success) {
+                showAlert('success', data.message);
+                setTimeout(() => location.reload(), 1500);
+            }
+        })
+        .catch(error => {
+            loadingModal.hide();
+            showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
+        });
+    }
+    
+    function showOrderDetail(orderId) {
+        window.location.href = `/orders/${orderId}`;
+    }
+    
     function trackOrder(orderId) {
-        // AJAX request untuk melacak pesanan
         fetch(`/orders/${orderId}/track`, {
             method: 'POST',
             headers: {
@@ -325,7 +579,6 @@
     }
     
     function showAlert(type, message) {
-        // Create alert element
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
         alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
@@ -336,7 +589,6 @@
         
         document.body.appendChild(alertDiv);
         
-        // Auto remove after 3 seconds
         setTimeout(() => {
             if (alertDiv.parentNode) {
                 alertDiv.parentNode.removeChild(alertDiv);

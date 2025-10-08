@@ -115,41 +115,49 @@ class OrderController extends Controller
         return view('orders.detail', compact('order'));
     }
 
-    public function accept($id)
-    {
-        // Logika untuk menerima pesanan
-        // Di sini biasanya Anda akan update status di database
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pesanan berhasil diterima dan akan diproses'
-        ]);
-    }
-
-    public function reject($id)
-    {
-        // Logika untuk menolak pesanan
-        return response()->json([
-            'success' => true,
-            'message' => 'Pesanan berhasil ditolak'
-        ]);
-    }
-
-    public function process($id)
-    {
-        // Logika untuk memproses pesanan
-        return response()->json([
-            'success' => true,
-            'message' => 'Pesanan sedang diproses untuk pengiriman'
-        ]);
-    }
-
     public function track($id)
     {
         // Logika untuk melacak pesanan
         return response()->json([
             'success' => true,
             'message' => 'Melacak pengiriman pesanan...'
+        ]);
+    }
+
+    // Di OrderController.php - tambahkan method berikut:
+
+    public function accept($id)
+    {
+        // Logika untuk menerima pesanan
+        return response()->json([
+            'success' => true,
+            'message' => 'Pesanan berhasil diterima dan akan diproses'
+        ]);
+    }
+
+    public function reject($id, Request $request)
+    {
+        $reason = $request->input('reason', 'Tidak ada alasan yang diberikan');
+
+        // Logika untuk menolak pesanan dengan alasan
+        return response()->json([
+            'success' => true,
+            'message' => 'Pesanan berhasil ditolak',
+            'reason' => $reason
+        ]);
+    }
+
+    public function process($id, Request $request)
+    {
+        $trackingNumber = $request->input('tracking_number');
+        $shippingService = $request->input('shipping_service');
+
+        // Logika untuk memproses pesanan dengan nomor resi dan layanan pengiriman
+        return response()->json([
+            'success' => true,
+            'message' => 'Pesanan sedang diproses untuk pengiriman',
+            'tracking_number' => $trackingNumber,
+            'shipping_service' => $shippingService
         ]);
     }
 }
