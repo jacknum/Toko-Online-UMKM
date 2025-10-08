@@ -486,9 +486,11 @@
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
+
             100% {
                 transform: scale(1);
             }
@@ -508,13 +510,17 @@
             <h3>Nama Perusahaan</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->is('/') ? 'active' : '' }}" data-route="dashboard">
+            <a href="{{ route('dashboard') }}"
+                class="{{ request()->routeIs('dashboard') || request()->is('/') ? 'active' : '' }}"
+                data-route="dashboard">
                 <i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span>
             </a>
-            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}" data-route="products">
+            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}"
+                data-route="products">
                 <i class="fas fa-box"></i> <span class="menu-text">Produk Saya</span>
             </a>
-            <a href="#" class="{{ request()->is('orders*') ? 'active' : '' }}" data-route="orders">
+            <a href="{{ route('orders.incoming') }}" class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"
+                data-route="orders">
                 <i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span>
             </a>
             <a href="#" class="{{ request()->is('outgoing*') ? 'active' : '' }}" data-route="outgoing">
@@ -535,7 +541,8 @@
         <nav class="navbar navbar-expand-lg navbar-custom rounded">
             <div class="container-fluid">
                 <div class="d-flex align-items-center">
-                    <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                    <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <span class="navbar-brand mb-0 h1 d-none d-md-block">Toko Online UMKM</span>
@@ -559,8 +566,10 @@
                                 <i class="fas fa-user-circle me-1"></i> Admin
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profil</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Pengaturan</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profil</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>
+                                        Pengaturan</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -642,7 +651,7 @@
 
             // Redirect to login page after logout
             setTimeout(() => {
-                window.location.href = '{{ route("login") }}';
+                window.location.href = '{{ route('login') }}';
             }, 1000);
         }
 
@@ -676,21 +685,22 @@
         function highlightActiveMenu() {
             const currentPath = window.location.pathname;
             const menuItems = document.querySelectorAll('.sidebar-menu a');
-            
+
             menuItems.forEach(item => {
                 // Remove active class from all items
                 item.classList.remove('active');
-                
+
                 // Check if current path matches the menu item's href
                 const itemHref = item.getAttribute('href');
                 if (itemHref) {
                     // Handle both absolute and relative paths
-                    const hrefPath = itemHref.startsWith('/') ? itemHref : new URL(itemHref, window.location.origin).pathname;
+                    const hrefPath = itemHref.startsWith('/') ? itemHref : new URL(itemHref, window.location.origin)
+                        .pathname;
                     if (currentPath === hrefPath) {
                         item.classList.add('active');
                     }
                 }
-                
+
                 // Check for route patterns
                 const route = item.getAttribute('data-route');
                 if (route) {
