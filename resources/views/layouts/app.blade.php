@@ -500,6 +500,83 @@
         .btn-register:hover {
             animation: pulse 0.6s ease-in-out;
         }
+
+        /* Additional styles for Pesanan Keluar page */
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .bg-primary-light {
+            background-color: rgba(78, 115, 223, 0.1);
+            color: #4e73df;
+        }
+
+        .bg-warning-light {
+            background-color: rgba(253, 192, 44, 0.1);
+            color: #fdc02c;
+        }
+
+        .bg-info-light {
+            background-color: rgba(54, 185, 204, 0.1);
+            color: #36b9cc;
+        }
+
+        .bg-success-light {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .badge-custom {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
+
+        .table-custom th {
+            border-top: none;
+            font-weight: 600;
+            color: #6e707e;
+            background-color: #f8f9fc;
+        }
+
+        .card-custom {
+            border: 1px solid #e3e6f0;
+            border-radius: 0.35rem;
+        }
+
+        .border-left-primary {
+            border-left: 0.25rem solid #4e73df !important;
+        }
+
+        .border-left-warning {
+            border-left: 0.25rem solid #f6c23e !important;
+        }
+
+        .border-left-info {
+            border-left: 0.25rem solid #36b9cc !important;
+        }
+
+        .border-left-success {
+            border-left: 0.25rem solid #1cc88a !important;
+        }
     </style>
 </head>
 
@@ -523,7 +600,7 @@
                 data-route="orders">
                 <i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span>
             </a>
-            <a href="#" class="{{ request()->is('outgoing*') ? 'active' : '' }}" data-route="outgoing">
+            <a href="{{ route('orders.outgoing') }}" class="{{ request()->is('outgoing*') ? 'active' : '' }}" data-route="outgoing">
                 <i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span>
             </a>
             <a href="#" class="{{ request()->is('payments*') ? 'active' : '' }}" data-route="payments">

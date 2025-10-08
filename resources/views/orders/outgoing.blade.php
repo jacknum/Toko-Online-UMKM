@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Pesanan Masuk')
+@section('title', 'Pesanan Keluar')
 
 @section('content')
 <!-- Page Header -->
 <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h1 class="h3 mb-0">Pesanan Masuk</h1>
+            <h1 class="h3 mb-0">Pesanan Keluar</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Pesanan Masuk</li>
+                    <li class="breadcrumb-item active" aria-current="page">Pesanan Keluar</li>
                 </ol>
             </nav>
         </div>
@@ -31,10 +31,10 @@
         <div class="card card-custom border-left-primary">
             <div class="card-body stat-card">
                 <div class="stat-icon bg-primary-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-truck"></i>
                 </div>
-                <div class="stat-number text-primary">{{ $stats['new_orders'] }}</div>
-                <div class="stat-title">Pesanan Baru</div>
+                <div class="stat-number text-primary">{{ $stats['total_outgoing'] }}</div>
+                <div class="stat-title">Total Pesanan Keluar</div>
             </div>
         </div>
     </div>
@@ -42,10 +42,21 @@
         <div class="card card-custom border-left-warning">
             <div class="card-body stat-card">
                 <div class="stat-icon bg-warning-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-clock"></i>
+                    <i class="fas fa-tasks"></i>
                 </div>
-                <div class="stat-number text-warning">{{ $stats['pending_confirmation'] }}</div>
-                <div class="stat-title">Menunggu Konfirmasi</div>
+                <div class="stat-number text-warning">{{ $stats['processing'] }}</div>
+                <div class="stat-title">Sedang Diproses</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card card-custom border-left-info">
+            <div class="card-body stat-card">
+                <div class="stat-icon bg-info-light rounded-circle p-3 mb-3">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div class="stat-number text-info">{{ $stats['shipped'] }}</div>
+                <div class="stat-title">Dalam Pengiriman</div>
             </div>
         </div>
     </div>
@@ -53,21 +64,10 @@
         <div class="card card-custom border-left-success">
             <div class="card-body stat-card">
                 <div class="stat-icon bg-success-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-calendar-day"></i>
+                    <i class="fas fa-check-circle"></i>
                 </div>
-                <div class="stat-number text-success">{{ $stats['today_orders'] }}</div>
-                <div class="stat-title">Pesanan Hari Ini</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card card-custom border-left-info">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-danger-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div class="stat-number text-info">Rp {{ number_format($stats['total_value'], 0, ',', '.') }}</div>
-                <div class="stat-title">Total Nilai Pesanan</div>
+                <div class="stat-number text-success">{{ $stats['delivered'] }}</div>
+                <div class="stat-title">Berhasil Dikirim</div>
             </div>
         </div>
     </div>
@@ -78,14 +78,14 @@
     <div class="card-header">
         <div class="row align-items-center">
             <div class="col">
-                <h5 class="card-title mb-0">Daftar Pesanan</h5>
+                <h5 class="card-title mb-0">Daftar Pesanan Keluar</h5>
             </div>
             <div class="col-auto">
                 <div class="filter-options btn-group" role="group">
                     <button type="button" class="btn btn-outline-primary active" data-filter="all">Semua</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="pending">Baru</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="confirmed">Diproses</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="shipped">Selesai</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="processing">Diproses</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="shipped">Dikirim</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="delivered">Terkirim</button>
                 </div>
             </div>
         </div>
@@ -130,17 +130,17 @@
                             <strong>Rp {{ number_format($order->price, 0, ',', '.') }}</strong>
                         </td>
                         <td>
-                            @if($order->status == 'pending')
+                            @if($order->status == 'processing')
                                 <span class="badge badge-custom bg-warning text-dark">
-                                    <i class="fas fa-clock me-1"></i>Menunggu Konfirmasi
-                                </span>
-                            @elseif($order->status == 'confirmed')
-                                <span class="badge badge-custom bg-info text-white">
-                                    <i class="fas fa-check me-1"></i>Dikonfirmasi
+                                    <i class="fas fa-clock me-1"></i>Sedang Diproses
                                 </span>
                             @elseif($order->status == 'shipped')
+                                <span class="badge badge-custom bg-info text-white">
+                                    <i class="fas fa-shipping-fast me-1"></i>Dalam Pengiriman
+                                </span>
+                            @elseif($order->status == 'delivered')
                                 <span class="badge badge-custom bg-success text-white">
-                                    <i class="fas fa-shipping-fast me-1"></i>Dikirim
+                                    <i class="fas fa-check-circle me-1"></i>Terkirim
                                 </span>
                             @endif
                         </td>
@@ -150,20 +150,23 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
 
-                                @if($order->status == 'pending')
-                                    <button class="btn btn-sm btn-outline-success" onclick="acceptOrder({{ $order->id }})" title="Terima">
-                                        <i class="fas fa-check"></i>
+                                @if($order->status == 'processing')
+                                    <button class="btn btn-sm btn-outline-info" onclick="shipOrder({{ $order->id }})" title="Kirim">
+                                        <i class="fas fa-shipping-fast"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger" onclick="rejectOrder({{ $order->id }})" title="Tolak">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                @elseif($order->status == 'confirmed')
-                                    <button class="btn btn-sm btn-outline-info" onclick="processOrder({{ $order->id }})" title="Proses">
-                                        <i class="fas fa-cog"></i>
+                                    <button class="btn btn-sm btn-outline-warning" onclick="updateOrder({{ $order->id }})" title="Update">
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                 @elseif($order->status == 'shipped')
+                                    <button class="btn btn-sm btn-outline-success" onclick="markDelivered({{ $order->id }})" title="Tandai Terkirim">
+                                        <i class="fas fa-check"></i>
+                                    </button>
                                     <button class="btn btn-sm btn-outline-warning" onclick="trackOrder({{ $order->id }})" title="Lacak">
                                         <i class="fas fa-map-marker-alt"></i>
+                                    </button>
+                                @elseif($order->status == 'delivered')
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="completeOrder({{ $order->id }})" title="Selesai">
+                                        <i class="fas fa-flag-checkered"></i>
                                     </button>
                                 @endif
                             </div>
@@ -175,19 +178,23 @@
         </div>
 
         <!-- Pagination -->
+        @if($orders->hasPages())
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <li class="page-item {{ $orders->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $orders->previousPageUrl() }}" tabindex="-1">Previous</a>
                 </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                @foreach(range(1, $orders->lastPage()) as $i)
+                    <li class="page-item {{ $orders->currentPage() == $i ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $orders->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endforeach
+                <li class="page-item {{ $orders->hasMorePages() ? '' : 'disabled' }}">
+                    <a class="page-link" href="{{ $orders->nextPageUrl() }}">Next</a>
                 </li>
             </ul>
         </nav>
+        @endif
     </div>
 </div>
 @endsection
@@ -225,16 +232,41 @@
         });
     }
 
-    // Fungsi untuk menangani aksi pada pesanan
+    // Fungsi untuk menangani aksi pada pesanan keluar
     function showOrderDetail(orderId) {
         // Redirect ke halaman detail pesanan
         window.location.href = `/orders/${orderId}`;
     }
 
-    function acceptOrder(orderId) {
-        if (confirm('Apakah Anda yakin ingin menerima pesanan ini?')) {
-            // AJAX request untuk menerima pesanan
-            fetch(`/orders/${orderId}/accept`, {
+    function shipOrder(orderId) {
+        if (confirm('Apakah Anda yakin ingin mengirim pesanan ini?')) {
+            // AJAX request untuk mengirim pesanan
+            fetch(`/orders/${orderId}/ship`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                showAlert('error', 'Terjadi kesalahan saat mengirim pesanan');
+            });
+        }
+    }
+
+    function markDelivered(orderId) {
+        if (confirm('Apakah Anda yakin ingin menandai pesanan ini sebagai terkirim?')) {
+            // AJAX request untuk menandai pesanan terkirim
+            fetch(`/orders/${orderId}/mark-delivered`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -254,54 +286,6 @@
                 showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
             });
         }
-    }
-
-    function rejectOrder(orderId) {
-        if (confirm('Apakah Anda yakin ingin menolak pesanan ini?')) {
-            // AJAX request untuk menolak pesanan
-            fetch(`/orders/${orderId}/reject`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert('success', data.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            })
-            .catch(error => {
-                showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
-            });
-        }
-    }
-
-    function processOrder(orderId) {
-        // AJAX request untuk memproses pesanan
-        fetch(`/orders/${orderId}/process`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showAlert('success', data.message);
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
-            }
-        })
-        .catch(error => {
-            showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
-        });
     }
 
     function trackOrder(orderId) {
@@ -322,6 +306,36 @@
         .catch(error => {
             showAlert('error', 'Terjadi kesalahan saat melacak pesanan');
         });
+    }
+
+    function updateOrder(orderId) {
+        // Redirect ke halaman update pesanan
+        alert('Fitur update pesanan akan segera tersedia');
+    }
+
+    function completeOrder(orderId) {
+        if (confirm('Apakah Anda yakin ingin menyelesaikan pesanan ini?')) {
+            // AJAX request untuk menyelesaikan pesanan
+            fetch(`/orders/${orderId}/complete`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                showAlert('error', 'Terjadi kesalahan saat menyelesaikan pesanan');
+            });
+        }
     }
 
     function showAlert(type, message) {
