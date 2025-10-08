@@ -190,10 +190,21 @@
                                     <td>15 Jan 2024</td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
+                                            <button class="btn btn-sm btn-outline-primary edit-product" 
+                                                    data-product-id="1"
+                                                    data-product-name="Sepatu Running Premium"
+                                                    data-product-sku="SPR-001"
+                                                    data-product-category="Sepatu & Sandal"
+                                                    data-product-price="450000"
+                                                    data-product-stock="24"
+                                                    data-product-status="active"
+                                                    data-product-description="Sepatu running premium dengan teknologi terbaru untuk kenyamanan maksimal saat berlari. Dilengkapi dengan sole yang fleksibel dan bahan breathable."
+                                                    data-product-weight="0.8"
+                                                    data-product-dimensions="30x20x10"
+                                                    data-product-tags="Running,Sport,Premium">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-info view-product" data-bs-toggle="tooltip" title="Lihat" data-product='{
+                                            <button class="btn btn-sm btn-outline-info view-product" data-product='{
                                                 "name": "Sepatu Running Premium",
                                                 "sku": "SPR-001",
                                                 "category": "Sepatu & Sandal",
@@ -209,7 +220,9 @@
                                             }'>
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Hapus">
+                                            <button class="btn btn-sm btn-outline-danger delete-product" 
+                                                    data-product-id="1"
+                                                    data-product-name="Sepatu Running Premium">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -239,7 +252,18 @@
                                     <td>12 Jan 2024</td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-primary">
+                                            <button class="btn btn-sm btn-outline-primary edit-product"
+                                                    data-product-id="2"
+                                                    data-product-name="Tas Laptop Minimalis"
+                                                    data-product-sku="TLM-002"
+                                                    data-product-category="Aksesoris"
+                                                    data-product-price="320000"
+                                                    data-product-stock="15"
+                                                    data-product-status="active"
+                                                    data-product-description="Tas laptop dengan desain minimalis dan elegan. Cocok untuk pekerja profesional dengan kompartemen yang terorganisir."
+                                                    data-product-weight="0.5"
+                                                    data-product-dimensions="40x30x15"
+                                                    data-product-tags="Laptop,Minimalis,Professional">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <button class="btn btn-sm btn-outline-info view-product" data-product='{
@@ -258,105 +282,9 @@
                                             }'>
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&h=150&fit=crop&crop=center" alt="Smartwatch" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
-                                            <div>
-                                                <div class="fw-bold">Smartwatch Series 5</div>
-                                                <small class="text-muted">SKU: SWS-003</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Elektronik</td>
-                                    <td>Rp 1.200.000</td>
-                                    <td>
-                                        <span class="fw-bold text-warning">8</span>
-                                    </td>
-                                    <td><span class="badge bg-warning badge-custom">Stok Sedikit</span></td>
-                                    <td>10 Jan 2024</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info view-product" data-product='{
-                                                "name": "Smartwatch Series 5",
-                                                "sku": "SWS-003",
-                                                "category": "Elektronik",
-                                                "price": "1200000",
-                                                "stock": "8",
-                                                "status": "Stok Sedikit",
-                                                "description": "Smartwatch canggih dengan fitur kesehatan lengkap, GPS, dan battery life hingga 7 hari. Kompatibel dengan iOS dan Android.",
-                                                "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center",
-                                                "date_added": "10 Jan 2024",
-                                                "weight": "0.1 kg",
-                                                "dimensions": "4 x 4 x 1 cm",
-                                                "tags": ["Smartwatch", "Elektronik", "Health"]
-                                            }'>
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop&crop=center" alt="Kaos Polo" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
-                                            <div>
-                                                <div class="fw-bold">Kaos Polo Cotton</div>
-                                                <small class="text-muted">SKU: KPC-004</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Pakaian</td>
-                                    <td>Rp 125.000</td>
-                                    <td>
-                                        <span class="fw-bold text-danger">0</span>
-                                    </td>
-                                    <td><span class="badge bg-danger badge-custom">Habis</span></td>
-                                    <td>08 Jan 2024</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info view-product" data-product='{
-                                                "name": "Kaos Polo Cotton",
-                                                "sku": "KPC-004",
-                                                "category": "Pakaian",
-                                                "price": "125000",
-                                                "stock": "0",
-                                                "status": "Habis",
-                                                "description": "Kaos polo dengan bahan cotton premium yang nyaman dipakai sehari-hari. Tersedia dalam berbagai ukuran dan warna.",
-                                                "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&crop=center",
-                                                "date_added": "08 Jan 2024",
-                                                "weight": "0.3 kg",
-                                                "dimensions": "35 x 25 x 2 cm",
-                                                "tags": ["Polo", "Cotton", "Casual"]
-                                            }'>
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger">
+                                            <button class="btn btn-sm btn-outline-danger delete-product"
+                                                    data-product-id="2"
+                                                    data-product-name="Tas Laptop Minimalis">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -441,6 +369,125 @@
     </div>
 </div>
 
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <input type="hidden" id="editProductId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nama Produk</label>
+                            <input type="text" class="form-control" id="editProductName" placeholder="Masukkan nama produk" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">SKU</label>
+                            <input type="text" class="form-control" id="editProductSku" placeholder="Kode SKU" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" id="editProductCategory" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                <option value="Pakaian">Pakaian</option>
+                                <option value="Elektronik">Elektronik</option>
+                                <option value="Aksesoris">Aksesoris</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="editProductStatus" required>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Stok Sedikit</option>
+                                <option value="out_of_stock">Stok Habis</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="editProductPrice" placeholder="0" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Stok</label>
+                            <input type="number" class="form-control" id="editProductStock" placeholder="0" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Berat (kg)</label>
+                            <input type="number" step="0.1" class="form-control" id="editProductWeight" placeholder="0.0" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Dimensi (cm)</label>
+                            <input type="text" class="form-control" id="editProductDimensions" placeholder="Panjang x Lebar x Tinggi" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="editProductDescription" rows="4" placeholder="Deskripsi produk"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="editProductTags" placeholder="Pisahkan dengan koma (contoh: Running, Sport, Premium)">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Gambar Produk</label>
+                            <input type="file" class="form-control" id="editProductImage" accept="image/*">
+                            <div class="form-text">Biarkan kosong jika tidak ingin mengubah gambar</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="saveEditProduct">
+                    <i class="fas fa-save me-2"></i>Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Product Modal -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h5 class="modal-title" id="deleteProductModalLabel">Hapus Produk</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus produk ini?</p>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Produk:</strong> <span id="deleteProductName"></span>
+                </div>
+                <p class="small text-danger mb-0">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Data yang sudah dihapus tidak dapat dikembalikan. Pastikan Anda telah membackup data penting.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteProduct">
+                    <i class="fas fa-trash me-2"></i>Ya, Hapus Produk
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Product Detail Modal -->
 <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -504,9 +551,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id="editFromDetail">
                     <i class="fas fa-edit me-2"></i>Edit Produk
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="mb-2">Memproses...</h5>
+                <p class="text-muted mb-0">Sedang memproses permintaan Anda</p>
             </div>
         </div>
     </div>
@@ -523,12 +585,33 @@
         font-size: 0.8rem;
         color: #6c757d;
     }
+    
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: none;
+    }
+    
+    .modal-header {
+        padding: 1.5rem 1.5rem 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 0 1.5rem 1rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem 1.5rem;
+    }
 </style>
 @endsection
 
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let currentProductId = null;
+        let currentProductData = null;
+        
         // Select all checkbox
         const selectAll = document.getElementById('selectAll');
         const checkboxes = document.querySelectorAll('tbody .form-check-input');
@@ -556,13 +639,74 @@
             });
         }
 
-        // Product detail modal
+        // Edit Product Modal
+        const editProductButtons = document.querySelectorAll('.edit-product');
+        const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        
+        editProductButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productData = {
+                    id: this.getAttribute('data-product-id'),
+                    name: this.getAttribute('data-product-name'),
+                    sku: this.getAttribute('data-product-sku'),
+                    category: this.getAttribute('data-product-category'),
+                    price: this.getAttribute('data-product-price'),
+                    stock: this.getAttribute('data-product-stock'),
+                    status: this.getAttribute('data-product-status'),
+                    description: this.getAttribute('data-product-description'),
+                    weight: this.getAttribute('data-product-weight'),
+                    dimensions: this.getAttribute('data-product-dimensions'),
+                    tags: this.getAttribute('data-product-tags')
+                };
+                showEditModal(productData);
+            });
+        });
+
+        function showEditModal(product) {
+            currentProductId = product.id;
+            
+            // Fill form with product data
+            document.getElementById('editProductId').value = product.id;
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductSku').value = product.sku;
+            document.getElementById('editProductCategory').value = product.category;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('editProductStock').value = product.stock;
+            document.getElementById('editProductStatus').value = product.status;
+            document.getElementById('editProductDescription').value = product.description;
+            document.getElementById('editProductWeight').value = product.weight;
+            document.getElementById('editProductDimensions').value = product.dimensions;
+            document.getElementById('editProductTags').value = product.tags;
+            
+            editProductModal.show();
+        }
+
+        // Delete Product Modal
+        const deleteProductButtons = document.querySelectorAll('.delete-product');
+        const deleteProductModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+        
+        deleteProductButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                const productName = this.getAttribute('data-product-name');
+                showDeleteModal(productId, productName);
+            });
+        });
+
+        function showDeleteModal(productId, productName) {
+            currentProductId = productId;
+            document.getElementById('deleteProductName').textContent = productName;
+            deleteProductModal.show();
+        }
+
+        // Product Detail Modal
         const viewProductButtons = document.querySelectorAll('.view-product');
         const productDetailModal = new bootstrap.Modal(document.getElementById('productDetailModal'));
         
         viewProductButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const productData = JSON.parse(this.getAttribute('data-product'));
+                currentProductData = productData;
                 showProductDetail(productData);
             });
         });
@@ -610,6 +754,80 @@
 
             // Show modal
             productDetailModal.show();
+        }
+
+        // Edit from detail modal
+        document.getElementById('editFromDetail').addEventListener('click', function() {
+            if (currentProductData) {
+                productDetailModal.hide();
+                // Convert detail data to edit format
+                const editData = {
+                    id: currentProductData.sku.replace('SKU-', ''),
+                    name: currentProductData.name,
+                    sku: currentProductData.sku,
+                    category: currentProductData.category,
+                    price: currentProductData.price.replace(/[^\d]/g, ''),
+                    stock: currentProductData.stock,
+                    status: currentProductData.status === 'Aktif' ? 'active' : 
+                           currentProductData.status === 'Stok Sedikit' ? 'low_stock' : 'out_of_stock',
+                    description: currentProductData.description,
+                    weight: currentProductData.weight.replace(' kg', ''),
+                    dimensions: currentProductData.dimensions.replace(/ x /g, 'x').replace(' cm', ''),
+                    tags: currentProductData.tags.join(',')
+                };
+                showEditModal(editData);
+            }
+        });
+
+        // Save Edit Product
+        document.getElementById('saveEditProduct').addEventListener('click', function() {
+            const loadingModal = showLoadingModal();
+            
+            // Simulate API call
+            setTimeout(() => {
+                loadingModal.hide();
+                editProductModal.hide();
+                showAlert('success', 'Produk berhasil diperbarui!');
+                // In real application, you would reload the page or update the table
+            }, 1500);
+        });
+
+        // Confirm Delete Product
+        document.getElementById('confirmDeleteProduct').addEventListener('click', function() {
+            const loadingModal = showLoadingModal();
+            deleteProductModal.hide();
+            
+            // Simulate API call
+            setTimeout(() => {
+                loadingModal.hide();
+                showAlert('success', 'Produk berhasil dihapus!');
+                // In real application, you would reload the page or remove the row
+            }, 1500);
+        });
+
+        // Utility Functions
+        function showLoadingModal() {
+            const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            modal.show();
+            return modal;
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
         }
     });
 </script>
