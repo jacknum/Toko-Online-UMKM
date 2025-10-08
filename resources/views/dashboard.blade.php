@@ -119,7 +119,7 @@
                 <div class="card-body">
                     <div class="activity-list">
                         <div class="activity-item d-flex mb-3">
-                            <div class="activity-icon bg-primary-light rounded-circle p-2 me-3">
+                            <div class="activity-icon bg-primary-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-shopping-cart text-primary"></i>
                             </div>
                             <div>
@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <div class="activity-item d-flex mb-3">
-                            <div class="activity-icon bg-success-light rounded-circle p-2 me-3">
+                            <div class="activity-icon bg-success-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-money-bill-wave text-success"></i>
                             </div>
                             <div>
@@ -137,7 +137,7 @@
                             </div>
                         </div>
                         <div class="activity-item d-flex mb-3">
-                            <div class="activity-icon bg-warning-light rounded-circle p-2 me-3">
+                            <div class="activity-icon bg-warning-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-box text-warning"></i>
                             </div>
                             <div>
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <div class="activity-item d-flex">
-                            <div class="activity-icon bg-danger-light rounded-circle p-2 me-3">
+                            <div class="activity-icon bg-danger-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-exclamation-triangle text-danger"></i>
                             </div>
                             <div>
@@ -158,7 +158,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Products Table -->
     <div class="row">
