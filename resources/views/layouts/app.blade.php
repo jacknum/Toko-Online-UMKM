@@ -127,6 +127,46 @@
             color: #6c757d;
         }
 
+        /* Override Bootstrap warning colors dengan orange #ffa200 */
+        .text-warning {
+            color: #ffa200 !important;
+        }
+
+        .bg-warning {
+            background-color: #ffa200 !important;
+        }
+
+        .border-warning {
+            border-color: #ffa200 !important;
+        }
+
+        .btn-warning {
+            background-color: #ffa200;
+            border-color: #ffa200;
+            color: #fff;
+        }
+
+        .btn-warning:hover {
+            background-color: #e69100;
+            border-color: #e69100;
+        }
+
+        .border-left-warning {
+            border-left-color: #ffa200 !important;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffa200 !important;
+        }
+
+        .activity-icon.bg-warning-light {
+            background-color: rgba(255, 162, 0, 0.1) !important;
+        }
+
+        .activity-icon.bg-warning-light .text-warning {
+            color: #ffa200 !important;
+        }
+
         .bg-primary-light {
             background-color: rgba(67, 97, 238, 0.1);
             color: var(--primary);
@@ -138,8 +178,8 @@
         }
 
         .bg-warning-light {
-            background-color: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
+            background-color: rgba(255, 162, 0, 0.1);
+            color: #FFA200FF;
         }
 
         .bg-danger-light {
@@ -531,8 +571,8 @@
         }
 
         .bg-warning-light {
-            background-color: rgba(253, 192, 44, 0.1);
-            color: #fdc02c;
+            background-color: rgba(255, 162, 0, 0.1);
+            color: #FFA200FF;
         }
 
         .bg-info-light {
@@ -567,7 +607,7 @@
         }
 
         .border-left-warning {
-            border-left: 0.25rem solid #f6c23e !important;
+            border-left: 0.25rem solid #ffa200 !important;
         }
 
         .border-left-info {
@@ -586,27 +626,35 @@
         <div class="sidebar-header">
             <h3>Nama Perusahaan</h3>
         </div>
+
         <div class="sidebar-menu">
             <a href="{{ route('dashboard') }}"
-                class="{{ request()->routeIs('dashboard') || request()->is('/') ? 'active' : '' }}"
-                data-route="dashboard">
+            class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span>
             </a>
-            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}"
-                data-route="products">
+
+            <a href="{{ route('products.index') }}"
+            class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
                 <i class="fas fa-box"></i> <span class="menu-text">Produk Saya</span>
             </a>
-            <a href="{{ route('orders.incoming') }}" class="{{ request()->routeIs('orders.*') ? 'active' : '' }}"
-                data-route="orders">
+
+            <!-- Pesanan Masuk -->
+            <a href="{{ route('orders.incoming') }}"
+            class="{{ request()->is('orders/incoming') || request()->routeIs('orders.incoming') ? 'active' : '' }}">
                 <i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span>
             </a>
-            <a href="{{ route('orders.outgoing') }}" class="{{ request()->is('outgoing*') ? 'active' : '' }}" data-route="outgoing">
+
+            <!-- Pesanan Keluar -->
+            <a href="{{ route('orders.outgoing') }}"
+            class="{{ request()->is('orders/outgoing') || request()->routeIs('orders.outgoing') ? 'active' : '' }}">
                 <i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span>
             </a>
-            <a href="#" class="{{ request()->is('payments*') ? 'active' : '' }}" data-route="payments">
+
+            <a href="#" class="">
                 <i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span>
             </a>
-            <a href="#" class="{{ request()->is('settings*') ? 'active' : '' }}" data-route="settings">
+
+            <a href="#" class="">
                 <i class="fas fa-cog"></i> <span class="menu-text">Pengaturan</span>
             </a>
         </div>

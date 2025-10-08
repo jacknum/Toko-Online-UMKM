@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-    
+
     <!-- Stats Cards -->
     <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
@@ -239,12 +239,12 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Simple chart implementation
         const ctx = document.getElementById('revenueChart').getContext('2d');
-        
+
         // Create gradient
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(78, 115, 223, 0.5)');
         gradient.addColorStop(1, 'rgba(78, 115, 223, 0)');
-        
+
         // Chart data
         const data = {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
@@ -261,7 +261,7 @@
                 fill: true
             }]
         };
-        
+
         // Chart options
         const options = {
             responsive: true,
@@ -304,7 +304,7 @@
                 }
             }
         };
-        
+
         // Create chart
         const revenueChart = new Chart(ctx, {
             type: 'line',
