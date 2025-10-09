@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -30,3 +31,7 @@ Route::post('/orders/{id}/track', [OrderController::class, 'track'])->name('orde
 Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
 Route::post('/orders/{id}/mark-delivered', [OrderController::class, 'markDelivered'])->name('orders.mark-delivered');
 Route::post('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+
+// Payments Routes
+Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+Route::get('/payments/{id}', [PaymentController::class, 'detail'])->name('payments.detail');

@@ -628,29 +628,28 @@
         </div>
 
         <div class="sidebar-menu">
-            <a href="{{ route('dashboard') }}"
-            class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span>
             </a>
 
-            <a href="{{ route('products.index') }}"
-            class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
+            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
                 <i class="fas fa-box"></i> <span class="menu-text">Produk Saya</span>
             </a>
 
             <!-- Pesanan Masuk -->
             <a href="{{ route('orders.incoming') }}"
-            class="{{ request()->is('orders/incoming') || request()->routeIs('orders.incoming') ? 'active' : '' }}">
+                class="{{ request()->is('orders/incoming') || request()->routeIs('orders.incoming') ? 'active' : '' }}">
                 <i class="fas fa-shopping-cart"></i> <span class="menu-text">Pesanan Masuk</span>
             </a>
 
             <!-- Pesanan Keluar -->
             <a href="{{ route('orders.outgoing') }}"
-            class="{{ request()->is('orders/outgoing') || request()->routeIs('orders.outgoing') ? 'active' : '' }}">
+                class="{{ request()->is('orders/outgoing') || request()->routeIs('orders.outgoing') ? 'active' : '' }}">
                 <i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span>
             </a>
 
-            <a href="#" class="">
+            <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}"
+                data-route="payments">
                 <i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span>
             </a>
 
