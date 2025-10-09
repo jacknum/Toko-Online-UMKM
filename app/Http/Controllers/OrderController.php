@@ -342,6 +342,7 @@ class OrderController extends Controller
 
         return view('orders.outgoing', compact('stats', 'orders', 'filter'));
     }
+    
     public function show($id)
     {
         // Data pesanan dummy berdasarkan ID

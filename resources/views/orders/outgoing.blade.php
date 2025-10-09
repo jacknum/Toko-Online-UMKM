@@ -201,9 +201,83 @@
                                 <div class="alert alert-success py-2 mb-2">
                                     <small><i class="fas fa-check-circle me-1"></i>Pesanan telah diterima</small>
                                 </div>
+
+                                <!-- Bukti Foto Terkirim -->
+                                <div class="delivery-proof mt-3">
+                                    <p class="small fw-bold mb-2">📸 Bukti Pengiriman:</p>
+                                    <div class="proof-images">
+                                        <!-- Foto bukti pengiriman sesuai produk -->
+                                        @if(str_contains(strtolower($order->product_name), 'jam') && str_contains(strtolower($order->product_name), 'tangan'))
+                                            <!-- Foto khusus untuk Jam Tangan -->
+                                            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&h=200&fit=crop&crop=center"
+                                                alt="Bukti Pengiriman Jam Tangan" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=600&h=400&fit=crop', 'Bukti Pengiriman {{ $order->product_name }}')">
+                                        @elseif(str_contains(strtolower($order->product_name), 'dompet') && str_contains(strtolower($order->product_name), 'kulit'))
+                                            <!-- Foto khusus untuk Dompet Kulit -->
+                                            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200&h=200&fit=crop&crop=center"
+                                                alt="Bukti Pengiriman Dompet" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop', 'Bukti Pengiriman {{ $order->product_name }}')">
+                                        @elseif(str_contains(strtolower($order->product_name), 'tas') && str_contains(strtolower($order->product_name), 'laptop'))
+                                            <!-- Foto khusus untuk Tas Laptop -->
+                                            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=200&fit=crop&crop=center"
+                                                alt="Bukti Pengiriman Tas Laptop" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=400&fit=crop', 'Bukti Pengiriman {{ $order->product_name }}')">
+                                        @elseif(str_contains(strtolower($order->product_name), 'topi') || str_contains(strtolower($order->product_name), 'baseball'))
+                                            <!-- Foto khusus untuk Topi Baseball -->
+                                            <img src="https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=200&h=200&fit=crop&crop=center"
+                                                alt="Bukti Pengiriman Topi" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=600&h=400&fit=crop', 'Bukti Pengiriman {{ $order->product_name }}')">
+                                        @else
+                                            <!-- Default foto untuk produk lainnya -->
+                                            <img src="https://images.unsplash.com/photo-1565689228866-1d7db786d2c1?w=200&h=200&fit=crop&crop=center"
+                                                alt="Bukti Pengiriman" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1565689228866-1d7db786d2c1?w=600&h=400&fit=crop', 'Bukti Pengiriman {{ $order->product_name }}')">
+                                        @endif
+                                    </div>
+                                    <small class="text-muted">Klik foto untuk melihat detail</small>
+                                </div>
                             @elseif($order->status == 'completed')
                                 <div class="alert alert-secondary py-2 mb-2">
                                     <small><i class="fas fa-flag-checkered me-1"></i>Pesanan selesai</small>
+                                </div>
+
+                                <!-- Bukti Foto Diterima Pembeli -->
+                                <div class="completion-proof mt-3">
+                                    <p class="small fw-bold mb-2">📦 Bukti Diterima Pembeli:</p>
+                                    <div class="proof-images">
+                                        <!-- Foto bukti diterima sesuai produk -->
+                                        @if(str_contains(strtolower($order->product_name), 'tas') || str_contains(strtolower($order->product_name), 'laptop'))
+                                            <!-- Foto khusus untuk Tas Laptop -->
+                                            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&h=200&fit=crop&crop=center"
+                                                alt="Tas Laptop Diterima" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop', '{{ $order->product_name }} Diterima')">
+                                        @elseif(str_contains(strtolower($order->product_name), 'sepatu') || str_contains(strtolower($order->product_name), 'formal'))
+                                            <!-- Foto khusus untuk Sepatu Formal -->
+                                            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200&h=200&fit=crop&crop=center"
+                                                alt="Sepatu Formal Diterima" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=400&fit=crop', '{{ $order->product_name }} Diterima')">
+                                        @elseif(str_contains(strtolower($order->product_name), 'jam') || str_contains(strtolower($order->product_name), 'tangan'))
+                                            <!-- Foto khusus untuk Jam Tangan -->
+                                            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&h=200&fit=crop&crop=center"
+                                                alt="Jam Tangan Diterima" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&h=200&fit=crop', '{{ $order->product_name }} Diterima')">
+                                        @else
+                                            <!-- Default foto untuk produk lainnya -->
+                                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&h=200&fit=crop&crop=center"
+                                                alt="Produk Diterima" class="proof-image"
+                                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                                                onclick="showImageModal('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop', '{{ $order->product_name }} Diterima')">
+                                        @endif
+                                    </div>
+                                    <small class="text-muted">Klik foto untuk melihat detail</small>
                                 </div>
                             @elseif($order->status == 'cancelled')
                                 <div class="alert alert-danger py-2 mb-2">
@@ -554,6 +628,24 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk Lihat Foto Bukti -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalTitle">Bukti Foto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Bukti Foto" class="img-fluid" style="max-height: 70vh; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -561,33 +653,12 @@
     let currentOrderId = null;
     let currentCustomerName = null;
 
-    // Fungsi untuk mengelola filter pesanan
-    document.querySelectorAll('[data-filter]').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('[data-filter]').forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-outline-primary');
-            });
-
-            this.classList.add('active');
-            this.classList.remove('btn-outline-primary');
-            this.classList.add('btn-primary');
-
-            const filter = this.dataset.filter;
-            filterOrders(filter);
-        });
-    });
-
-    function filterOrders(status) {
-        const orders = document.querySelectorAll('.order-card');
-        orders.forEach(order => {
-            if (status === 'all' || order.dataset.status === status) {
-                order.style.display = 'block';
-            } else {
-                order.style.display = 'none';
-            }
-        });
+    // Fungsi untuk menampilkan modal gambar
+    function showImageModal(imageSrc, title) {
+        document.getElementById('modalImage').src = imageSrc;
+        document.getElementById('imageModalTitle').textContent = title;
+        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+        modal.show();
     }
 
     // Fungsi untuk menangani aksi pada pesanan keluar
@@ -841,6 +912,18 @@
         padding: 0.75rem 1rem;
     }
 
+    /* Proof Images Styles */
+    .proof-image {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .proof-image:hover {
+        transform: scale(1.05);
+        border-color: #007bff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
     /* Timeline Styles */
     .timeline {
         position: relative;
@@ -923,6 +1006,11 @@
         .order-item-card .card-footer .btn {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
+        }
+
+        .proof-image {
+            width: 60px !important;
+            height: 60px !important;
         }
     }
 </style>
