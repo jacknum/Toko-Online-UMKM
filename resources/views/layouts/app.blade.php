@@ -674,36 +674,41 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <!-- Auth Buttons - Visible when not logged in -->
-                        <li class="nav-item auth-buttons">
-                            <a href="{{ route('login') }}" class="btn btn-login">
-                                <i class="fas fa-sign-in-alt me-1"></i>Login
-                            </a>
-                            <a href="{{ route('register') }}" class="btn btn-register">
-                                <i class="fas fa-user-plus me-1"></i>Register
-                            </a>
-                        </li>
-
-                        <!-- User Dropdown - Visible when logged in -->
-                        <li class="nav-item dropdown d-none">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i> Admin
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profil</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>
-                                        Pengaturan</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" id="logoutBtn">
-                                        <i class="fas fa-sign-out-alt me-2"></i> Keluar
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @auth
+                            <!-- User Dropdown - Visible when logged in -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profil</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>
+                                            Pengaturan</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item" id="logoutBtn">
+                                                <i class="fas fa-sign-out-alt me-2"></i> Keluar
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @else
+                            <!-- Auth Buttons - Visible when not logged in -->
+                            <li class="nav-item auth-buttons">
+                                <a href="{{ route('login') }}" class="btn btn-login">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </a>
+                                <a href="{{ route('register') }}" class="btn btn-register">
+                                    <i class="fas fa-user-plus me-1"></i>Register
+                                </a>
+                            </li>
+                        @endauth
                     </ul>
                 </div>
             </div>
