@@ -36,21 +36,46 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="text-center floating">
-                        <div class="position-relative">
-                            <div class="bg-white rounded-3 shadow-lg p-4 d-inline-block">
-                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                                    alt="Dashboard Preview" class="img-fluid rounded-2">
-                            </div>
-                            <div class="position-absolute top-0 start-0 mt-4 ms-4">
-                                <div class="bg-success text-white rounded-pill px-3 py-1 small">
-                                    <i class="fas fa-chart-line me-1"></i>+25% Penjualan
+                    <div class="css-chart-container">
+                        <div class="chart-wrapper">
+                            <div class="chart-area">
+                                <div class="chart-grid">
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                </div>
+                                <div class="chart-line-animated"></div>
+                                <div class="chart-fill-animated"></div>
+                                <div class="chart-points">
+                                    <div class="point" style="left: 4%; bottom: 31%;" data-value="65%"></div>
+                                    <div class="point" style="left: 12%; bottom: 37.2%;" data-value="78%"></div>
+                                    <div class="point" style="left: 20%; bottom: 43%;" data-value="90%"></div>
+                                    <div class="point" style="left: 28%; bottom: 38.6%;" data-value="81%"></div>
+                                    <div class="point" style="left: 36%; bottom: 45.8%;" data-value="96%"></div>
+                                    <div class="point" style="left: 44%; bottom: 50%;" data-value="105%"></div>
+                                    <div class="point" style="left: 52%; bottom: 57.1%;" data-value="120%"></div>
+                                    <div class="point" style="left: 60%; bottom: 64.3%;" data-value="135%"></div>
+                                    <div class="point" style="left: 68%; bottom: 71.4%;" data-value="150%"></div>
+                                    <div class="point" style="left: 76%; bottom: 81%;" data-value="170%"></div>
+                                    <div class="point" style="left: 84%; bottom: 88.1%;" data-value="185%"></div>
+                                    <div class="point" style="left: 92%; bottom: 100%;" data-value="210%"></div>
                                 </div>
                             </div>
-                            <div class="position-absolute bottom-0 end-0 mb-4 me-4">
-                                <div class="bg-primary text-white rounded-pill px-3 py-1 small">
-                                    <i class="fas fa-shopping-cart me-1"></i>50+ Orders
-                                </div>
+                            <div class="chart-labels">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>Mei</span>
+                                <span>Jun</span>
+                                <span>Jul</span>
+                                <span>Agu</span>
+                                <span>Sep</span>
+                                <span>Okt</span>
+                                <span>Nov</span>
+                                <span>Des</span>
                             </div>
                         </div>
                     </div>
@@ -59,7 +84,7 @@
         </div>
     </section>
 
-    <!-- Stats Section tetap sama -->
+    <!-- Stats Section -->
     <section class="section stats">
         <div class="container">
             <div class="row text-center">
@@ -149,7 +174,7 @@
         </div>
     </section>
 
-    <!-- About Section dengan gambar -->
+    <!-- About Section dengan 3D Animation -->
     <section id="about" class="section">
         <div class="container">
             <div class="row align-items-center">
@@ -189,8 +214,51 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                            alt="Business Growth" class="img-fluid rounded-3 shadow">
+                        <div class="animation-3d-container">
+                            <!-- 3D Animation dengan CSS -->
+                            <div class="scene-3d">
+                                <div class="cube">
+                                    <div class="face front">
+                                        <i class="fas fa-store"></i>
+                                        <span>Toko Online</span>
+                                    </div>
+                                    <div class="face back">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Analytics</span>
+                                    </div>
+                                    <div class="face right">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>Penjualan</span>
+                                    </div>
+                                    <div class="face left">
+                                        <i class="fas fa-users"></i>
+                                        <span>Pelanggan</span>
+                                    </div>
+                                    <div class="face top">
+                                        <i class="fas fa-rocket"></i>
+                                        <span>Growth</span>
+                                    </div>
+                                    <div class="face bottom">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Security</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="element element-1">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="element element-2">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="element element-3">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="element element-4">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

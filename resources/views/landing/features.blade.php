@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Hero Section untuk Features -->
-    <section class="hero" style="min-height: 60vh;">
+    <section class="hero" style="min-height: 80vh;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">
@@ -59,9 +59,50 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <div class="bg-white rounded-3 shadow-lg p-4 d-inline-block">
-                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                                 alt="Product Management" class="img-fluid rounded-2">
+                        <div class="animation-3d-container">
+                            <!-- 3D Animation untuk Manajemen Produk -->
+                            <div class="scene-3d">
+                                <div class="cube">
+                                    <div class="face front">
+                                        <i class="fas fa-boxes"></i>
+                                        <span>Produk</span>
+                                    </div>
+                                    <div class="face back">
+                                        <i class="fas fa-database"></i>
+                                        <span>Stok</span>
+                                    </div>
+                                    <div class="face right">
+                                        <i class="fas fa-tags"></i>
+                                        <span>Harga</span>
+                                    </div>
+                                    <div class="face left">
+                                        <i class="fas fa-layer-group"></i>
+                                        <span>Kategori</span>
+                                    </div>
+                                    <div class="face top">
+                                        <i class="fas fa-upload"></i>
+                                        <span>Upload</span>
+                                    </div>
+                                    <div class="face bottom">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>Analytics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="element element-1">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="element element-2">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="element element-3">
+                                    <i class="fas fa-pallet"></i>
+                                </div>
+                                <div class="element element-4">
+                                    <i class="fas fa-barcode"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,9 +145,50 @@
                 </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="text-center">
-                        <div class="bg-white rounded-3 shadow-lg p-4 d-inline-block">
-                            <img src="https://images.unsplash.com/photo-1563013541-2d0d41e6b2e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                                 alt="Order Management" class="img-fluid rounded-2">
+                        <div class="animation-3d-container">
+                            <!-- 3D Animation untuk Pesanan -->
+                            <div class="scene-3d">
+                                <div class="cube">
+                                    <div class="face front">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>Order</span>
+                                    </div>
+                                    <div class="face back">
+                                        <i class="fas fa-truck"></i>
+                                        <span>Kirim</span>
+                                    </div>
+                                    <div class="face right">
+                                        <i class="fas fa-bell"></i>
+                                        <span>Notif</span>
+                                    </div>
+                                    <div class="face left">
+                                        <i class="fas fa-exchange-alt"></i>
+                                        <span>Retur</span>
+                                    </div>
+                                    <div class="face top">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Track</span>
+                                    </div>
+                                    <div class="face bottom">
+                                        <i class="fas fa-history"></i>
+                                        <span>Riwayat</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="element element-1">
+                                    <i class="fas fa-receipt"></i>
+                                </div>
+                                <div class="element element-2">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </div>
+                                <div class="element element-3">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <div class="element element-4">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,9 +231,50 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <div class="bg-white rounded-3 shadow-lg p-4 d-inline-block">
-                            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                                 alt="Payment System" class="img-fluid rounded-2">
+                        <div class="animation-3d-container">
+                            <!-- 3D Animation untuk Pembayaran -->
+                            <div class="scene-3d">
+                                <div class="cube">
+                                    <div class="face front">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span>Kartu</span>
+                                    </div>
+                                    <div class="face back">
+                                        <i class="fas fa-wallet"></i>
+                                        <span>E-Wallet</span>
+                                    </div>
+                                    <div class="face right">
+                                        <i class="fas fa-university"></i>
+                                        <span>Transfer</span>
+                                    </div>
+                                    <div class="face left">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>COD</span>
+                                    </div>
+                                    <div class="face top">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Secure</span>
+                                    </div>
+                                    <div class="face bottom">
+                                        <i class="fas fa-sync"></i>
+                                        <span>Sync</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="element element-1">
+                                    <i class="fab fa-cc-visa"></i>
+                                </div>
+                                <div class="element element-2">
+                                    <i class="fab fa-cc-mastercard"></i>
+                                </div>
+                                <div class="element element-3">
+                                    <i class="fas fa-qrcode"></i>
+                                </div>
+                                <div class="element element-4">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
