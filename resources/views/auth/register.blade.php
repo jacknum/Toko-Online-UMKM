@@ -57,10 +57,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
 
-                <!-- Kolom Kanan -->
-                <div class="form-column">
                     <div class="register-form-group position-relative">
                         <i class="fas fa-lock register-form-icon"></i>
                         <input type="password" class="register-form-control" id="password_confirmation"
@@ -70,7 +67,10 @@
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
+                </div>
 
+                <!-- Kolom Kanan -->
+                <div class="form-column">
                     <div class="register-form-group">
                         <i class="fas fa-phone register-form-icon"></i>
                         <input type="tel" class="register-form-control @error('phone') is-invalid @enderror"
