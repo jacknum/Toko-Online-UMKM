@@ -10,10 +10,26 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // TAMBAHKAN METHOD INI - untuk menampilkan form login
+    // Show Login Form
     public function showLogin()
     {
+        // Jika sudah login, redirect ke dashboard
+        if (Auth::check()) { // Ganti auth()->check() dengan Auth::check()
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
+    }
+
+    // Show Register Form
+    public function showRegister()
+    {
+        // Jika sudah login, redirect ke dashboard
+        if (Auth::check()) { // Ganti auth()->check() dengan Auth::check()
+            return redirect()->route('dashboard');
+        }
+
+        return view('auth.register');
     }
 
     // Di method login AuthController
@@ -38,12 +54,6 @@ class AuthController extends Controller
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->onlyInput('username');
-    }
-
-    // Show Register Form
-    public function showRegister()
-    {
-        return view('auth.register');
     }
 
     // Handle Register - Pastikan login setelah registrasi
@@ -80,7 +90,8 @@ class AuthController extends Controller
             // Login user setelah registrasi
             Auth::login($user);
 
-            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+            // Redirect ke dashboard setelah registrasi berhasil
+            return redirect()->route('dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat registrasi: ' . $e->getMessage());
         }
@@ -93,6 +104,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Logout berhasil!');
     }
 }

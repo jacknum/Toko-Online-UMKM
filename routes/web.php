@@ -5,7 +5,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
+
+// Landing Page - Halaman pertama yang dilihat user
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/features', [LandingController::class, 'features'])->name('features');
+Route::get('/pricing', [LandingController::class, 'pricing'])->name('pricing');
 
 // Public Routes - Harus diletakkan sebelum middleware auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -13,18 +19,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Redirect root berdasarkan status auth
-Route::get('/', function () {
-    return auth()->check()
-        ? redirect()->route('dashboard')
-        : redirect()->route('login');
-});
-
-// Protected Routes
+// Protected Routes - Hanya bisa diakses setelah login
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard
+    // Dashboard - akan diarahkan kesini setelah login berhasil
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Products Routes
