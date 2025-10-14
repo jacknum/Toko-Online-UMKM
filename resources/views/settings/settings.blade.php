@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengaturan Sistem - ')
+@section('title', 'Pengaturan - ')
 
 @section('content')
 <div class="container-fluid">
@@ -8,13 +8,8 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h1 class="h3 mb-0">Pengaturan Sistem</h1>
-                <p class="mb-0 text-muted">Kelola konfigurasi dan preferensi sistem</p>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary" id="saveAllSettings">
-                    <i class="fas fa-save me-2"></i>Simpan Semua Perubahan
-                </button>
+                <h1 class="h3 mb-0">Pengaturan</h1>
+                <p class="mb-0 text-muted">Kelola akun, toko, dan preferensi Anda</p>
             </div>
         </div>
     </div>
@@ -26,33 +21,23 @@
                 <div class="card-body py-3">
                     <ul class="nav nav-pills nav-fill" id="settingsTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
-                                <i class="fas fa-cog me-2"></i>Umum
+                            <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">
+                                <i class="fas fa-user me-2"></i>Akun Saya
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
-                                <i class="fas fa-shield-alt me-2"></i>Keamanan
+                            <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address" type="button" role="tab">
+                                <i class="fas fa-map-marker-alt me-2"></i>Alamat Toko
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">
-                                <i class="fas fa-bell me-2"></i>Notifikasi
+                            <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment" type="button" role="tab">
+                                <i class="fas fa-credit-card me-2"></i>Pembayaran
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="appearance-tab" data-bs-toggle="tab" data-bs-target="#appearance" type="button" role="tab">
-                                <i class="fas fa-palette me-2"></i>Tampilan
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="integration-tab" data-bs-toggle="tab" data-bs-target="#integration" type="button" role="tab">
-                                <i class="fas fa-plug me-2"></i>Integrasi
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button" role="tab">
-                                <i class="fas fa-tools me-2"></i>Lanjutan
+                            <button class="nav-link" id="support-tab" data-bs-toggle="tab" data-bs-target="#support" type="button" role="tab">
+                                <i class="fas fa-headset me-2"></i>Bantuan & Support
                             </button>
                         </li>
                     </ul>
@@ -66,408 +51,472 @@
         <div class="col-12">
             <div class="tab-content" id="settingsTabContent">
                 
-                <!-- General Settings -->
-                <div class="tab-pane fade show active" id="general" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-cog text-primary me-2"></i>
-                                Pengaturan Umum
-                            </h5>
+                <!-- Account Settings -->
+                <div class="tab-pane fade show active" id="account" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card card-custom shadow mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-user-circle text-primary me-2"></i>
+                                        Informasi Profil
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="profileForm">
+                                        @csrf
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nama Lengkap</label>
+                                                <input type="text" class="form-control" name="name" 
+                                                       value="{{ Auth::user()->name ?? '' }}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" name="email" 
+                                                       value="{{ Auth::user()->email ?? '' }}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nomor Telepon</label>
+                                                <input type="tel" class="form-control" name="phone" 
+                                                       value="{{ Auth::user()->phone ?? '' }}" placeholder="+62">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nama Toko</label>
+                                                <input type="text" class="form-control" name="store_name" 
+                                                       value="{{ Auth::user()->store_name ?? '' }}" placeholder="Nama toko Anda">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Bio Toko</label>
+                                                <textarea class="form-control" name="store_bio" rows="3" 
+                                                          placeholder="Deskripsi singkat tentang toko Anda">{{ Auth::user()->store_bio ?? '' }}</textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fas fa-save me-2"></i>Simpan Perubahan Profil
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-lock text-success me-2"></i>
+                                        Keamanan Akun
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="securityForm">
+                                        @csrf
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Kata Sandi Saat Ini</label>
+                                                <input type="password" class="form-control" name="current_password" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Kata Sandi Baru</label>
+                                                <input type="password" class="form-control" name="new_password" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Konfirmasi Kata Sandi Baru</label>
+                                                <input type="password" class="form-control" name="new_password_confirmation" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="logout_other_devices" id="logoutOtherDevices">
+                                                    <label class="form-check-label" for="logoutOtherDevices">
+                                                        Keluar dari semua perangkat lain
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-key me-2"></i>Perbarui Kata Sandi
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form id="generalSettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama Aplikasi</label>
-                                        <input type="text" class="form-control" name="app_name" 
-                                               value="{{ config('app.name', 'Laravel') }}" required>
+                        
+                        <div class="col-lg-4">
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-image text-info me-2"></i>
+                                        Foto Profil
+                                    </h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=200&background=4361ee&color=fff' }}" 
+                                             alt="Profile" class="rounded-circle" width="150" height="150" id="profileImage">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Email Administrator</label>
-                                        <input type="email" class="form-control" name="admin_email" 
-                                               value="{{ old('admin_email', 'admin@example.com') }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Zona Waktu</label>
-                                        <select class="form-select" name="timezone" required>
-                                            <option value="Asia/Jakarta" selected>WIB (Asia/Jakarta)</option>
-                                            <option value="Asia/Makassar">WITA (Asia/Makassar)</option>
-                                            <option value="Asia/Jayapura">WIT (Asia/Jayapura)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Bahasa Default</label>
-                                        <select class="form-select" name="locale" required>
-                                            <option value="id" selected>Bahasa Indonesia</option>
-                                            <option value="en">English</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Deskripsi Aplikasi</label>
-                                        <textarea class="form-control" name="app_description" rows="3" 
-                                                  placeholder="Deskripsi singkat tentang aplikasi">{{ old('app_description') }}</textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="maintenance_mode" 
-                                                   id="maintenanceMode" value="1">
-                                            <label class="form-check-label" for="maintenanceMode">
-                                                Mode Maintenance
-                                            </label>
-                                        </div>
-                                        <div class="form-text">
-                                            Aktifkan untuk menghentikan sementara akses pengguna ke aplikasi
-                                        </div>
+                                    <input type="file" class="form-control mb-3" id="avatarUpload" accept="image/*">
+                                    <button type="button" class="btn btn-outline-primary w-100" id="uploadAvatarBtn">
+                                        <i class="fas fa-upload me-2"></i>Unggah Foto
+                                    </button>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Format: JPG, PNG. Maksimal 2MB</small>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Security Settings -->
-                <div class="tab-pane fade" id="security" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-shield-alt text-success me-2"></i>
-                                Pengaturan Keamanan
-                            </h5>
+                <!-- Address Settings -->
+                <div class="tab-pane fade" id="address" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-store text-warning me-2"></i>
+                                        Alamat Toko Utama
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="addressForm">
+                                        @csrf
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Label Alamat</label>
+                                                <input type="text" class="form-control" name="address_label" 
+                                                       value="Toko Utama" placeholder="Contoh: Toko Utama, Gudang, dll.">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Alamat Lengkap</label>
+                                                <textarea class="form-control" name="full_address" rows="3" 
+                                                          placeholder="Jl. Contoh No. 123">{{ Auth::user()->full_address ?? '' }}</textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Provinsi</label>
+                                                <select class="form-select" name="province" id="provinceSelect">
+                                                    <option value="">Pilih Provinsi</option>
+                                                    <!-- Options will be populated by JavaScript -->
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Kota/Kabupaten</label>
+                                                <select class="form-select" name="city" id="citySelect" disabled>
+                                                    <option value="">Pilih Kota/Kabupaten</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Kecamatan</label>
+                                                <input type="text" class="form-control" name="district" 
+                                                       value="{{ Auth::user()->district ?? '' }}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Kode Pos</label>
+                                                <input type="text" class="form-control" name="postal_code" 
+                                                       value="{{ Auth::user()->postal_code ?? '' }}">
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="is_primary" id="isPrimary" checked>
+                                                    <label class="form-check-label" for="isPrimary">
+                                                        Jadikan sebagai alamat utama
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-warning">
+                                                    <i class="fas fa-save me-2"></i>Simpan Alamat
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form id="securitySettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <h6 class="mb-3">Kebijakan Kata Sandi</h6>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="password_uppercase" 
-                                                   id="passwordUppercase" value="1" checked>
-                                            <label class="form-check-label" for="passwordUppercase">
-                                                Harus mengandung huruf besar
-                                            </label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="password_numbers" 
-                                                   id="passwordNumbers" value="1" checked>
-                                            <label class="form-check-label" for="passwordNumbers">
-                                                Harus mengandung angka
-                                            </label>
-                                        </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="password_special" 
-                                                   id="passwordSpecial" value="1">
-                                            <label class="form-check-label" for="passwordSpecial">
-                                                Harus mengandung karakter khusus
-                                            </label>
-                                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-map-marked-alt text-info me-2"></i>
+                                        Alamat Lainnya
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                            <i class="fas fa-plus me-2"></i>Tambah Alamat Baru
+                                        </button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Panjang Minimal Kata Sandi</label>
-                                        <input type="number" class="form-control" name="password_min_length" 
-                                               value="8" min="6" max="20">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Masa Berlaku Kata Sandi (hari)</label>
-                                        <input type="number" class="form-control" name="password_expiry_days" 
-                                               value="90" min="30" max="365">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Autentikasi</h6>
-                                        <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" name="two_factor_auth" 
-                                                   id="twoFactorAuth" value="1">
-                                            <label class="form-check-label" for="twoFactorAuth">
-                                                Autentikasi Dua Faktor
-                                            </label>
+                                    
+                                    <div class="mt-3">
+                                        <div class="list-group">
+                                            <!-- Example addresses -->
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Gudang Pusat</h6>
+                                                    <small class="text-success">Aktif</small>
+                                                </div>
+                                                <p class="mb-1 small">Jl. Gudang No. 45, Jakarta Selatan</p>
+                                                <div class="btn-group btn-group-sm mt-2">
+                                                    <button class="btn btn-outline-primary btn-sm">Edit</button>
+                                                    <button class="btn btn-outline-danger btn-sm">Hapus</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" name="login_attempts_limit" 
-                                                   id="loginAttemptsLimit" value="1" checked>
-                                            <label class="form-check-label" for="loginAttemptsLimit">
-                                                Batas Percobaan Login
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Maksimal Percobaan Login</label>
-                                        <input type="number" class="form-control" name="max_login_attempts" 
-                                               value="5" min="3" max="10">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Waktu Blokir (menit)</label>
-                                        <input type="number" class="form-control" name="lockout_time" 
-                                               value="30" min="5" max="1440">
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Notification Settings -->
-                <div class="tab-pane fade" id="notifications" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-bell text-warning me-2"></i>
-                                Pengaturan Notifikasi
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="notificationSettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <h6 class="mb-3">Email Notifikasi</h6>
-                                        <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input" type="checkbox" name="email_notifications" 
-                                                   id="emailNotifications" value="1" checked>
-                                            <label class="form-check-label" for="emailNotifications">
-                                                Aktifkan Notifikasi Email
-                                            </label>
+                <!-- Payment Settings -->
+                <div class="tab-pane fade" id="payment" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card card-custom shadow mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-university text-success me-2"></i>
+                                        Rekening Bank
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="bankAccountForm">
+                                        @csrf
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nama Bank</label>
+                                                <select class="form-select" name="bank_name" required>
+                                                    <option value="">Pilih Bank</option>
+                                                    <option value="bca">BCA</option>
+                                                    <option value="bni">BNI</option>
+                                                    <option value="bri">BRI</option>
+                                                    <option value="mandiri">Mandiri</option>
+                                                    <option value="cimb">CIMB Niaga</option>
+                                                    <option value="permata">Permata</option>
+                                                    <option value="other">Lainnya</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nomor Rekening</label>
+                                                <input type="text" class="form-control" name="account_number" 
+                                                       placeholder="1234567890" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Nama Pemilik Rekening</label>
+                                                <input type="text" class="form-control" name="account_holder" 
+                                                       value="{{ Auth::user()->name ?? '' }}" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="is_primary_account" id="isPrimaryAccount" checked>
+                                                    <label class="form-check-label" for="isPrimaryAccount">
+                                                        Jadikan sebagai rekening utama
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-plus me-2"></i>Tambah Rekening
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">SMTP Host</label>
-                                        <input type="text" class="form-control" name="smtp_host" 
-                                               value="{{ old('smtp_host', 'smtp.gmail.com') }}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">SMTP Port</label>
-                                        <input type="number" class="form-control" name="smtp_port" 
-                                               value="{{ old('smtp_port', '587') }}">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Jenis Notifikasi</h6>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="notify_new_users" 
-                                                   id="notifyNewUsers" value="1" checked>
-                                            <label class="form-check-label" for="notifyNewUsers">
-                                                Pengguna Baru
-                                            </label>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-mobile-alt text-primary me-2"></i>
+                                        E-Wallet & Pembayaran Digital
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="gopaySwitch" checked>
+                                                <label class="form-check-label" for="gopaySwitch">
+                                                    <i class="fas fa-wallet text-success me-2"></i>GoPay
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 ms-4">
+                                                <small class="text-muted">Nomor: 081234567890</small>
+                                            </div>
                                         </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="notify_errors" 
-                                                   id="notifyErrors" value="1" checked>
-                                            <label class="form-check-label" for="notifyErrors">
-                                                Error Sistem
-                                            </label>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="ovoSwitch" checked>
+                                                <label class="form-check-label" for="ovoSwitch">
+                                                    <i class="fas fa-mobile text-purple me-2"></i>OVO
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 ms-4">
+                                                <small class="text-muted">Nomor: 081234567890</small>
+                                            </div>
                                         </div>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="notify_backups" 
-                                                   id="notifyBackups" value="1">
-                                            <label class="form-check-label" for="notifyBackups">
-                                                Backup Selesai
-                                            </label>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="danaSwitch">
+                                                <label class="form-check-label" for="danaSwitch">
+                                                    <i class="fas fa-money-bill-wave text-blue me-2"></i>DANA
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Push Notifikasi</h6>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="push_notifications" 
-                                                   id="pushNotifications" value="1">
-                                            <label class="form-check-label" for="pushNotifications">
-                                                Aktifkan Push Notifikasi
-                                            </label>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="shopeepaySwitch">
+                                                <label class="form-check-label" for="shopeepaySwitch">
+                                                    <i class="fas fa-shopping-bag text-orange me-2"></i>ShopeePay
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-credit-card text-info me-2"></i>
+                                        Rekening Terdaftar
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <div class="list-group-item">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">BCA</h6>
+                                                <span class="badge bg-success">Utama</span>
+                                            </div>
+                                            <p class="mb-1">1234567890</p>
+                                            <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">BRI</h6>
+                                                <span class="badge bg-secondary">Cadangan</span>
+                                            </div>
+                                            <p class="mb-1">9876543210</p>
+                                            <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Appearance Settings -->
-                <div class="tab-pane fade" id="appearance" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-palette text-info me-2"></i>
-                                Pengaturan Tampilan
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="appearanceSettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Tema Aplikasi</label>
-                                        <select class="form-select" name="theme" required>
-                                            <option value="light" selected>Tema Terang</option>
-                                            <option value="dark">Tema Gelap</option>
-                                            <option value="auto">Sesuai Sistem</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Warna Primer</label>
-                                        <input type="color" class="form-control form-control-color" name="primary_color" 
-                                               value="#4361ee" title="Pilih warna primer">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Logo & Branding</h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Logo Aplikasi</label>
-                                        <input type="file" class="form-control" name="app_logo" accept="image/*">
-                                        <div class="form-text">Format: PNG, JPG, SVG. Maksimal 2MB</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Favicon</label>
-                                        <input type="file" class="form-control" name="favicon" accept="image/*">
-                                        <div class="form-text">Format: ICO, PNG. Maksimal 500KB</div>
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Tata Letak</h6>
-                                        <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" name="fixed_header" 
-                                                   id="fixedHeader" value="1" checked>
-                                            <label class="form-check-label" for="fixedHeader">
-                                                Header Tetap
-                                            </label>
+                <!-- Support Settings -->
+                <div class="tab-pane fade" id="support" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card card-custom shadow mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-robot text-primary me-2"></i>
+                                        AI Assistant Toko
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chat-container bg-light rounded p-3" style="height: 300px; overflow-y: auto;">
+                                        <div class="chat-message bot-message mb-3">
+                                            <div class="message-bubble bg-white rounded p-3 shadow-sm">
+                                                <strong>AI Assistant:</strong> Halo! Saya AI Assistant toko Anda. Ada yang bisa saya bantu? Saya bisa membantu dengan pertanyaan tentang produk, pesanan, atau pengaturan toko.
+                                            </div>
                                         </div>
-                                        <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" name="sidebar_collapsed" 
-                                                   id="sidebarCollapsed" value="1">
-                                            <label class="form-check-label" for="sidebarCollapsed">
-                                                Sidebar Terlipat Default
-                                            </label>
-                                        </div>
+                                    </div>
+                                    <div class="input-group mt-3">
+                                        <input type="text" class="form-control" placeholder="Ketik pertanyaan Anda..." id="chatInput">
+                                        <button class="btn btn-primary" type="button" id="sendMessageBtn">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Contoh pertanyaan: "Bagaimana cara menambah produk?" atau "Lihat pesanan terbaru"</small>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card card-custom shadow mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-headset text-success me-2"></i>
+                                        Kontak Support
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="https://wa.me/6281234567890" target="_blank" class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fab fa-whatsapp text-success me-3 fs-5"></i>
+                                                <div>
+                                                    <h6 class="mb-1">WhatsApp Support</h6>
+                                                    <small class="text-muted">+62 812-3456-7890</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="mailto:support@tokokami.com" class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-envelope text-primary me-3 fs-5"></i>
+                                                <div>
+                                                    <h6 class="mb-1">Email Support</h6>
+                                                    <small class="text-muted">support@tokokami.com</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="tel:+622112345678" class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-phone text-info me-3 fs-5"></i>
+                                                <div>
+                                                    <h6 class="mb-1">Telepon</h6>
+                                                    <small class="text-muted">(021) 1234-5678</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- Integration Settings -->
-                <div class="tab-pane fade" id="integration" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-plug text-danger me-2"></i>
-                                Pengaturan Integrasi
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="integrationSettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <h6 class="mb-3">API Settings</h6>
-                                        <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input" type="checkbox" name="api_enabled" 
-                                                   id="apiEnabled" value="1" checked>
-                                            <label class="form-check-label" for="apiEnabled">
-                                                Aktifkan API
-                                            </label>
+                            <div class="card card-custom shadow">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-clock text-warning me-2"></i>
+                                        Jam Operasional
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="operational-hours">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Senin - Jumat</span>
+                                            <span>08:00 - 17:00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Sabtu</span>
+                                            <span>09:00 - 15:00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Minggu</span>
+                                            <span class="text-danger">Libur</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">API Key</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="api_key" 
-                                                   value="{{ Str::random(32) }}" readonly>
-                                            <button class="btn btn-outline-secondary" type="button" id="generateApiKey">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Rate Limit (per minute)</label>
-                                        <input type="number" class="form-control" name="api_rate_limit" 
-                                               value="60" min="10" max="1000">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Third-Party Integrations</h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Google Analytics ID</label>
-                                        <input type="text" class="form-control" name="google_analytics_id" 
-                                               placeholder="UA-XXXXXXXXX-X">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Facebook Pixel ID</label>
-                                        <input type="text" class="form-control" name="facebook_pixel_id" 
-                                               placeholder="XXXXXXXXXXXXXXX">
+                                    <div class="mt-3 p-3 bg-light rounded">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Response time: 1-2 jam kerja untuk WhatsApp & Email
+                                        </small>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Advanced Settings -->
-                <div class="tab-pane fade" id="advanced" role="tabpanel">
-                    <div class="card card-custom shadow">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-tools text-secondary me-2"></i>
-                                Pengaturan Lanjutan
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="advancedSettingsForm">
-                                @csrf
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <h6 class="mb-3">Database & Backup</h6>
-                                        <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input" type="checkbox" name="auto_backup" 
-                                                   id="autoBackup" value="1" checked>
-                                            <label class="form-check-label" for="autoBackup">
-                                                Backup Otomatis
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Interval Backup</label>
-                                        <select class="form-select" name="backup_interval">
-                                            <option value="daily" selected>Harian</option>
-                                            <option value="weekly">Mingguan</option>
-                                            <option value="monthly">Bulanan</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Maksimal Backup</label>
-                                        <input type="number" class="form-control" name="max_backups" 
-                                               value="30" min="5" max="100">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <h6 class="mb-3">Cache & Performance</h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Driver Cache</label>
-                                        <select class="form-select" name="cache_driver">
-                                            <option value="file" selected>File</option>
-                                            <option value="redis">Redis</option>
-                                            <option value="memcached">Memcached</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Cache Lifetime (menit)</label>
-                                        <input type="number" class="form-control" name="cache_lifetime" 
-                                               value="60" min="1" max="1440">
-                                    </div>
-                                    <div class="col-12">
-                                        <hr>
-                                        <div class="alert alert-warning">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>
-                                            <strong>Peringatan:</strong> Pengaturan ini hanya untuk administrator sistem.
-                                            Perubahan yang tidak tepat dapat mempengaruhi performa aplikasi.
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -476,16 +525,17 @@
     </div>
 </div>
 
-<!-- Loading Modal -->
-<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-body text-center py-5">
-                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <h5 class="mb-2">Menyimpan Pengaturan...</h5>
-                <p class="text-muted mb-0">Harap tunggu sebentar</p>
+<!-- Add Address Modal -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Alamat Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Similar form to address form -->
+                <p>Form tambah alamat akan ditampilkan di sini...</p>
             </div>
         </div>
     </div>
@@ -520,19 +570,27 @@
         padding: 1.25rem 1.5rem;
     }
     
-    .card-title {
-        color: #495057;
-        font-weight: 600;
+    .chat-container {
+        border: 1px solid #dee2e6;
     }
     
-    .form-check-input:checked {
+    .message-bubble {
+        max-width: 80%;
+    }
+    
+    .bot-message {
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .user-message {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .user-message .message-bubble {
         background-color: #4361ee;
-        border-color: #4361ee;
-    }
-    
-    .form-control-color {
-        height: 45px;
-        padding: 5px;
+        color: white;
     }
 </style>
 @endsection
@@ -540,119 +598,165 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Generate API Key
-        document.getElementById('generateApiKey').addEventListener('click', function() {
-            const apiKeyInput = document.querySelector('input[name="api_key"]');
-            const newApiKey = generateApiKey(32);
-            apiKeyInput.value = newApiKey;
-            showAlert('success', 'API Key berhasil digenerate!');
-        });
-
-        // Save All Settings
-        document.getElementById('saveAllSettings').addEventListener('click', function() {
-            saveAllSettings();
-        });
-
-        // Form submission handlers
-        const forms = document.querySelectorAll('form[id$="SettingsForm"]');
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                saveFormSettings(this);
-            });
-        });
-
-        // Utility Functions
-        function generateApiKey(length) {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
+        // Profile image upload
+        document.getElementById('uploadAvatarBtn')?.addEventListener('click', function() {
+            const fileInput = document.getElementById('avatarUpload');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    showAlert('error', 'Ukuran file maksimal 2MB');
+                    return;
+                }
+                
+                // Simulate upload
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                    showAlert('success', 'Foto profil berhasil diunggah!');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showAlert('error', 'Pilih file terlebih dahulu');
             }
-            return result;
-        }
+        });
 
-        function saveFormSettings(form) {
-            const formData = new FormData(form);
-            const loadingModal = showLoadingModal();
-            
-            // Simulate API call to Laravel backend
-            setTimeout(() => {
-                loadingModal.hide();
-                showAlert('success', 'Pengaturan berhasil disimpan!');
-                
-                // In real application, you would use:
-                // fetch('{{ route('settings.update') }}', {
-                //     method: 'POST',
-                //     body: formData,
-                //     headers: {
-                //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                //     }
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     loadingModal.hide();
-                //     if (data.success) {
-                //         showAlert('success', data.message);
-                //     } else {
-                //         showAlert('error', data.message);
-                //     }
-                // })
-                // .catch(error => {
-                //     loadingModal.hide();
-                //     showAlert('error', 'Terjadi kesalahan saat menyimpan pengaturan');
-                // });
-                
-            }, 1500);
-        }
+        // Form submissions
+        document.getElementById('profileForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm(this, 'Profil berhasil diperbarui!');
+        });
 
-        function saveAllSettings() {
-            const loadingModal = showLoadingModal();
-            let hasError = false;
-            
-            // Collect all form data
-            const allFormData = new FormData();
-            forms.forEach((form, index) => {
-                const formData = new FormData(form);
-                for (let [key, value] of formData.entries()) {
-                    allFormData.append(key, value);
+        document.getElementById('securityForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm(this, 'Kata sandi berhasil diperbarui!');
+        });
+
+        document.getElementById('addressForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm(this, 'Alamat berhasil disimpan!');
+        });
+
+        document.getElementById('bankAccountForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm(this, 'Rekening bank berhasil ditambahkan!');
+        });
+
+        // Chat functionality
+        document.getElementById('sendMessageBtn')?.addEventListener('click', function() {
+            sendMessage();
+        });
+
+        document.getElementById('chatInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Province and city selection (simplified)
+        const provinces = [
+            { id: 1, name: 'DKI Jakarta' },
+            { id: 2, name: 'Jawa Barat' },
+            { id: 3, name: 'Jawa Tengah' },
+            { id: 4, name: 'Jawa Timur' },
+            { id: 5, name: 'Banten' }
+        ];
+
+        const provinceSelect = document.getElementById('provinceSelect');
+        const citySelect = document.getElementById('citySelect');
+
+        if (provinceSelect) {
+            provinces.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.id;
+                option.textContent = province.name;
+                provinceSelect.appendChild(option);
+            });
+
+            provinceSelect.addEventListener('change', function() {
+                citySelect.disabled = !this.value;
+                if (this.value) {
+                    // Simulate loading cities
+                    citySelect.innerHTML = '<option value="">Memuat kota...</option>';
+                    setTimeout(() => {
+                        citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
+                        const cities = ['Jakarta Pusat', 'Jakarta Selatan', 'Jakarta Barat', 'Jakarta Timur', 'Jakarta Utara'];
+                        cities.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city.toLowerCase().replace(' ', '_');
+                            option.textContent = city;
+                            citySelect.appendChild(option);
+                        });
+                    }, 500);
                 }
             });
-            
-            // Simulate API call to save all settings
-            setTimeout(() => {
-                loadingModal.hide();
-                if (!hasError) {
-                    showAlert('success', 'Semua pengaturan berhasil disimpan!');
-                } else {
-                    showAlert('error', 'Beberapa pengaturan gagal disimpan');
-                }
-                
-                // In real application:
-                // fetch('{{ route('settings.update-all') }}', {
-                //     method: 'POST',
-                //     body: allFormData,
-                //     headers: {
-                //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                //     }
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     loadingModal.hide();
-                //     if (data.success) {
-                //         showAlert('success', data.message);
-                //     } else {
-                //         showAlert('error', data.message);
-                //     }
-                // });
-                
-            }, 2000);
         }
 
-        function showLoadingModal() {
-            const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
-            modal.show();
-            return modal;
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (!message) return;
+
+            const chatContainer = document.querySelector('.chat-container');
+            
+            // Add user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user-message mb-3';
+            userMessageDiv.innerHTML = `
+                <div class="message-bubble rounded p-3 shadow-sm">
+                    <strong>Anda:</strong> ${message}
+                </div>
+            `;
+            chatContainer.appendChild(userMessageDiv);
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const botResponse = getAIResponse(message);
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message bot-message mb-3';
+                botMessageDiv.innerHTML = `
+                    <div class="message-bubble bg-white rounded p-3 shadow-sm">
+                        <strong>AI Assistant:</strong> ${botResponse}
+                    </div>
+                `;
+                chatContainer.appendChild(botMessageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const responses = {
+                'produk': 'Untuk menambah produk, buka menu "Produk Saya" dan klik tombol "Tambah Produk". Isi informasi produk seperti nama, deskripsi, harga, dan foto produk.',
+                'pesanan': 'Anda bisa melihat pesanan masuk di menu "Pesanan Masuk" dan pesanan keluar di "Pesanan Keluar". Setiap pesanan bisa dikelola statusnya.',
+                'pembayaran': 'Informasi pembayaran dan komisi bisa dilihat di menu "Pembayaran & Komisi". Pastikan rekening bank sudah terdaftar di pengaturan.',
+                'default': 'Saya memahami pertanyaan Anda. Untuk informasi lebih detail, silakan hubungi tim support kami melalui WhatsApp atau email yang tersedia.'
+            };
+
+            message = message.toLowerCase();
+            if (message.includes('produk') || message.includes('barang')) {
+                return responses.produk;
+            } else if (message.includes('pesanan') || message.includes('order')) {
+                return responses.pesanan;
+            } else if (message.includes('pembayaran') || message.includes('bayar')) {
+                return responses.pembayaran;
+            } else {
+                return responses.default;
+            }
+        }
+
+        function saveForm(form, successMessage) {
+            const formData = new FormData(form);
+            
+            // Simulate API call
+            setTimeout(() => {
+                showAlert('success', successMessage);
+            }, 1000);
         }
 
         function showAlert(type, message) {
@@ -679,12 +783,6 @@
                 }
             }, 5000);
         }
-
-        // Initialize tooltips
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
     });
 </script>
 @endsection

@@ -6,6 +6,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 // Landing Page - Halaman pertama yang dilihat user
@@ -25,6 +27,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard - akan diarahkan kesini setelah login berhasil
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Settings Routes
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/settings/update-all', [SettingsController::class, 'updateAll'])->name('settings.update-all');
 
     // Products Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');

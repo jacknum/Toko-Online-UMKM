@@ -648,12 +648,17 @@
                 <i class="fas fa-truck"></i> <span class="menu-text">Pesanan Keluar</span>
             </a>
 
-            <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}"
-                data-route="payments">
+            <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}">
                 <i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span>
             </a>
 
-            <a href="#" class="">
+            <!-- Profile Menu -->
+            <a href="{{ route('profile.edit') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                <i class="fas fa-user"></i> <span class="menu-text">Profil</span>
+            </a>
+
+            <!-- Settings Menu -->
+            <a href="{{ route('settings') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <i class="fas fa-cog"></i> <span class="menu-text">Pengaturan</span>
             </a>
         </div>
@@ -681,10 +686,16 @@
                                     <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profil</a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                            <i class="fas fa-user me-2"></i> Profil
+                                        </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>
-                                            Pengaturan</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('settings') }}">
+                                            <i class="fas fa-cog me-2"></i> Pengaturan
+                                        </a>
+                                    </li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

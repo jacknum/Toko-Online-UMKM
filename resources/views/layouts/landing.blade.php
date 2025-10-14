@@ -1805,7 +1805,7 @@
                 </div>
             </div>
             <div class="text-center pt-4 mt-4 border-top border-secondary">
-                <p class="text-white mb-0">&copy; 2024 TokoOnline. All rights reserved.</p>
+                <p class="text-white mb-0">&copy; 2025 TokoOnline. All rights reserved.</p>
             </div>
         </div>
     </footer>
