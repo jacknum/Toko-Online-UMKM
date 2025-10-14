@@ -617,6 +617,90 @@
         .border-left-success {
             border-left: 0.25rem solid #1cc88a !important;
         }
+
+        /* Settings Page Specific Styles */
+        .nav-pills .nav-link {
+            border-radius: 10px;
+            margin: 0 2px;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .nav-pills .nav-link:not(.active) {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .nav-pills .nav-link:not(.active):hover {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .chat-container {
+            border: 1px solid #dee2e6;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+        }
+
+        .bot-message {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .user-message .message-bubble {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .ewallet-card {
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .ewallet-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Smooth transitions for form toggling */
+        .form-container {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Button animations */
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        /* Alert positioning */
+        .alert.position-fixed {
+            z-index: 1050;
+        }
     </style>
 </head>
 
@@ -650,11 +734,6 @@
 
             <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}">
                 <i class="fas fa-money-bill-wave"></i> <span class="menu-text">Pembayaran & Komisi</span>
-            </a>
-
-            <!-- Profile Menu -->
-            <a href="{{ route('profile.edit') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
-                <i class="fas fa-user"></i> <span class="menu-text">Profil</span>
             </a>
 
             <!-- Settings Menu -->

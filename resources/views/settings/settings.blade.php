@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengaturan - ')
+@section('title', 'Pengaturan')
 
 @section('content')
 <div class="container-fluid">
@@ -50,7 +50,7 @@
     <div class="row">
         <div class="col-12">
             <div class="tab-content" id="settingsTabContent">
-                
+
                 <!-- Account Settings -->
                 <div class="tab-pane fade show active" id="account" role="tabpanel">
                     <div class="row">
@@ -68,27 +68,27 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Nama Lengkap</label>
-                                                <input type="text" class="form-control" name="name" 
+                                                <input type="text" class="form-control" name="name"
                                                        value="{{ Auth::user()->name ?? '' }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Email</label>
-                                                <input type="email" class="form-control" name="email" 
+                                                <input type="email" class="form-control" name="email"
                                                        value="{{ Auth::user()->email ?? '' }}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Nomor Telepon</label>
-                                                <input type="tel" class="form-control" name="phone" 
+                                                <input type="tel" class="form-control" name="phone"
                                                        value="{{ Auth::user()->phone ?? '' }}" placeholder="+62">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Nama Toko</label>
-                                                <input type="text" class="form-control" name="store_name" 
+                                                <input type="text" class="form-control" name="store_name"
                                                        value="{{ Auth::user()->store_name ?? '' }}" placeholder="Nama toko Anda">
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Bio Toko</label>
-                                                <textarea class="form-control" name="store_bio" rows="3" 
+                                                <textarea class="form-control" name="store_bio" rows="3"
                                                           placeholder="Deskripsi singkat tentang toko Anda">{{ Auth::user()->store_bio ?? '' }}</textarea>
                                             </div>
                                             <div class="col-12">
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4">
                             <div class="card card-custom shadow">
                                 <div class="card-header">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="card-body text-center">
                                     <div class="mb-3">
-                                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=200&background=4361ee&color=fff' }}" 
+                                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=200&background=4361ee&color=fff' }}"
                                              alt="Profile" class="rounded-circle" width="150" height="150" id="profileImage">
                                     </div>
                                     <input type="file" class="form-control mb-3" id="avatarUpload" accept="image/*">
@@ -174,98 +174,137 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="card card-custom shadow">
-                                <div class="card-header">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
                                         <i class="fas fa-store text-warning me-2"></i>
-                                        Alamat Toko Utama
+                                        Alamat Toko
                                     </h5>
+                                    <button class="btn btn-primary btn-sm" id="showAddressFormBtn">
+                                        <i class="fas fa-plus me-1"></i>Tambah Alamat
+                                    </button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="addressForm">
-                                        @csrf
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <label class="form-label">Label Alamat</label>
-                                                <input type="text" class="form-control" name="address_label" 
-                                                       value="Toko Utama" placeholder="Contoh: Toko Utama, Gudang, dll.">
-                                            </div>
-                                            <div class="col-12">
-                                                <label class="form-label">Alamat Lengkap</label>
-                                                <textarea class="form-control" name="full_address" rows="3" 
-                                                          placeholder="Jl. Contoh No. 123">{{ Auth::user()->full_address ?? '' }}</textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Provinsi</label>
-                                                <select class="form-select" name="province" id="provinceSelect">
-                                                    <option value="">Pilih Provinsi</option>
-                                                    <!-- Options will be populated by JavaScript -->
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Kota/Kabupaten</label>
-                                                <select class="form-select" name="city" id="citySelect" disabled>
-                                                    <option value="">Pilih Kota/Kabupaten</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Kecamatan</label>
-                                                <input type="text" class="form-control" name="district" 
-                                                       value="{{ Auth::user()->district ?? '' }}">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Kode Pos</label>
-                                                <input type="text" class="form-control" name="postal_code" 
-                                                       value="{{ Auth::user()->postal_code ?? '' }}">
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="is_primary" id="isPrimary" checked>
-                                                    <label class="form-check-label" for="isPrimary">
-                                                        Jadikan sebagai alamat utama
-                                                    </label>
+                                    <!-- Form Alamat (Awalnya Disembunyikan) -->
+                                    <div id="addressFormContainer" class="d-none">
+                                        <form id="addressForm">
+                                            @csrf
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label">Label Alamat</label>
+                                                    <input type="text" class="form-control" name="address_label"
+                                                           placeholder="Contoh: Toko Utama, Gudang, dll.">
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Alamat Lengkap</label>
+                                                    <textarea class="form-control" name="full_address" rows="3"
+                                                              placeholder="Jl. Contoh No. 123"></textarea>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Provinsi</label>
+                                                    <select class="form-select" name="province" id="provinceSelect">
+                                                        <option value="">Pilih Provinsi</option>
+                                                        <!-- Options will be populated by JavaScript -->
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Kota/Kabupaten</label>
+                                                    <select class="form-select" name="city" id="citySelect" disabled>
+                                                        <option value="">Pilih Kota/Kabupaten</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Kecamatan</label>
+                                                    <input type="text" class="form-control" name="district">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Kode Pos</label>
+                                                    <input type="text" class="form-control" name="postal_code">
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="is_primary" id="isPrimary">
+                                                        <label class="form-check-label" for="isPrimary">
+                                                            Jadikan sebagai alamat utama
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-warning me-2">
+                                                        <i class="fas fa-save me-2"></i>Simpan Alamat
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" id="cancelAddressFormBtn">
+                                                        Batal
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-warning">
-                                                    <i class="fas fa-save me-2"></i>Simpan Alamat
-                                                </button>
+                                        </form>
+                                        <hr class="my-4">
+                                    </div>
+
+                                    <!-- Daftar Alamat -->
+                                    <div id="addressList">
+                                        <div class="list-group">
+                                            <!-- Example addresses -->
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1">Toko Utama</h6>
+                                                        <p class="mb-1 small text-muted">Jl. Sudirman No. 123, Jakarta Pusat, DKI Jakarta 10210</p>
+                                                        <small class="text-success">Alamat Utama</small>
+                                                    </div>
+                                                    <div class="btn-group btn-group-sm ms-3">
+                                                        <button class="btn btn-outline-primary btn-sm edit-address-btn">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger btn-sm delete-address-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                                data-type="alamat" data-name="Toko Utama">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1">Gudang Pusat</h6>
+                                                        <p class="mb-1 small text-muted">Jl. Gatot Subroto No. 45, Jakarta Selatan, DKI Jakarta 12950</p>
+                                                    </div>
+                                                    <div class="btn-group btn-group-sm ms-3">
+                                                        <button class="btn btn-outline-primary btn-sm edit-address-btn">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger btn-sm delete-address-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                                data-type="alamat" data-name="Gudang Pusat">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4">
                             <div class="card card-custom shadow">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">
-                                        <i class="fas fa-map-marked-alt text-info me-2"></i>
-                                        Alamat Lainnya
+                                        <i class="fas fa-info-circle text-info me-2"></i>
+                                        Informasi Alamat
                                     </h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                                            <i class="fas fa-plus me-2"></i>Tambah Alamat Baru
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="mt-3">
-                                        <div class="list-group">
-                                            <!-- Example addresses -->
-                                            <div class="list-group-item">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <h6 class="mb-1">Gudang Pusat</h6>
-                                                    <small class="text-success">Aktif</small>
-                                                </div>
-                                                <p class="mb-1 small">Jl. Gudang No. 45, Jakarta Selatan</p>
-                                                <div class="btn-group btn-group-sm mt-2">
-                                                    <button class="btn btn-outline-primary btn-sm">Edit</button>
-                                                    <button class="btn btn-outline-danger btn-sm">Hapus</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="alert alert-info">
+                                        <small>
+                                            <i class="fas fa-lightbulb me-2"></i>
+                                            <strong>Tips:</strong><br>
+                                            • Anda dapat menambahkan multiple alamat toko<br>
+                                            • Pilih satu alamat sebagai alamat utama<br>
+                                            • Alamat utama akan ditampilkan di halaman toko
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -278,135 +317,224 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="card card-custom shadow mb-4">
-                                <div class="card-header">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
                                         <i class="fas fa-university text-success me-2"></i>
                                         Rekening Bank
                                     </h5>
+                                    <button class="btn btn-success btn-sm" id="showBankFormBtn">
+                                        <i class="fas fa-plus me-1"></i>Tambah Rekening
+                                    </button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="bankAccountForm">
-                                        @csrf
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Nama Bank</label>
-                                                <select class="form-select" name="bank_name" required>
-                                                    <option value="">Pilih Bank</option>
-                                                    <option value="bca">BCA</option>
-                                                    <option value="bni">BNI</option>
-                                                    <option value="bri">BRI</option>
-                                                    <option value="mandiri">Mandiri</option>
-                                                    <option value="cimb">CIMB Niaga</option>
-                                                    <option value="permata">Permata</option>
-                                                    <option value="other">Lainnya</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Nomor Rekening</label>
-                                                <input type="text" class="form-control" name="account_number" 
-                                                       placeholder="1234567890" required>
-                                            </div>
-                                            <div class="col-12">
-                                                <label class="form-label">Nama Pemilik Rekening</label>
-                                                <input type="text" class="form-control" name="account_holder" 
-                                                       value="{{ Auth::user()->name ?? '' }}" required>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="is_primary_account" id="isPrimaryAccount" checked>
-                                                    <label class="form-check-label" for="isPrimaryAccount">
-                                                        Jadikan sebagai rekening utama
-                                                    </label>
+                                    <!-- Form Rekening Bank -->
+                                    <div id="bankFormContainer" class="d-none mb-4">
+                                        <form id="bankAccountForm">
+                                            @csrf
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Nama Bank</label>
+                                                    <select class="form-select" name="bank_name" required>
+                                                        <option value="">Pilih Bank</option>
+                                                        <option value="bca">BCA</option>
+                                                        <option value="bni">BNI</option>
+                                                        <option value="bri">BRI</option>
+                                                        <option value="mandiri">Mandiri</option>
+                                                        <option value="cimb">CIMB Niaga</option>
+                                                        <option value="permata">Permata</option>
+                                                        <option value="other">Lainnya</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Nomor Rekening</label>
+                                                    <input type="text" class="form-control" name="account_number"
+                                                           placeholder="1234567890" required>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Nama Pemilik Rekening</label>
+                                                    <input type="text" class="form-control" name="account_holder"
+                                                           value="{{ Auth::user()->name ?? '' }}" required>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="is_primary_account" id="isPrimaryAccount">
+                                                        <label class="form-check-label" for="isPrimaryAccount">
+                                                            Jadikan sebagai rekening utama
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-success me-2">
+                                                        <i class="fas fa-plus me-2"></i>Tambah Rekening
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" id="cancelBankFormBtn">
+                                                        Batal
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-success">
-                                                    <i class="fas fa-plus me-2"></i>Tambah Rekening
-                                                </button>
+                                        </form>
+                                        <hr class="my-4">
+                                    </div>
+
+                                    <!-- Daftar Rekening -->
+                                    <div id="bankAccountList">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1">BCA</h6>
+                                                        <p class="mb-1">1234567890</p>
+                                                        <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
+                                                    </div>
+                                                    <div>
+                                                        <span class="badge bg-success me-2">Utama</span>
+                                                        <button class="btn btn-outline-danger btn-sm delete-bank-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                                data-type="rekening bank" data-name="BCA - 1234567890">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1">BRI</h6>
+                                                        <p class="mb-1">9876543210</p>
+                                                        <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
+                                                    </div>
+                                                    <div>
+                                                        <span class="badge bg-secondary me-2">Cadangan</span>
+                                                        <button class="btn btn-outline-danger btn-sm delete-bank-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                                data-type="rekening bank" data-name="BRI - 9876543210">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="card card-custom shadow">
-                                <div class="card-header">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
                                         <i class="fas fa-mobile-alt text-primary me-2"></i>
                                         E-Wallet & Pembayaran Digital
                                     </h5>
+                                    <button class="btn btn-primary btn-sm" id="showEwalletFormBtn">
+                                        <i class="fas fa-plus me-1"></i>Tambah E-Wallet
+                                    </button>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="gopaySwitch" checked>
-                                                <label class="form-check-label" for="gopaySwitch">
-                                                    <i class="fas fa-wallet text-success me-2"></i>GoPay
-                                                </label>
+                                    <!-- Form E-Wallet -->
+                                    <div id="ewalletFormContainer" class="d-none mb-4">
+                                        <form id="ewalletForm">
+                                            @csrf
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Jenis E-Wallet</label>
+                                                    <select class="form-select" name="ewallet_type" required>
+                                                        <option value="">Pilih E-Wallet</option>
+                                                        <option value="gopay">GoPay</option>
+                                                        <option value="ovo">OVO</option>
+                                                        <option value="dana">DANA</option>
+                                                        <option value="shopeepay">ShopeePay</option>
+                                                        <option value="linkaja">LinkAja</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Nomor Telepon</label>
+                                                    <input type="text" class="form-control" name="ewallet_number"
+                                                           placeholder="081234567890" required>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="is_active" id="isActiveEwallet" checked>
+                                                        <label class="form-check-label" for="isActiveEwallet">
+                                                            Aktifkan pembayaran dengan e-wallet ini
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-primary me-2">
+                                                        <i class="fas fa-plus me-2"></i>Tambah E-Wallet
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" id="cancelEwalletFormBtn">
+                                                        Batal
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="mt-2 ms-4">
-                                                <small class="text-muted">Nomor: 081234567890</small>
+                                        </form>
+                                        <hr class="my-4">
+                                    </div>
+
+                                    <!-- Daftar E-Wallet -->
+                                    <div class="row g-3" id="ewalletList">
+                                        <div class="col-md-6">
+                                            <div class="card ewallet-card">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <h6 class="mb-0">
+                                                            <i class="fas fa-wallet text-success me-2"></i>GoPay
+                                                        </h6>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" checked>
+                                                        </div>
+                                                    </div>
+                                                    <p class="mb-1 small text-muted">081234567890</p>
+                                                    <button class="btn btn-outline-danger btn-sm mt-2 delete-ewallet-btn"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                            data-type="e-wallet" data-name="GoPay - 081234567890">
+                                                        <i class="fas fa-trash me-1"></i>Hapus
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="ovoSwitch" checked>
-                                                <label class="form-check-label" for="ovoSwitch">
-                                                    <i class="fas fa-mobile text-purple me-2"></i>OVO
-                                                </label>
-                                            </div>
-                                            <div class="mt-2 ms-4">
-                                                <small class="text-muted">Nomor: 081234567890</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="danaSwitch">
-                                                <label class="form-check-label" for="danaSwitch">
-                                                    <i class="fas fa-money-bill-wave text-blue me-2"></i>DANA
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="shopeepaySwitch">
-                                                <label class="form-check-label" for="shopeepaySwitch">
-                                                    <i class="fas fa-shopping-bag text-orange me-2"></i>ShopeePay
-                                                </label>
+                                            <div class="card ewallet-card">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <h6 class="mb-0">
+                                                            <i class="fas fa-mobile text-purple me-2"></i>OVO
+                                                        </h6>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" checked>
+                                                        </div>
+                                                    </div>
+                                                    <p class="mb-1 small text-muted">081234567890</p>
+                                                    <button class="btn btn-outline-danger btn-sm mt-2 delete-ewallet-btn"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                            data-type="e-wallet" data-name="OVO - 081234567890">
+                                                        <i class="fas fa-trash me-1"></i>Hapus
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4">
                             <div class="card card-custom shadow">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">
-                                        <i class="fas fa-credit-card text-info me-2"></i>
-                                        Rekening Terdaftar
+                                        <i class="fas fa-info-circle text-info me-2"></i>
+                                        Informasi Pembayaran
                                     </h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="list-group">
-                                        <div class="list-group-item">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1">BCA</h6>
-                                                <span class="badge bg-success">Utama</span>
-                                            </div>
-                                            <p class="mb-1">1234567890</p>
-                                            <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
-                                        </div>
-                                        <div class="list-group-item">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1">BRI</h6>
-                                                <span class="badge bg-secondary">Cadangan</span>
-                                            </div>
-                                            <p class="mb-1">9876543210</p>
-                                            <small class="text-muted">A/N: {{ Auth::user()->name }}</small>
-                                        </div>
+                                    <div class="alert alert-info">
+                                        <small>
+                                            <i class="fas fa-lightbulb me-2"></i>
+                                            <strong>Tips:</strong><br>
+                                            • Tambahkan minimal satu rekening bank<br>
+                                            • E-wallet memudahkan pembayaran customer<br>
+                                            • Rekening utama akan digunakan untuk penarikan dana
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -416,6 +544,7 @@
 
                 <!-- Support Settings -->
                 <div class="tab-pane fade" id="support" role="tabpanel">
+                    <!-- Tetap sama seperti sebelumnya -->
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="card card-custom shadow mb-4">
@@ -445,7 +574,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4">
                             <div class="card card-custom shadow mb-4">
                                 <div class="card-header">
@@ -525,22 +654,43 @@
     </div>
 </div>
 
-<!-- Add Address Modal -->
-<div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Alamat Baru</h5>
+                <h5 class="modal-title text-danger" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Similar form to address form -->
-                <p>Form tambah alamat akan ditampilkan di sini...</p>
+                <div class="text-center mb-3">
+                    <i class="fas fa-trash-alt text-danger fa-3x mb-3"></i>
+                    <h6 class="fw-bold">Apakah Anda yakin ingin menghapus?</h6>
+                </div>
+                <p class="text-center mb-0">
+                    <span id="deleteItemType" class="fw-bold"></span>:
+                    <span id="deleteItemName" class="text-primary"></span>
+                </p>
+                <p class="text-muted text-center small mt-2">
+                    Tindakan ini tidak dapat dibatalkan
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash me-2"></i>Ya, Hapus
+                </button>
             </div>
         </div>
     </div>
 </div>
+@endsection
 
+@section('styles')
 <style>
     .nav-pills .nav-link {
         border-radius: 10px;
@@ -548,49 +698,78 @@
         padding: 12px 20px;
         transition: all 0.3s ease;
     }
-    
+
     .nav-pills .nav-link.active {
         background: linear-gradient(135deg, #4361ee, #3a0ca3);
         box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
-    
+
     .nav-pills .nav-link:not(.active) {
         background-color: #f8f9fa;
         color: #6c757d;
     }
-    
+
     .nav-pills .nav-link:not(.active):hover {
         background-color: #e9ecef;
         color: #495057;
     }
-    
+
     .card-header {
         background-color: #f8f9fa;
         border-bottom: 1px solid #dee2e6;
         padding: 1.25rem 1.5rem;
     }
-    
+
     .chat-container {
         border: 1px solid #dee2e6;
     }
-    
+
     .message-bubble {
         max-width: 80%;
     }
-    
+
     .bot-message {
         display: flex;
         justify-content: flex-start;
     }
-    
+
     .user-message {
         display: flex;
         justify-content: flex-end;
     }
-    
+
     .user-message .message-bubble {
         background-color: #4361ee;
         color: white;
+    }
+
+    .ewallet-card {
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .ewallet-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .list-group-item {
+        transition: all 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Modal Styles */
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-content {
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border-radius: 15px;
     }
 </style>
 @endsection
@@ -598,17 +777,63 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let currentDeleteButton = null;
+        let currentItemType = '';
+        let currentItemName = '';
+
+        // Initialize delete modal
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        const deleteItemType = document.getElementById('deleteItemType');
+        const deleteItemName = document.getElementById('deleteItemName');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Delete button click handlers
+        document.querySelectorAll('.delete-address-btn, .delete-bank-btn, .delete-ewallet-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentDeleteButton = this;
+                currentItemType = this.getAttribute('data-type');
+                currentItemName = this.getAttribute('data-name');
+
+                // Update modal content
+                deleteItemType.textContent = currentItemType.charAt(0).toUpperCase() + currentItemType.slice(1);
+                deleteItemName.textContent = currentItemName;
+            });
+        });
+
+        // Confirm delete action
+        confirmDeleteBtn.addEventListener('click', function() {
+            if (currentDeleteButton) {
+                // Determine what type of item to delete
+                if (currentDeleteButton.classList.contains('delete-address-btn')) {
+                    currentDeleteButton.closest('.list-group-item').remove();
+                    showAlert('success', 'Alamat berhasil dihapus!');
+                }
+                else if (currentDeleteButton.classList.contains('delete-bank-btn')) {
+                    currentDeleteButton.closest('.list-group-item').remove();
+                    showAlert('success', 'Rekening bank berhasil dihapus!');
+                }
+                else if (currentDeleteButton.classList.contains('delete-ewallet-btn')) {
+                    currentDeleteButton.closest('.col-md-6').remove();
+                    showAlert('success', 'E-Wallet berhasil dihapus!');
+                }
+
+                // Close modal
+                deleteModal.hide();
+                currentDeleteButton = null;
+            }
+        });
+
         // Profile image upload
         document.getElementById('uploadAvatarBtn')?.addEventListener('click', function() {
             const fileInput = document.getElementById('avatarUpload');
             const file = fileInput.files[0];
-            
+
             if (file) {
                 if (file.size > 2 * 1024 * 1024) {
                     showAlert('error', 'Ukuran file maksimal 2MB');
                     return;
                 }
-                
+
                 // Simulate upload
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -632,14 +857,104 @@
             saveForm(this, 'Kata sandi berhasil diperbarui!');
         });
 
+        // Address Management
+        const addressFormContainer = document.getElementById('addressFormContainer');
+        const showAddressFormBtn = document.getElementById('showAddressFormBtn');
+        const cancelAddressFormBtn = document.getElementById('cancelAddressFormBtn');
+
+        if (showAddressFormBtn) {
+            showAddressFormBtn.addEventListener('click', function() {
+                addressFormContainer.classList.remove('d-none');
+                this.classList.add('d-none');
+            });
+        }
+
+        if (cancelAddressFormBtn) {
+            cancelAddressFormBtn.addEventListener('click', function() {
+                addressFormContainer.classList.add('d-none');
+                showAddressFormBtn.classList.remove('d-none');
+                document.getElementById('addressForm').reset();
+            });
+        }
+
         document.getElementById('addressForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             saveForm(this, 'Alamat berhasil disimpan!');
+            addressFormContainer.classList.add('d-none');
+            showAddressFormBtn.classList.remove('d-none');
         });
+
+        // Bank Account Management
+        const bankFormContainer = document.getElementById('bankFormContainer');
+        const showBankFormBtn = document.getElementById('showBankFormBtn');
+        const cancelBankFormBtn = document.getElementById('cancelBankFormBtn');
+
+        if (showBankFormBtn) {
+            showBankFormBtn.addEventListener('click', function() {
+                bankFormContainer.classList.remove('d-none');
+                this.classList.add('d-none');
+            });
+        }
+
+        if (cancelBankFormBtn) {
+            cancelBankFormBtn.addEventListener('click', function() {
+                bankFormContainer.classList.add('d-none');
+                showBankFormBtn.classList.remove('d-none');
+                document.getElementById('bankAccountForm').reset();
+            });
+        }
 
         document.getElementById('bankAccountForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             saveForm(this, 'Rekening bank berhasil ditambahkan!');
+            bankFormContainer.classList.add('d-none');
+            showBankFormBtn.classList.remove('d-none');
+        });
+
+        // E-Wallet Management
+        const ewalletFormContainer = document.getElementById('ewalletFormContainer');
+        const showEwalletFormBtn = document.getElementById('showEwalletFormBtn');
+        const cancelEwalletFormBtn = document.getElementById('cancelEwalletFormBtn');
+
+        if (showEwalletFormBtn) {
+            showEwalletFormBtn.addEventListener('click', function() {
+                ewalletFormContainer.classList.remove('d-none');
+                this.classList.add('d-none');
+            });
+        }
+
+        if (cancelEwalletFormBtn) {
+            cancelEwalletFormBtn.addEventListener('click', function() {
+                ewalletFormContainer.classList.add('d-none');
+                showEwalletFormBtn.classList.remove('d-none');
+                document.getElementById('ewalletForm').reset();
+            });
+        }
+
+        document.getElementById('ewalletForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm(this, 'E-Wallet berhasil ditambahkan!');
+            ewalletFormContainer.classList.add('d-none');
+            showEwalletFormBtn.classList.remove('d-none');
+        });
+
+        // Edit address buttons
+        document.querySelectorAll('.edit-address-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const addressItem = this.closest('.list-group-item');
+                const title = addressItem.querySelector('h6').textContent;
+                const address = addressItem.querySelector('p').textContent;
+
+                // Fill form with existing data
+                document.querySelector('input[name="address_label"]').value = title;
+                document.querySelector('textarea[name="full_address"]').value = address;
+
+                // Show form
+                addressFormContainer.classList.remove('d-none');
+                showAddressFormBtn.classList.add('d-none');
+
+                showAlert('info', 'Edit mode: ' + title);
+            });
         });
 
         // Chat functionality
@@ -695,11 +1010,11 @@
         function sendMessage() {
             const chatInput = document.getElementById('chatInput');
             const message = chatInput.value.trim();
-            
+
             if (!message) return;
 
             const chatContainer = document.querySelector('.chat-container');
-            
+
             // Add user message
             const userMessageDiv = document.createElement('div');
             userMessageDiv.className = 'chat-message user-message mb-3';
@@ -709,10 +1024,10 @@
                 </div>
             `;
             chatContainer.appendChild(userMessageDiv);
-            
+
             // Clear input
             chatInput.value = '';
-            
+
             // Simulate AI response
             setTimeout(() => {
                 const botResponse = getAIResponse(message);
@@ -726,7 +1041,7 @@
                 chatContainer.appendChild(botMessageDiv);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }, 1000);
-            
+
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
@@ -752,7 +1067,7 @@
 
         function saveForm(form, successMessage) {
             const formData = new FormData(form);
-            
+
             // Simulate API call
             setTimeout(() => {
                 showAlert('success', successMessage);
@@ -763,7 +1078,7 @@
             // Remove existing alerts
             const existingAlerts = document.querySelectorAll('.alert-dismissible.position-fixed');
             existingAlerts.forEach(alert => alert.remove());
-            
+
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
             alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
@@ -774,9 +1089,9 @@
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-            
+
             document.body.appendChild(alertDiv);
-            
+
             setTimeout(() => {
                 if (alertDiv.parentNode) {
                     alertDiv.parentNode.removeChild(alertDiv);
