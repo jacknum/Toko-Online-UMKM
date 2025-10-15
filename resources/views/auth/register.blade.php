@@ -94,11 +94,7 @@
                     <div class="register-role-wrapper">
                         <label class="register-role-label"><i class="fas fa-user-tag me-2"></i>Pilih Role:</label>
                         <div class="register-role-selection">
-                            <div class="register-role-option active" data-role="admin">
-                                <i class="fas fa-crown"></i>
-                                <span>Admin</span>
-                            </div>
-                            <div class="register-role-option" data-role="penjual">
+                            <div class="register-role-option active" data-role="penjual">
                                 <i class="fas fa-store"></i>
                                 <span>Penjual</span>
                             </div>

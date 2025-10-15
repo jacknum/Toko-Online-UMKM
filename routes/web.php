@@ -8,7 +8,11 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreAccountController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 // Landing Page - Halaman pertama yang dilihat user
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -20,6 +24,32 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+
+// Routes untuk Pembeli (Store) - Bisa diakses tanpa login
+Route::prefix('store')->name('store.')->group(function () {
+    // Halaman utama dan produk
+    Route::get('/', [StoreController::class, 'index'])->name('home');
+    Route::get('/search', [StoreController::class, 'search'])->name('search');
+    Route::get('/product/{id}', [StoreController::class, 'productDetail'])->name('product.detail');
+
+    // Keranjang dan wishlist
+    Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+    Route::get('/wishlist', [StoreController::class, 'wishlist'])->name('wishlist');
+    Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
+
+    // Akun pengguna - butuh login
+    Route::prefix('account')->name('account.')->middleware(['auth'])->group(function () {
+        Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile');
+        Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses');
+        Route::get('/security', [StoreAccountController::class, 'security'])->name('security');
+
+        // Actions
+        Route::post('/profile/update', [StoreAccountController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/password/update', [StoreAccountController::class, 'updatePassword'])->name('password.update');
+        Route::post('/address/add', [StoreAccountController::class, 'addAddress'])->name('address.add');
+        Route::delete('/address/{id}/delete', [StoreAccountController::class, 'deleteAddress'])->name('address.delete');
+    });
+});
 
 // Protected Routes - Hanya bisa diakses setelah login
 Route::middleware(['auth'])->group(function () {
@@ -57,4 +87,22 @@ Route::middleware(['auth'])->group(function () {
     // Payments Routes
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments/{id}', [PaymentController::class, 'detail'])->name('payments.detail');
+
+    // Stores Routes (untuk penjual)
+    Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+});
+
+// Route untuk serve CSS dari resources
+Route::get('/css/{file}', function ($file) {
+    $path = resource_path("css/{$file}");
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $fileContent = File::get($path);
+    $response = Response::make($fileContent, 200);
+    $response->header('Content-Type', 'text/css');
+
+    return $response;
 });
