@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url('/css/buyer.css') }}">
 </head>
+
 <body class="store-body">
     <!-- Header -->
     <nav class="store-navbar navbar navbar-expand-lg navbar-light fixed-top">
@@ -43,16 +45,31 @@
                     <span class="store-badge">5</span>
                 </a>
                 <div class="dropdown">
-                    <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
+                    <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown"
+                        data-bs-toggle="dropdown">
                         <i class="fas fa-user"></i>
                         <span>Akun</span>
                     </a>
                     <ul class="dropdown-menu store-dropdown">
-                        <li><a class="dropdown-item" href="{{ url('/store/profile') }}"><i class="fas fa-user-circle me-2"></i>Profil</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/store/addresses') }}"><i class="fas fa-map-marker-alt me-2"></i>Alamat</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/store/security') }}"><i class="fas fa-lock me-2"></i>Keamanan</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/store/profile') }}"><i
+                                    class="fas fa-user-circle me-2"></i>Profil</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/store/addresses') }}"><i
+                                    class="fas fa-map-marker-alt me-2"></i>Alamat</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/store/security') }}"><i
+                                    class="fas fa-lock me-2"></i>Keamanan</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <!-- Form Logout -->
+                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                                @csrf
+                                <a class="dropdown-item text-danger" href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -128,4 +145,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

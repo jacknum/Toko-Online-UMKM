@@ -13,26 +13,22 @@ class AuthController extends Controller
     // Show Login Form
     public function showLogin()
     {
-        // Jika sudah login, redirect ke dashboard
-        if (Auth::check()) { // Ganti auth()->check() dengan Auth::check()
-            return redirect()->route('dashboard');
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
         }
-
         return view('auth.login');
     }
 
     // Show Register Form
     public function showRegister()
     {
-        // Jika sudah login, redirect ke dashboard
-        if (Auth::check()) { // Ganti auth()->check() dengan Auth::check()
-            return redirect()->route('dashboard');
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
         }
-
         return view('auth.register');
     }
 
-    // Di method login AuthController
+    // Method Login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -40,15 +36,12 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Login hanya dengan username (tidak pakai email)
-        $credentials = [
-            'username' => $request->username,
-            'password' => $request->password
-        ];
-
-        if (Auth::attempt($credentials, $request->remember)) {
+        // Login dengan username
+        if (Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('success', 'Login berhasil!');
+
+            // Redirect berdasarkan role
+            return $this->redirectBasedOnRole();
         }
 
         return back()->withErrors([
@@ -56,7 +49,20 @@ class AuthController extends Controller
         ])->onlyInput('username');
     }
 
-    // Handle Register - Pastikan login setelah registrasi
+    // Method untuk redirect berdasarkan role
+    private function redirectBasedOnRole()
+    {
+        $user = Auth::user();
+
+        if ($user->role === 'penjual') {
+            return redirect()->route('dashboard')->with('success', 'Login berhasil! Selamat datang Penjual.');
+        } else {
+            // Default untuk pembeli dan role lainnya
+            return redirect()->route('store.home')->with('success', 'Login berhasil! Selamat datang.');
+        }
+    }
+
+    // Handle Register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -66,7 +72,7 @@ class AuthController extends Controller
             'password' => 'required|confirmed|min:6',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
-            'role' => 'required|in:admin,penjual,pembeli',
+            'role' => 'required|in:penjual,pembeli', // Hanya 2 pilihan
             'agree_terms' => 'required',
         ]);
 
@@ -87,11 +93,10 @@ class AuthController extends Controller
                 'role' => $request->role,
             ]);
 
-            // Login user setelah registrasi
             Auth::login($user);
 
-            // Redirect ke dashboard setelah registrasi berhasil
-            return redirect()->route('dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+            // Redirect berdasarkan role setelah registrasi
+            return $this->redirectBasedOnRole();
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat registrasi: ' . $e->getMessage());
         }
