@@ -17,7 +17,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="store-hero-image">
-                    <img src="https://via.placeholder.com/500x300" alt="Hero Image" class="img-fluid">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=300&fit=crop" alt="Toko UMKM" class="img-fluid">
                 </div>
             </div>
         </div>
@@ -29,38 +29,16 @@
     <div class="container">
         <h2 class="store-section-title">Kategori Produk</h2>
         <div class="row">
+            @foreach($categories as $category)
             <div class="col-md-3 col-6 mb-4">
                 <div class="store-category-card">
                     <div class="store-category-icon">
-                        <i class="fas fa-tshirt"></i>
+                        <i class="{{ $category['icon'] }}"></i>
                     </div>
-                    <h5>Fashion</h5>
+                    <h5>{{ $category['name'] }}</h5>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="store-category-card">
-                    <div class="store-category-icon">
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                    <h5>Makanan</h5>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="store-category-card">
-                    <div class="store-category-icon">
-                        <i class="fas fa-home"></i>
-                    </div>
-                    <h5>Dekorasi</h5>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="store-category-card">
-                    <div class="store-category-icon">
-                        <i class="fas fa-hand-sparkles"></i>
-                    </div>
-                    <h5>Kecantikan</h5>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -73,30 +51,36 @@
             <a href="#" class="store-view-all">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
         <div class="row">
-            @for($i = 0; $i < 4; $i++)
+            @foreach($trendingProducts as $product)
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="store-product-card">
                     <div class="store-product-image">
-                        <img src="https://via.placeholder.com/250x200" alt="Product Image">
-                        <div class="store-product-badge">Trending</div>
+                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="img-fluid">
+                        <div class="store-product-badge">{{ $product['badge'] }}</div>
                         <button class="store-wishlist-btn">
                             <i class="far fa-heart"></i>
                         </button>
                     </div>
                     <div class="store-product-info">
-                        <h5 class="store-product-title">Nama Produk {{ $i + 1 }}</h5>
-                        <p class="store-product-desc">Deskripsi singkat produk yang menarik</p>
+                        <h5 class="store-product-title">{{ $product['name'] }}</h5>
+                        <p class="store-product-desc">{{ $product['description'] }}</p>
                         <div class="store-product-price">
-                            <span class="store-price-current">Rp 150.000</span>
-                            <span class="store-price-original">Rp 200.000</span>
+                            <span class="store-price-current">Rp {{ number_format($product['price'], 0, ',', '.') }}</span>
+                            @if($product['original_price'] > $product['price'])
+                            <span class="store-price-original">Rp {{ number_format($product['original_price'], 0, ',', '.') }}</span>
+                            @endif
                         </div>
                         <div class="store-product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span class="store-rating-count">(128)</span>
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= floor($product['rating']))
+                                <i class="fas fa-star"></i>
+                                @elseif($i == ceil($product['rating']) && !is_int($product['rating']))
+                                <i class="fas fa-star-half-alt"></i>
+                                @else
+                                <i class="far fa-star"></i>
+                                @endif
+                            @endfor
+                            <span class="store-rating-count">({{ $product['review_count'] }})</span>
                         </div>
                         <button class="btn store-add-to-cart">
                             <i class="fas fa-shopping-cart me-2"></i>
@@ -105,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 </section>
@@ -118,30 +102,34 @@
             <a href="#" class="store-view-all">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
         <div class="row">
-            @for($i = 0; $i < 4; $i++)
+            @foreach($discountProducts as $product)
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="store-product-card">
                     <div class="store-product-image">
-                        <img src="https://via.placeholder.com/250x200" alt="Product Image">
-                        <div class="store-product-badge discount">-30%</div>
+                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="img-fluid">
+                        <div class="store-product-badge discount">-{{ $product['discount_percent'] }}%</div>
                         <button class="store-wishlist-btn">
                             <i class="far fa-heart"></i>
                         </button>
                     </div>
                     <div class="store-product-info">
-                        <h5 class="store-product-title">Produk Diskon {{ $i + 1 }}</h5>
-                        <p class="store-product-desc">Produk dengan diskon menarik</p>
+                        <h5 class="store-product-title">{{ $product['name'] }}</h5>
+                        <p class="store-product-desc">{{ $product['description'] }}</p>
                         <div class="store-product-price">
-                            <span class="store-price-current">Rp 120.000</span>
-                            <span class="store-price-original">Rp 170.000</span>
+                            <span class="store-price-current">Rp {{ number_format($product['price'], 0, ',', '.') }}</span>
+                            <span class="store-price-original">Rp {{ number_format($product['original_price'], 0, ',', '.') }}</span>
                         </div>
                         <div class="store-product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span class="store-rating-count">(95)</span>
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= floor($product['rating']))
+                                <i class="fas fa-star"></i>
+                                @elseif($i == ceil($product['rating']) && !is_int($product['rating']))
+                                <i class="fas fa-star-half-alt"></i>
+                                @else
+                                <i class="far fa-star"></i>
+                                @endif
+                            @endfor
+                            <span class="store-rating-count">({{ $product['review_count'] }})</span>
                         </div>
                         <button class="btn store-add-to-cart">
                             <i class="fas fa-shopping-cart me-2"></i>
@@ -150,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 </section>

@@ -11,7 +11,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        // Data dummy untuk demo
+        // Data dummy untuk demo dengan gambar yang sesuai nama produk
         $trendingProducts = [
             [
                 'id' => 1,
@@ -19,29 +19,29 @@ class StoreController extends Controller
                 'description' => 'Kaos dengan bahan katun premium, nyaman dipakai sehari-hari',
                 'price' => 150000,
                 'original_price' => 200000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=250&h=200&fit=crop', // T-shirt
                 'rating' => 4.5,
                 'review_count' => 128,
                 'badge' => 'Trending'
             ],
             [
                 'id' => 2,
-                'name' => 'Keripik Singkong Pedas',
+                'name' => 'Burger',
                 'description' => 'Keripik singkong dengan bumbu pedas khas nusantara',
                 'price' => 25000,
                 'original_price' => 30000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=250&h=200&fit=crop', // Snacks
                 'rating' => 4.8,
                 'review_count' => 95,
                 'badge' => 'Trending'
             ],
             [
                 'id' => 3,
-                'name' => 'Tas Anyaman Rotan',
+                'name' => 'Tas Laptop',
                 'description' => 'Tas anyaman tangan dengan bahan rotan pilihan',
                 'price' => 180000,
                 'original_price' => 220000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=250&h=200&fit=crop', // Bag
                 'rating' => 4.3,
                 'review_count' => 67,
                 'badge' => 'Trending'
@@ -52,7 +52,7 @@ class StoreController extends Controller
                 'description' => 'Sabun dengan bahan herbal alami untuk kulit sehat',
                 'price' => 45000,
                 'original_price' => 55000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=250&h=200&fit=crop', // Soap - gambar sabun herbal
                 'rating' => 4.6,
                 'review_count' => 142,
                 'badge' => 'Trending'
@@ -62,11 +62,11 @@ class StoreController extends Controller
         $discountProducts = [
             [
                 'id' => 5,
-                'name' => 'Mukena Katun Jepang',
+                'name' => 'Tas Kulit',
                 'description' => 'Mukena dengan bahan katun jepang yang adem dan nyaman',
                 'price' => 120000,
                 'original_price' => 170000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=250&h=200&fit=crop', // Prayer wear
                 'rating' => 4.7,
                 'review_count' => 89,
                 'badge' => 'discount',
@@ -78,7 +78,7 @@ class StoreController extends Controller
                 'description' => 'Kopi arabika asal Gayo dengan aroma yang khas',
                 'price' => 75000,
                 'original_price' => 95000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=250&h=200&fit=crop', // Coffee
                 'rating' => 4.9,
                 'review_count' => 156,
                 'badge' => 'discount',
@@ -90,7 +90,7 @@ class StoreController extends Controller
                 'description' => 'Lilin dengan essential oil untuk relaksasi',
                 'price' => 35000,
                 'original_price' => 50000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=250&h=200&fit=crop', // Candle - gambar lilin yang berfungsi
                 'rating' => 4.4,
                 'review_count' => 78,
                 'badge' => 'discount',
@@ -98,11 +98,11 @@ class StoreController extends Controller
             ],
             [
                 'id' => 8,
-                'name' => 'Gelang Kayu Ukir',
+                'name' => 'Gelang Emas',
                 'description' => 'Gelang kayu dengan ukiran tradisional khas Indonesia',
                 'price' => 65000,
                 'original_price' => 85000,
-                'image' => 'https://via.placeholder.com/250x200',
+                'image' => 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=250&h=200&fit=crop', // Wooden bracelet
                 'rating' => 4.2,
                 'review_count' => 54,
                 'badge' => 'discount',
@@ -138,7 +138,7 @@ class StoreController extends Controller
                     'description' => 'Hasil pencarian untuk ' . $searchTerm,
                     'price' => 150000,
                     'original_price' => 200000,
-                    'image' => 'https://via.placeholder.com/250x200',
+                    'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=250&h=200&fit=crop',
                     'rating' => 4.5,
                     'review_count' => 128
                 ],
@@ -148,7 +148,7 @@ class StoreController extends Controller
                     'description' => 'Deskripsi produk ' . $searchTerm,
                     'price' => 250000,
                     'original_price' => 300000,
-                    'image' => 'https://via.placeholder.com/250x200',
+                    'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=250&h=200&fit=crop',
                     'rating' => 4.2,
                     'review_count' => 95
                 ]
@@ -173,9 +173,9 @@ class StoreController extends Controller
             'original_price' => 200000,
             'discount_percent' => 25,
             'images' => [
-                'https://via.placeholder.com/400x400',
-                'https://via.placeholder.com/400x400',
-                'https://via.placeholder.com/400x400'
+                'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
+                'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop',
+                'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop'
             ],
             'rating' => 4.5,
             'review_count' => 128,
@@ -198,14 +198,14 @@ class StoreController extends Controller
                 'id' => 2,
                 'name' => 'Kaos Basic Cotton',
                 'price' => 120000,
-                'image' => 'https://via.placeholder.com/200x200',
+                'image' => 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=200&h=200&fit=crop',
                 'rating' => 4.3
             ],
             [
                 'id' => 3,
                 'name' => 'Kaos Oversized',
                 'price' => 180000,
-                'image' => 'https://via.placeholder.com/200x200',
+                'image' => 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=200&h=200&fit=crop',
                 'rating' => 4.6
             ]
         ];
@@ -224,7 +224,7 @@ class StoreController extends Controller
                 'name' => 'Kaos Lokal Premium',
                 'price' => 150000,
                 'original_price' => 200000,
-                'image' => 'https://via.placeholder.com/100x100',
+                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop',
                 'quantity' => 2,
                 'stock' => 50,
                 'size' => 'L',
@@ -235,7 +235,7 @@ class StoreController extends Controller
                 'name' => 'Keripik Singkong Pedas',
                 'price' => 25000,
                 'original_price' => 30000,
-                'image' => 'https://via.placeholder.com/100x100',
+                'image' => 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop',
                 'quantity' => 3,
                 'stock' => 100,
                 'variant' => 'Pedas Level 3'
@@ -262,7 +262,7 @@ class StoreController extends Controller
                 'name' => 'Kaos Lokal Premium',
                 'price' => 150000,
                 'original_price' => 200000,
-                'image' => 'https://via.placeholder.com/150x150',
+                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop',
                 'rating' => 4.5,
                 'review_count' => 128,
                 'stock' => 50
@@ -272,7 +272,7 @@ class StoreController extends Controller
                 'name' => 'Sabun Herbal Alami',
                 'price' => 45000,
                 'original_price' => 55000,
-                'image' => 'https://via.placeholder.com/150x150',
+                'image' => 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=150&h=150&fit=crop', // Soap - gambar sabun herbal
                 'rating' => 4.6,
                 'review_count' => 142,
                 'stock' => 30
@@ -292,7 +292,7 @@ class StoreController extends Controller
                 'id' => 1,
                 'name' => 'Kaos Lokal Premium',
                 'price' => 150000,
-                'image' => 'https://via.placeholder.com/80x80',
+                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop',
                 'quantity' => 2,
                 'size' => 'L',
                 'color' => 'Hitam'
