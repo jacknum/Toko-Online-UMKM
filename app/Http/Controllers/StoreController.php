@@ -210,7 +210,7 @@ class StoreController extends Controller
             ]
         ];
 
-        return view('stores.product-detail', compact('product', 'relatedProducts'));
+        return view('stores.detail', compact('product', 'relatedProducts'));
     }
 
     /**

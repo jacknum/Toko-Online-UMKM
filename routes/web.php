@@ -27,7 +27,6 @@ Route::post('/register', [AuthController::class, 'register']);
 
 // Routes untuk Pembeli (Store) - Bisa diakses tanpa login
 Route::prefix('store')->name('store.')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', [StoreController::class, 'index'])->name('home');
     Route::get('/search', [StoreController::class, 'search'])->name('search');
     Route::get('/product/{id}', [StoreController::class, 'productDetail'])->name('product.detail');
