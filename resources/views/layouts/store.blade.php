@@ -22,12 +22,16 @@
 
             <!-- Search Bar -->
             <div class="store-search mx-4">
-                <div class="input-group">
-                    <input type="text" class="form-control store-search-input" placeholder="Cari produk...">
-                    <button class="btn store-search-btn" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                <form action="{{ route('store.search') }}" method="GET" class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control search-input"
+                            placeholder="Cari produk, kategori, atau merek..." value="{{ request('q') }}" autocomplete="off">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fas fa-search"></i>
+                            Cari
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <!-- Navigation Icons -->
