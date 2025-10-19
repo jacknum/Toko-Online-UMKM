@@ -113,7 +113,7 @@
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; 2024 Toko UMKM. All rights reserved.</p>
+                <p>&copy; 2025 Toko UMKM. All rights reserved.</p>
             </div>
         </div>
     </footer>
