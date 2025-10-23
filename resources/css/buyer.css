@@ -2416,3 +2416,221 @@
         text-align: left;
     }
 }
+
+.checkout-progress {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e9ecef;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-2px);
+}
+
+.step-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+}
+
+.step.active .step-icon {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.step.completed .step-icon {
+    background: #28a745;
+    color: white;
+}
+
+.step-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-text {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.step.completed .step-text {
+    color: #28a745;
+}
+
+.step-panel {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.step-panel.active {
+    display: block;
+}
+
+.product-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.payment-option,
+.shipping-option,
+.address-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent !important;
+}
+
+.payment-option:hover,
+.shipping-option:hover {
+    border-color: #007bff !important;
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cart-icon,
+.success-icon {
+    opacity: 0.8;
+}
+
+/* Simple & Professional Navigation Buttons */
+.navigation-buttons-simple {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 15px;
+}
+
+.btn-prev-simple {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 28px;
+    background: white;
+    border: 2px solid #dee2e6;
+    color: #6c757d;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-prev-simple:hover {
+    border-color: #007bff;
+    color: #007bff;
+    background: #f8f9ff;
+    transform: translateX(-2px);
+}
+
+.btn-next-simple {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 32px;
+    background: #007bff;
+    border: 2px solid #007bff;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-next-simple:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btn-next-simple:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navigation-buttons-simple {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-prev-simple,
+    .btn-next-simple {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .payment-option {
+        padding: 20px 15px !important;
+    }
+}

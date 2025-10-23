@@ -218,37 +218,29 @@ class StoreController extends Controller
      */
     public function cart()
     {
-        $cartItems = [
-            [
-                'id' => 1,
-                'name' => 'Kaos Lokal Premium',
-                'price' => 150000,
-                'original_price' => 200000,
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop',
-                'quantity' => 2,
-                'stock' => 50,
-                'size' => 'L',
-                'color' => 'Hitam'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Keripik Singkong Pedas',
-                'price' => 25000,
-                'original_price' => 30000,
-                'image' => 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop',
-                'quantity' => 3,
-                'stock' => 100,
-                'variant' => 'Pedas Level 3'
-            ]
+        // Data bank dengan link yang bekerja
+        $banks = [
+            ['name' => 'BCA', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg', 'account' => '123-456-7890'],
+            ['name' => 'BNI', 'image' => 'https://wwf.id/sites/default/files/inline-images/BNI_logo.svg__1.png', 'account' => '987-654-3210'],
+            ['name' => 'BRI', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/800px-BRI_2020.svg.png?20221123095928', 'account' => '456-789-0123'],
+            ['name' => 'Mandiri', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg', 'account' => '111-222-3333'],
+            ['name' => 'BTN', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/BTN_2024.svg/250px-BTN_2024.svg.png', 'account' => '444-555-6666'],
+            ['name' => 'BSI', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bank_Syariah_Indonesia.svg/512px-Bank_Syariah_Indonesia.svg.png', 'account' => '777-888-9999'],
         ];
 
-        $summary = [
-            'subtotal' => 375000,
-            'shipping' => 15000,
-            'total' => 390000
+        // Data e-wallet dengan link yang bekerja
+        $ewallets = [
+            ['name' => 'GoPay', 'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Logo_Gopay.svg/512px-Logo_Gopay.svg.png'],
+            ['name' => 'OVO', 'image' => 'https://bloguna.com/wp-content/uploads/2025/06/Logo-OVO-Format-PNG-CDR-EPS-SVG-Kualitas-HD-768x615.png'],
+            ['name' => 'DANA', 'image' => 'https://career.amikom.ac.id/images/company/cover/1637497527.jpeg'],
+            ['name' => 'LinkAja', 'image' => 'https://www.linkaja.id/assets/linkaja/ico/richlink.jpg'],
+            ['name' => 'ShopeePay', 'image' => 'https://images.seeklogo.com/logo-png/50/1/shopeepay-logo-png_seeklogo-504055.png'],
+            ['name' => 'QRIS', 'image' => 'https://pojoksiar.com/wp-content/uploads/2025/08/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png'],
+            ['name' => 'PayPal', 'image' => 'https://www.paypalobjects.com/webstatic/icon/pp258.png'],
+            ['name' => 'Sakuku', 'image' => 'https://biller.id/assets/games/6362d15d74e1a.png'],
         ];
 
-        return view('stores.cart', compact('cartItems', 'summary'));
+        return view('stores.cart', compact('banks', 'ewallets'));
     }
 
     /**

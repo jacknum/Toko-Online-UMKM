@@ -3,6 +3,20 @@
 @section('title', 'Home - Toko UMKM')
 
 @section('content')
+<!-- Modal untuk notifikasi tambah keranjang -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="modal-title">Produk Telah Ditambahkan ke Keranjang</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Hero Section -->
 <section class="store-hero">
     <div class="container">
@@ -188,7 +202,15 @@ function addToCart(productId) {
     event.stopPropagation(); // Prevent navigation to product detail
     // Implement add to cart logic here
     console.log('Add to cart:', productId);
-    alert('Produk ditambahkan ke keranjang!');
+
+    // Show modal
+    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+    cartModal.show();
+
+    // Auto hide modal after 3 seconds
+    setTimeout(() => {
+        cartModal.hide();
+    }, 3000);
 }
 
 // Function to handle add to wishlist
