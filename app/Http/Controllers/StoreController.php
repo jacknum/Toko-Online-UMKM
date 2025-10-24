@@ -244,34 +244,121 @@ class StoreController extends Controller
     }
 
     /**
-     * Menampilkan halaman wishlist
+     * Menampilkan halaman wishlist dengan data dummy lengkap
      */
     public function wishlist()
     {
+        // Data dummy wishlist items
         $wishlistItems = [
             [
                 'id' => 1,
-                'name' => 'Kaos Lokal Premium',
-                'price' => 150000,
-                'original_price' => 200000,
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop',
+                'name' => 'Smartphone Samsung Galaxy A15 6/128GB - Garansi Resmi',
+                'price' => 2499000,
+                'discount' => 15,
+                'discounted_price' => 2124150,
+                'image' => 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
                 'rating' => 4.5,
                 'review_count' => 128,
-                'stock' => 50
+                'stock' => 25,
+                'store_name' => 'Samsung Official Store',
+                'is_new' => true
+            ],
+            [
+                'id' => 2,
+                'name' => 'Kemeja Flanel Pria Premium Cotton - Warna Navy',
+                'price' => 189000,
+                'discount' => 0,
+                'discounted_price' => 189000,
+                'image' => 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=300&fit=crop',
+                'rating' => 4.2,
+                'review_count' => 89,
+                'stock' => 0,
+                'store_name' => 'Fashion Store',
+                'is_new' => false
+            ],
+            [
+                'id' => 3,
+                'name' => 'Kopi Arabika Gayo Premium 250gr - Roasted Bean',
+                'price' => 75000,
+                'discount' => 10,
+                'discounted_price' => 67500,
+                'image' => 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400&h=300&fit=crop',
+                'rating' => 4.8,
+                'review_count' => 256,
+                'stock' => 150,
+                'store_name' => 'Coffee Roastery',
+                'is_new' => true
             ],
             [
                 'id' => 4,
-                'name' => 'Sabun Herbal Alami',
-                'price' => 45000,
-                'original_price' => 55000,
-                'image' => 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=150&h=150&fit=crop', // Soap - gambar sabun herbal
+                'name' => 'Headphone Wireless Bluetooth dengan Noise Cancelling',
+                'price' => 450000,
+                'discount' => 20,
+                'discounted_price' => 360000,
+                'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
+                'rating' => 4.3,
+                'review_count' => 67,
+                'stock' => 12,
+                'store_name' => 'Audio Tech Store',
+                'is_new' => false
+            ],
+            [
+                'id' => 5,
+                'name' => 'Tas Ransel Outdoor Waterproof 30L - Black Edition',
+                'price' => 299000,
+                'discount' => 0,
+                'discounted_price' => 299000,
+                'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop',
                 'rating' => 4.6,
-                'review_count' => 142,
-                'stock' => 30
+                'review_count' => 42,
+                'stock' => 8,
+                'store_name' => 'Outdoor Gear',
+                'is_new' => true
+            ],
+            [
+                'id' => 6,
+                'name' => 'Smart Watch Fitness Tracker dengan Heart Rate Monitor',
+                'price' => 599000,
+                'discount' => 25,
+                'discounted_price' => 449250,
+                'image' => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
+                'rating' => 4.4,
+                'review_count' => 156,
+                'stock' => 30,
+                'store_name' => 'Tech Gadget Store',
+                'is_new' => false
             ]
         ];
 
-        return view('stores.wishlist', compact('wishlistItems'));
+        // Recommended products
+        $recommendedProducts = [
+            [
+                'id' => 7,
+                'name' => 'Sepatu Sneakers Casual Pria - White',
+                'price' => 329000,
+                'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Mouse Wireless Ergonomic - Gaming Edition',
+                'price' => 189000,
+                'image' => 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=300&fit=crop'
+            ],
+            [
+                'id' => 9,
+                'name' => 'Buku Notebook Premium A5 - Hard Cover',
+                'price' => 45000,
+                'image' => 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop'
+            ],
+            [
+                'id' => 10,
+                'name' => 'Lampu Study LED dengan 3 Mode Pencahayaan',
+                'price' => 129000,
+                'image' => 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop'
+            ]
+        ];
+
+        return view('stores.wishlist', compact('wishlistItems', 'recommendedProducts'));
     }
 
     /**
