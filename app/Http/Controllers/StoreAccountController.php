@@ -19,7 +19,7 @@ class StoreAccountController extends Controller
             'join_date' => '2024-01-15'
         ];
 
-        return view('store.account.profile', compact('user'));
+        return view('stores.account.profile', compact('user'));
     }
 
     /**
@@ -52,7 +52,7 @@ class StoreAccountController extends Controller
             ]
         ];
 
-        return view('store.account.addresses', compact('addresses'));
+        return view('stores.account.addresses', compact('addresses'));
     }
 
     /**
@@ -60,7 +60,7 @@ class StoreAccountController extends Controller
      */
     public function security()
     {
-        return view('store.account.security');
+        return view('stores.account.security');
     }
 
     /**

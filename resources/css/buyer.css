@@ -2887,3 +2887,693 @@
 .cart-pulse {
     animation: cartPulse 0.5s ease;
 }
+
+/* Account Profile Styles */
+.account-progress {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.account-progress .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.account-progress .progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e9ecef;
+    z-index: 1;
+}
+
+.account-progress .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.account-progress .step-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.account-progress .step.active .step-icon {
+    border-color: #0d6efd;
+    background: #0d6efd;
+    color: #fff;
+}
+
+.account-progress .step.completed .step-icon {
+    border-color: #198754;
+    background: #198754;
+    color: #fff;
+}
+
+.account-progress .step-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.account-progress .step.active .step-text {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.account-progress .step.completed .step-text {
+    color: #198754;
+}
+
+/* Avatar Profile */
+.avatar-profile {
+    width: 120px;
+    height: 120px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Address Page Styles */
+.account-navigation {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.nav-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #6c757d;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.nav-step:hover {
+    color: #0d6efd;
+    background-color: #f8f9fa;
+}
+
+.nav-step.active {
+    color: #0d6efd;
+}
+
+.nav-step-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.nav-step.active .nav-step-icon {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.nav-step-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Address Cards - UPDATED */
+.address-card {
+    transition: all 0.3s ease;
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    position: relative;
+    z-index: 1;
+}
+
+.address-card:hover {
+    background: #ffffff !important;
+    border-color: #0d6efd !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.address-details {
+    min-height: 120px;
+}
+
+.bg-primary-light {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, rgba(13, 110, 253, 0.02) 100%) !important;
+    border-color: #0d6efd !important;
+}
+
+.address-card-add {
+    background: #f8f9fa !important;
+    border: 2px dashed #dee2e6 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.address-card-add:hover {
+    background: #e9ecef !important;
+    border-color: #0d6efd !important;
+    transform: translateY(-2px);
+    z-index: 2;
+}
+
+.add-address-icon {
+    transition: all 0.3s ease;
+}
+
+.address-card-add:hover .add-address-icon {
+    transform: scale(1.1);
+    color: #0d6efd !important;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+/* Custom Dropdown Styles - FIXED */
+.dropdown-custom {
+    position: relative;
+}
+
+.dropdown-menu-custom {
+    position: absolute !important;
+    z-index: 9999 !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    margin-top: 0.125rem !important;
+    min-width: 160px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+}
+
+/* Ensure dropdown appears above all cards */
+.col-md-6.col-lg-4.position-relative {
+    z-index: 1;
+}
+
+.col-md-6.col-lg-4.position-relative:hover {
+    z-index: 2;
+}
+
+/* When dropdown is open, increase z-index */
+.dropdown.show {
+    z-index: 9999;
+}
+
+.dropdown.show~* {
+    z-index: auto;
+}
+
+/* Dropdown Item Styles */
+.dropdown-item {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    margin: 2px 4px;
+    width: calc(100% - 8px);
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #fee;
+    color: #dc3545 !important;
+}
+
+/* Empty State */
+.empty-address-icon {
+    opacity: 0.5;
+}
+
+/* Modal Styles */
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+}
+
+/* Form Styles */
+.form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+}
+
+/* Security Section */
+.security-section {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.security-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Form Controls */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Step Panels */
+.step-panel {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.step-panel.active {
+    display: block;
+}
+
+.step-panel.fade-out {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Navigation Buttons */
+.navigation-buttons-simple {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.btn-next-simple,
+.btn-prev-simple {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-next-simple {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.btn-next-simple:hover {
+    background: #0b5ed7;
+    transform: translateX(5px);
+    color: #fff;
+}
+
+.btn-prev-simple {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-prev-simple:hover {
+    background: #5c636a;
+    transform: translateX(-5px);
+    color: #fff;
+}
+
+/* Button Styles */
+.btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+/* Text contrast improvements */
+.address-card .text-muted {
+    color: #6c757d !important;
+}
+
+.address-card:hover .text-muted {
+    color: #495057 !important;
+}
+
+/* Ensure proper card height and spacing */
+.address-card,
+.address-card-add {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.address-details {
+    flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    /* Navigation */
+    .nav-steps {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-step {
+        flex-direction: row;
+        width: 100%;
+        text-align: left;
+    }
+
+    .nav-step-icon {
+        margin-bottom: 0;
+        margin-right: 12px;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Cards */
+    .address-card {
+        margin-bottom: 1rem;
+    }
+
+    /* Header */
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    /* Dropdown Mobile */
+    .dropdown-menu-custom {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90vw;
+        max-width: 300px;
+    }
+
+    /* Progress Steps */
+    .account-progress .step-text {
+        font-size: 0.75rem;
+    }
+
+    .account-progress .step-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Navigation Buttons */
+    .navigation-buttons-simple {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-next-simple,
+    .btn-prev-simple {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Additional utility classes */
+.text-decoration-none {
+    text-decoration: none !important;
+}
+
+.fw-semibold {
+    font-weight: 600 !important;
+}
+
+.fw-medium {
+    font-weight: 500 !important;
+}
+
+/* Hover effects for interactive elements */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.form-control:focus,
+.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+/* Custom scrollbar for modal if needed */
+.modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #dee2e6 #f8f9fa;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #dee2e6;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+}
+
+/* Loading states */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Success/Error states */
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+/* Animation for modal appearance */
+.modal.fade .modal-dialog {
+    transform: translate(0, -50px);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Custom styles for address form */
+.form-label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Card hover enhancements */
+.address-card:hover .btn-outline-secondary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.address-card:hover .btn-outline-secondary:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+/* Dropdown divider */
+.dropdown-divider {
+    margin: 0.25rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Icon spacing */
+.fas,
+.far,
+.fal,
+.fab {
+    width: 1em;
+    text-align: center;
+}
+
+/* Ensure images are responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Print styles */
+@media print {
+
+    .btn,
+    .dropdown,
+    .modal,
+    .address-card-add {
+        display: none !important;
+    }
+
+    .address-card {
+        break-inside: avoid;
+        border: 1px solid #000 !important;
+        background: #fff !important;
+    }
+}
+
+/* Security Style */
+.security-card {
+    transition: all 0.3s ease;
+    background: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.security-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.session-item {
+    transition: all 0.3s ease;
+}
+
+.session-item:hover {
+    background-color: #f8f9fa;
+}
+
+.password-strength .progress-bar {
+    transition: width 0.3s ease;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-check-input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.input-group .btn-outline-secondary {
+    border-left: none;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}

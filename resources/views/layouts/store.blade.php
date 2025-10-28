@@ -25,7 +25,8 @@
                 <form action="{{ route('store.search') }}" method="GET" class="search-form">
                     <div class="input-group">
                         <input type="text" name="q" class="form-control search-input"
-                            placeholder="Cari produk, kategori, atau merek..." value="{{ request('q') }}" autocomplete="off">
+                            placeholder="Cari produk, kategori, atau merek..." value="{{ request('q') }}"
+                            autocomplete="off">
                         <button class="btn search-btn" type="submit">
                             <i class="fas fa-search"></i>
                             Cari
@@ -104,7 +105,7 @@
                 <div class="col-md-2">
                     <h6>Akun</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/store/profile') }}">Profil</a></li>
+                        <li><a href="{{ url('/stores/profile') }}">Profil</a></li>
                         <li><a href="{{ url('/store/addresses') }}">Alamat</a></li>
                         <li><a href="{{ url('/store/security') }}">Keamanan</a></li>
                     </ul>

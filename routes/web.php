@@ -35,6 +35,11 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/wishlist', [StoreController::class, 'wishlist'])->name('wishlist');
     Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
 
+    // Route langsung untuk profile dan addresses (tanpa /account)
+    Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile')->middleware(['auth']);
+    Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses')->middleware(['auth']);
+    Route::get('/security', [StoreAccountController::class, 'security'])->name('security')->middleware(['auth']);
+
     // Akun pengguna - butuh login
     Route::prefix('account')->name('account.')->middleware(['auth'])->group(function () {
         Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile');
