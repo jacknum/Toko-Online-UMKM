@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class StoreAccountController extends Controller
 {
@@ -11,15 +14,41 @@ class StoreAccountController extends Controller
      */
     public function profile()
     {
-        $user = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-            'phone' => '081234567890',
-            'avatar' => 'https://via.placeholder.com/150x150',
-            'join_date' => '2024-01-15'
-        ];
+        $user = Auth::user();
 
         return view('stores.account.profile', compact('user'));
+    }
+
+    /**
+     * Update profil pengguna
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validasi data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($user->id)
+            ],
+            'phone' => 'required|string|max:15'
+        ]);
+
+        try {
+            // Update data user
+            $user->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone']
+            ]);
+
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui profil.');
+        }
     }
 
     /**
@@ -27,13 +56,15 @@ class StoreAccountController extends Controller
      */
     public function addresses()
     {
+        // Untuk demo, kita tetap pakai data dummy
+        // Tapi nanti bisa diubah untuk mengambil dari database
         $addresses = [
             [
                 'id' => 1,
                 'name' => 'Rumah',
-                'recipient' => 'John Doe',
-                'phone' => '081234567890',
-                'address' => 'Jl. Contoh Alamat No. 123, RT 001/RW 002',
+                'recipient' => Auth::user()->name,
+                'phone' => Auth::user()->phone,
+                'address' => 'Jl. Sebuah Daerah No. 123, RT 001/RW 002',
                 'city' => 'Jakarta Selatan',
                 'province' => 'DKI Jakarta',
                 'postal_code' => '12345',
@@ -42,8 +73,8 @@ class StoreAccountController extends Controller
             [
                 'id' => 2,
                 'name' => 'Kantor',
-                'recipient' => 'John Doe',
-                'phone' => '081234567891',
+                'recipient' => Auth::user()->name,
+                'phone' => Auth::user()->phone,
                 'address' => 'Jl. Kantor No. 456, Gedung ABC Lantai 5',
                 'city' => 'Jakarta Pusat',
                 'province' => 'DKI Jakarta',
@@ -64,38 +95,33 @@ class StoreAccountController extends Controller
     }
 
     /**
-     * Update profil pengguna
-     */
-    public function updateProfile(Request $request)
-    {
-        // Validasi data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:15'
-        ]);
-
-        // Logic untuk update profil
-        // ...
-
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
-    }
-
-    /**
      * Update password pengguna
      */
     public function updatePassword(Request $request)
     {
+        $user = Auth::user();
+
         // Validasi data
         $validated = $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|min:8|confirmed'
         ]);
 
-        // Logic untuk update password
-        // ...
+        // Cek password saat ini
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return redirect()->back()->with('error', 'Password saat ini tidak sesuai.');
+        }
 
-        return redirect()->back()->with('success', 'Password berhasil diperbarui!');
+        try {
+            // Update password
+            $user->update([
+                'password' => Hash::make($validated['new_password'])
+            ]);
+
+            return redirect()->back()->with('success', 'Password berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui password.');
+        }
     }
 
     /**

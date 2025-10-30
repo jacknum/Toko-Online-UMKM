@@ -2,83 +2,104 @@
 
 @section('title', 'Login - Nama Perusahaan')
 
-@section('auth-title', 'LOGIN')
-
 @section('auth-content')
-    <form id="loginForm" method="POST" action="{{ route('login') }}">
-        @csrf
-        <div class="form-floating">
-            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username"
-                value="{{ old('username') }}" placeholder="Username" required>
-            <label for="username"><i class="fas fa-user me-2"></i>Username</label>
-            @error('username')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-floating position-relative">
-            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                name="password" placeholder="Password" required>
-            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
-            <button type="button" class="password-toggle">
-                <i class="fas fa-eye"></i>
-            </button>
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
-                <label class="form-check-label" for="rememberMe">
-                    Ingat saya
-                </label>
-            </div>
-            <a href="#" class="auth-link small">Lupa password?</a>
-        </div>
-
-        <button type="submit" class="btn btn-auth mb-2">
-            <i class="fas fa-sign-in-alt me-2"></i>Login
-        </button>
-
-        <!-- Tombol Kembali ke Dashboard -->
-        <a href="{{ route('landing') }}" class="btn btn-back-dashboard">
-            <i class="fas fa-arrow-left me-2"></i>Kembali ke Dashboard
-        </a>
-
-        <div class="auth-footer">
-            <p class="mb-0">Belum punya akun?
-                <a href="{{ route('register') }}" class="auth-link">Daftar di sini</a>
-            </p>
-        </div>
-    </form>
-
-    <!-- Modal Success -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 15px; border: none;">
-                <div class="modal-header"
-                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px 15px 0 0;">
-                    <h5 class="modal-title text-white" id="successModalLabel">
-                        <i class="fas fa-check-circle me-2"></i>Login Berhasil!
-                    </h5>
-                </div>
-                <div class="modal-body text-center py-4">
-                    <div class="mb-3">
-                        <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
-                    </div>
-                    <h5 class="text-success mb-3">Selamat! Login berhasil</h5>
-                    <p class="text-muted">Anda akan diarahkan ke dashboard dalam <span id="countdown">3</span> detik.</p>
-                </div>
-                <div class="modal-footer" style="border: none; border-radius: 0 0 15px 15px;">
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary w-100 py-2">
-                        <i class="fas fa-tachometer-alt me-2"></i>Ke Dashboard
-                    </a>
-                </div>
+<div class="auth-layout">
+    <div class="auth-image-section">
+        <div class="auth-image-container">
+            <img src="{{ asset('images/auth-image.jpg') }}" alt="Learn to Code" class="auth-image">
+            <div class="auth-image-overlay">
+                <h2>LEARN TO CODE</h2>
+                <p>WITH US.</p>
+                <div class="auth-image-subtitle">GET</div>
+                <div class="auth-image-domain">SEOTECHMAN.COM</div>
             </div>
         </div>
     </div>
+
+    <div class="auth-form-section">
+        <div class="auth-form-container">
+            <div class="auth-form-header">
+                <h2>Login</h2>
+                <p>Learn to code</p>
+            </div>
+
+            <form id="loginForm" method="POST" action="{{ route('login') }}" class="auth-form">
+                @csrf
+                <div class="form-floating">
+                    <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username"
+                        value="{{ old('username') }}" placeholder="Username" required>
+                    <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                    @error('username')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-floating position-relative">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                        name="password" placeholder="Password" required>
+                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                        <label class="form-check-label" for="rememberMe">
+                            Ingat saya
+                        </label>
+                    </div>
+                    <a href="{{ route('password.request') }}" class="auth-link small">Lupa password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-auth mb-2">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+
+                <!-- Tombol Kembali ke Dashboard -->
+                <a href="{{ route('landing') }}" class="btn btn-back-dashboard">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali ke Dashboard
+                </a>
+
+                <div class="auth-footer">
+                    <p class="mb-0">Belum punya akun?
+                        <a href="{{ route('register') }}" class="auth-link">Daftar di sini</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; border: none;">
+            <div class="modal-header"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title text-white" id="successModalLabel">
+                    <i class="fas fa-check-circle me-2"></i>Login Berhasil!
+                </h5>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="mb-3">
+                    <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="text-success mb-3">Selamat! Login berhasil</h5>
+                <p class="text-muted">Anda akan diarahkan ke dashboard dalam <span id="countdown">3</span> detik.</p>
+            </div>
+            <div class="modal-footer" style="border: none; border-radius: 0 0 15px 15px;">
+                <a href="{{ route('dashboard') }}" class="btn btn-primary w-100 py-2">
+                    <i class="fas fa-tachometer-alt me-2"></i>Ke Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -103,7 +124,7 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memproses...';
                 submitBtn.disabled = true;
 
-                // Jika form berhasil submit dan login berhasil, 
+                // Jika form berhasil submit dan login berhasil,
                 // modal akan ditampilkan oleh session success dari backend
             });
 

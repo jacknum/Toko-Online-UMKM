@@ -40,39 +40,43 @@
                             </h4>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Foto Profil -->
+                            <!-- Informasi User -->
                             <div class="text-center mb-4">
-                                <div class="avatar-profile position-relative mx-auto mb-3">
-                                    <img src="{{ $user['avatar'] }}" alt="{{ $user['name'] }}"
-                                         class="avatar-img rounded-circle">
-                                    <button class="btn btn-sm btn-primary avatar-edit-btn"
-                                            onclick="document.getElementById('avatar-input').click()">
-                                        <i class="fas fa-camera"></i>
-                                    </button>
-                                    <input type="file" id="avatar-input" class="d-none" accept="image/*">
+                                <div class="user-icon mx-auto mb-3">
+                                    <i class="fas fa-user-circle fa-4x text-primary"></i>
                                 </div>
-                                <h5 class="fw-semibold mb-1">{{ $user['name'] }}</h5>
-                                <p class="text-muted small">Bergabung sejak {{ date('d M Y', strtotime($user['join_date'])) }}</p>
+                                <h5 class="fw-semibold mb-1">{{ Auth::user()->name }}</h5>
+                                <p class="text-muted small">Bergabung sejak {{ Auth::user()->created_at->format('d M Y') }}</p>
                             </div>
 
                             <!-- Form Profil -->
                             <form action="{{ route('store.account.profile.update') }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="name" class="form-label fw-semibold">Nama Lengkap</label>
-                                        <input type="text" class="form-control" id="name" name="name"
-                                               value="{{ $user['name'] }}" required>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                               id="name" name="name" value="{{ old('name', Auth::user()->name) }}" required>
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label fw-semibold">Nomor Telepon</label>
-                                        <input type="tel" class="form-control" id="phone" name="phone"
-                                               value="{{ $user['phone'] }}" required>
+                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                               id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
                                         <label for="email" class="form-label fw-semibold">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email"
-                                               value="{{ $user['email'] }}" required>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                               id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-12 mt-4">
                                         <button type="submit" class="btn btn-primary btn-lg">
@@ -104,23 +108,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Avatar upload preview
-            const avatarInput = document.getElementById('avatar-input');
-            if (avatarInput) {
-                avatarInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            document.querySelector('.avatar-img').src = e.target.result;
-                        }
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-        });
-    </script>
 @endsection

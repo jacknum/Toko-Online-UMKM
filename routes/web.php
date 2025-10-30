@@ -26,6 +26,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
+// Password Reset Routes (Simplified - No Email)
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'checkEmail'])->name('password.email');
+Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 // Routes untuk Pembeli (Store) - Bisa diakses tanpa login
 Route::prefix('store')->name('store.')->group(function () {
     Route::get('/', [StoreController::class, 'index'])->name('home');

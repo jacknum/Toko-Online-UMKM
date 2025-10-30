@@ -28,6 +28,87 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    // Show Forgot Password Form
+    public function showForgotPassword()
+    {
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
+        }
+        return view('auth.forget-password');
+    }
+
+    // Check Email and Redirect to Reset Password
+    public function checkEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        // Cek apakah email ada di database
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tidak ditemukan dalam sistem.'
+            ])->withInput();
+        }
+
+        // Simpan email di session untuk digunakan di halaman reset password
+        $request->session()->put('reset_email', $request->email);
+
+        // Redirect ke halaman reset password
+        return redirect()->route('password.reset');
+    }
+
+    // Show Reset Password Form
+    public function showResetPassword(Request $request)
+    {
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
+        }
+
+        // Cek apakah ada email di session
+        if (!$request->session()->has('reset_email')) {
+            return redirect()->route('password.request')->with('error', 'Silakan masukkan email terlebih dahulu.');
+        }
+
+        return view('auth.reset-password', [
+            'email' => $request->session()->get('reset_email')
+        ]);
+    }
+
+    // Reset Password
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // Cek apakah email ada di database
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tidak valid.'
+            ])->withInput();
+        }
+
+        try {
+            // Update password user
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            // Hapus session reset_email
+            $request->session()->forget('reset_email');
+
+            return redirect()->route('login')->with('success', 'Password berhasil direset! Silakan login dengan password baru Anda.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mereset password: ' . $e->getMessage());
+        }
+    }
+
     // Method Login
     public function login(Request $request)
     {

@@ -2894,6 +2894,11 @@
     margin: 0 auto;
 }
 
+.user-icon {
+    color: #0d6efd;
+    opacity: 0.8;
+}
+
 .account-progress .progress-steps {
     display: flex;
     justify-content: space-between;
@@ -2988,6 +2993,37 @@
 }
 
 /* Address Page Styles */
+/* Custom dropdown styles untuk mencegah tertimpa */
+.dropdown-custom {
+    position: relative;
+}
+
+.dropdown-menu-custom {
+    position: absolute !important;
+    z-index: 9999 !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    margin-top: 0.125rem !important;
+}
+
+/* Pastikan card memiliki z-index yang lebih rendah */
+.address-card {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hover state untuk card */
+.address-card:hover {
+    z-index: 2;
+}
+
+/* Ketika dropdown aktif, naikkan z-index card */
+.dropdown.show~.address-card {
+    z-index: 3;
+}
+
 .account-navigation {
     max-width: 600px;
     margin: 0 auto;

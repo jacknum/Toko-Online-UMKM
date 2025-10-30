@@ -165,6 +165,20 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Quick Links ke Halaman Lain -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ route('store.account.profile') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-user me-2"></i>Profil Saya
+                        </a>
+                        <a href="{{ route('store.account.security') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-shield-alt me-2"></i>Pengaturan Keamanan
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -183,7 +197,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-semibold">
-                        <i class="fas fa-plus me-2"></i>Tambah Alamat Baru
+                        <i class="me-2"></i>Tambah Alamat Baru
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
@@ -312,39 +326,6 @@
             </div>
         </div>
     </div>
-
-    <style>
-        /* Custom dropdown styles untuk mencegah tertimpa */
-        .dropdown-custom {
-            position: relative;
-        }
-
-        .dropdown-menu-custom {
-            position: absolute !important;
-            z-index: 9999 !important;
-            top: 100% !important;
-            right: 0 !important;
-            left: auto !important;
-            transform: none !important;
-            margin-top: 0.125rem !important;
-        }
-
-        /* Pastikan card memiliki z-index yang lebih rendah */
-        .address-card {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Hover state untuk card */
-        .address-card:hover {
-            z-index: 2;
-        }
-
-        /* Ketika dropdown aktif, naikkan z-index card */
-        .dropdown.show ~ .address-card {
-            z-index: 3;
-        }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
