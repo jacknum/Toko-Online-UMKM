@@ -1,14 +1,15 @@
 @extends('layouts.auth')
 
-@section('title', 'Login - Nama Perusahaan')
+@section('title', 'Login - Toko Online Banyumas')
 
 @section('auth-content')
 <div class="auth-layout">
     <div class="auth-image-section">
         <div class="auth-image-container">
-            <!-- Ganti gambar dengan Lottie Animation -->
+            <!-- Lottie Animation -->
             <div id="lottie-animation" class="lottie-container"></div>
-            <div class="auth-image-overlay">
+            <!-- Teks dipindahkan ke bawah animasi -->
+            <div class="auth-text-below">
                 <h2>Toko Online Banyumas</h2>
                 <p>Selamat Datang di Toko Online Banyumas</p>
             </div>
@@ -114,7 +115,6 @@
 
         // Initialize Lottie Animation
         function initLottieAnimation() {
-            // Method 1: Using lottie-player web component (recommended)
             const lottieContainer = document.getElementById('lottie-animation');
 
             // Clear existing content
@@ -131,19 +131,6 @@
             player.autoplay = true;
 
             lottieContainer.appendChild(player);
-
-            // Alternative Method 2: Using lottie-web library (uncomment if preferred)
-            /*
-            if (typeof lottie !== 'undefined') {
-                lottie.loadAnimation({
-                    container: document.getElementById('lottie-animation'),
-                    renderer: 'svg',
-                    loop: true,
-                    autoplay: true,
-                    path: "{{ asset('js/lottie/shopping Ecommerce.json') }}"
-                });
-            }
-            */
         }
 
         // Initialize animation when page loads
@@ -209,7 +196,13 @@
 
         // Handle responsive behavior for Lottie animation
         window.addEventListener('resize', function() {
-            // You can add responsive adjustments here if needed
+            // Adjust Lottie container height based on screen size
+            const lottieContainer = document.getElementById('lottie-animation');
+            if (window.innerWidth <= 992) {
+                lottieContainer.style.height = '200px';
+            } else {
+                lottieContainer.style.height = '70%';
+            }
         });
     });
 </script>

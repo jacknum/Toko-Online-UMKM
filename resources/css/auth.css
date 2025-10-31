@@ -57,69 +57,50 @@
     position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.auth-image {
+/* Styles untuk Lottie container */
+.lottie-container {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: imageSlide 20s ease-in-out infinite;
-}
-
-@keyframes imageSlide {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-.auth-image-overlay {
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-    padding: 2rem;
+    z-index: 1;
 }
 
-.auth-image-overlay h2 {
-    font-size: 3rem;
-    font-weight: 700;
+/* Teks di bawah animasi */
+.auth-text-below {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: auto;
+}
+
+.auth-text-below h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     animation: textGlow 3s ease-in-out infinite alternate;
 }
 
-.auth-image-overlay p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    font-weight: 300;
-}
-
-.auth-image-subtitle {
+.auth-text-below p {
     font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    opacity: 0.9;
-}
-
-.auth-image-domain {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #4cc9f0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0;
 }
 
 @keyframes textGlow {
@@ -343,8 +324,8 @@
     }
 
     .auth-image-section {
-        height: 200px;
-        min-height: 200px;
+        height: 350px;
+        min-height: 350px;
         flex: none;
     }
 
@@ -357,20 +338,25 @@
         max-width: 100%;
     }
 
-    .auth-image-overlay h2 {
-        font-size: 1.8rem;
+    .auth-text-below h2 {
+        font-size: 2rem;
     }
 
-    .auth-image-overlay p {
+    .auth-text-below p {
         font-size: 1.1rem;
     }
 
     .auth-form-header h2 {
         font-size: 2rem;
     }
+
+    .lottie-container {
+        height: 60%;
+        position: relative;
+    }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .auth-layout {
         margin: 0.5rem;
         border-radius: 15px;
@@ -389,23 +375,49 @@
     }
 
     .auth-image-section {
-        height: 180px;
+        height: 300px;
     }
 
-    .auth-image-overlay h2 {
+    .auth-text-below h2 {
         font-size: 1.6rem;
     }
 
-    .auth-image-overlay p {
+    .auth-text-below p {
         font-size: 1rem;
     }
 
-    .auth-image-domain {
-        font-size: 1.3rem;
+    .lottie-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-layout {
+        margin: 0.5rem;
+    }
+
+    .auth-form-section {
+        padding: 1rem;
+    }
+
+    .auth-text-below h2 {
+        font-size: 1.5rem;
+    }
+
+    .auth-text-below p {
+        font-size: 0.9rem;
+    }
+
+    .auth-text-below {
+        padding: 1rem 0.5rem;
     }
 
     .auth-form-container {
         max-width: 280px;
+    }
+
+    .auth-image-section {
+        height: 280px;
     }
 }
 
@@ -427,66 +439,107 @@
 /* Styles untuk Lottie container */
 .lottie-container {
     width: 100%;
-    height: 100%;
+    height: 70%;
     display: flex;
     align-items: center;
     justify-content: center;
     background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
-/* Pastikan container auth-image-container memiliki height yang cukup */
+/* Container untuk auth image */
 .auth-image-container {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Overlay text di atas animation */
-.auth-image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    z-index: 2;
+    justify-content: flex-end;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.auth-image-overlay h2 {
+/* Teks di bawah animasi */
+.auth-text-below {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: auto;
+}
+
+.auth-text-below h2 {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.auth-image-overlay p {
+.auth-text-below p {
     font-size: 1.2rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-    .auth-image-overlay h2 {
-        font-size: 2rem;
-    }
-
-    .auth-image-overlay p {
-        font-size: 1rem;
+@media (max-width: 992px) {
+    .auth-image-container {
+        height: 300px;
+        justify-content: center;
     }
 
     .lottie-container {
-        height: 300px;
+        height: 60%;
+        position: relative;
+    }
+
+    .auth-text-below {
+        position: relative;
+        background: transparent;
+        padding: 1rem;
+    }
+
+    .auth-text-below h2 {
+        font-size: 2rem;
+    }
+
+    .auth-text-below p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-text-below h2 {
+        font-size: 1.8rem;
+    }
+
+    .auth-text-below p {
+        font-size: 0.9rem;
+    }
+
+    .lottie-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-text-below h2 {
+        font-size: 1.5rem;
+    }
+
+    .auth-text-below p {
+        font-size: 0.8rem;
+    }
+
+    .auth-text-below {
+        padding: 1rem 0.5rem;
     }
 }
 
@@ -647,16 +700,6 @@
     color: #666;
     font-size: 1rem;
     margin-bottom: 0;
-}
-
-@keyframes textGlow {
-    from {
-        text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-    }
-
-    to {
-        text-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
-    }
 }
 
 /* Landscape Layout untuk Register */
