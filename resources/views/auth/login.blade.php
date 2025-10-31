@@ -8,10 +8,8 @@
         <div class="auth-image-container">
             <img src="{{ asset('images/auth-image.jpg') }}" alt="Learn to Code" class="auth-image">
             <div class="auth-image-overlay">
-                <h2>LEARN TO CODE</h2>
-                <p>WITH US.</p>
-                <div class="auth-image-subtitle">GET</div>
-                <div class="auth-image-domain">SEOTECHMAN.COM</div>
+                <h2>Toko Online Banyumas</h2>
+                <p>Selamat Datang di Toko Online Banyumas</p>
             </div>
         </div>
     </div>
@@ -20,7 +18,7 @@
         <div class="auth-form-container">
             <div class="auth-form-header">
                 <h2>Login</h2>
-                <p>Learn to code</p>
+                <p>Silahkan masukkan username dan password</p>
             </div>
 
             <form id="loginForm" method="POST" action="{{ route('login') }}" class="auth-form">

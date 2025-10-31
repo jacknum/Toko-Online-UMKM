@@ -1758,11 +1758,6 @@
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
                     </li>
-                    <li class="nav-item ms-2">
-                        <a href="{{ route('register') }}" class="btn btn-primary">
-                            <i class="fas fa-user-plus me-1"></i>Daftar Gratis
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
