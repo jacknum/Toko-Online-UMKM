@@ -6,7 +6,8 @@
 <div class="auth-layout">
     <div class="auth-image-section">
         <div class="auth-image-container">
-            <img src="{{ asset('images/auth-image.jpg') }}" alt="Learn to Code" class="auth-image">
+            <!-- Ganti gambar dengan Lottie Animation -->
+            <div id="lottie-animation" class="lottie-container"></div>
             <div class="auth-image-overlay">
                 <h2>Toko Online Banyumas</h2>
                 <p>Selamat Datang di Toko Online Banyumas</p>
@@ -101,70 +102,115 @@
 @endsection
 
 @section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            let countdown = 3;
-            let countdownInterval;
+<!-- Include Lottie Player -->
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-            // Cek jika ada session success dari backend (jika login berhasil)
-            @if (session('success'))
-                showSuccessModal();
-            @endif
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        let countdown = 3;
+        let countdownInterval;
 
-            // Form submission handling
-            loginForm.addEventListener('submit', function(e) {
-                // Form akan di-submit secara normal ke backend
-                // Add loading animation
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memproses...';
-                submitBtn.disabled = true;
+        // Initialize Lottie Animation
+        function initLottieAnimation() {
+            // Method 1: Using lottie-player web component (recommended)
+            const lottieContainer = document.getElementById('lottie-animation');
 
-                // Jika form berhasil submit dan login berhasil,
-                // modal akan ditampilkan oleh session success dari backend
-            });
+            // Clear existing content
+            lottieContainer.innerHTML = '';
 
-            function showSuccessModal() {
-                successModal.show();
-                startCountdown();
+            // Create lottie player
+            const player = document.createElement('lottie-player');
+            player.src = "{{ asset('js/lottie/shopping Ecommerce.json') }}";
+            player.background = 'transparent';
+            player.speed = 1;
+            player.style.width = '100%';
+            player.style.height = '100%';
+            player.loop = true;
+            player.autoplay = true;
+
+            lottieContainer.appendChild(player);
+
+            // Alternative Method 2: Using lottie-web library (uncomment if preferred)
+            /*
+            if (typeof lottie !== 'undefined') {
+                lottie.loadAnimation({
+                    container: document.getElementById('lottie-animation'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: "{{ asset('js/lottie/shopping Ecommerce.json') }}"
+                });
             }
+            */
+        }
 
-            function startCountdown() {
-                const countdownElement = document.getElementById('countdown');
-                countdown = 3;
+        // Initialize animation when page loads
+        initLottieAnimation();
+
+        // Cek jika ada session success dari backend (jika login berhasil)
+        @if (session('success'))
+            showSuccessModal();
+        @endif
+
+        // Form submission handling
+        loginForm.addEventListener('submit', function(e) {
+            // Form akan di-submit secara normal ke backend
+            // Add loading animation
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memproses...';
+            submitBtn.disabled = true;
+
+            // Jika form berhasil submit dan login berhasil,
+            // modal akan ditampilkan oleh session success dari backend
+        });
+
+        function showSuccessModal() {
+            successModal.show();
+            startCountdown();
+        }
+
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            countdown = 3;
+            countdownElement.textContent = countdown;
+
+            countdownInterval = setInterval(function() {
+                countdown--;
                 countdownElement.textContent = countdown;
 
-                countdownInterval = setInterval(function() {
-                    countdown--;
-                    countdownElement.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = "{{ route('dashboard') }}";
+                }
+            }, 1000);
+        }
 
-                    if (countdown <= 0) {
-                        clearInterval(countdownInterval);
-                        window.location.href = "{{ route('dashboard') }}";
-                    }
-                }, 1000);
-            }
+        // Jika modal ditutup manual, clear interval dan redirect
+        document.getElementById('successModal').addEventListener('hidden.bs.modal', function() {
+            clearInterval(countdownInterval);
+            window.location.href = "{{ route('dashboard') }}";
+        });
 
-            // Jika modal ditutup manual, clear interval dan redirect
-            document.getElementById('successModal').addEventListener('hidden.bs.modal', function() {
-                clearInterval(countdownInterval);
-                window.location.href = "{{ route('dashboard') }}";
-            });
-
-            // Password toggle functionality
-            document.querySelectorAll('.password-toggle').forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const passwordInput = this.previousElementSibling;
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' :
-                        'password';
-                    passwordInput.setAttribute('type', type);
-                    this.innerHTML = type === 'password' ?
-                        '<i class="fas fa-eye"></i>' :
-                        '<i class="fas fa-eye-slash"></i>';
-                });
+        // Password toggle functionality
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const passwordInput = this.previousElementSibling;
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' :
+                    'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ?
+                    '<i class="fas fa-eye"></i>' :
+                    '<i class="fas fa-eye-slash"></i>';
             });
         });
-    </script>
+
+        // Handle responsive behavior for Lottie animation
+        window.addEventListener('resize', function() {
+            // You can add responsive adjustments here if needed
+        });
+    });
+</script>
 @endsection

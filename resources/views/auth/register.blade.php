@@ -119,7 +119,7 @@
                     </button>
 
                     <div class="register-auth-footer">
-                        <p class="mb-0">Sudah punya akun?</p>
+                        <p class="mb-0">Sudah punya akun? <a href="{{ route('login') }}" class="register-auth-link">Login di sini</a></p>
                     </div>
                 </div>
             </div>

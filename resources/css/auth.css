@@ -424,14 +424,83 @@
     text-align: center;
 }
 
+/* Styles untuk Lottie container */
+.lottie-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+/* Pastikan container auth-image-container memiliki height yang cukup */
+.auth-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Overlay text di atas animation */
+.auth-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    z-index: 2;
+}
+
+.auth-image-overlay h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.auth-image-overlay p {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .auth-image-overlay h2 {
+        font-size: 2rem;
+    }
+
+    .auth-image-overlay p {
+        font-size: 1rem;
+    }
+
+    .lottie-container {
+        height: 300px;
+    }
+}
+
 /* ===== STYLE UNTUK REGISTER ===== */
 .register-body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
-    padding: 40px 20px;
-    margin: 0;
+    padding: 20px;
+    margin-right: 40px;
     position: relative;
     overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .animated-bg {
@@ -540,13 +609,12 @@
     backdrop-filter: blur(20px);
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+    padding: 30px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 900px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     animation: containerSlide 0.8s ease-out;
-    margin: 0 auto;
-    min-height: auto;
+    margin-right: 130px;
 }
 
 @keyframes containerSlide {
@@ -564,19 +632,21 @@
 /* Header untuk Register */
 .register-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 .register-header h2 {
     color: #333;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 1.8rem;
     animation: textGlow 2s ease-in-out infinite alternate;
 }
 
 .register-header p {
     color: #666;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 0;
 }
 
 @keyframes textGlow {
@@ -597,153 +667,33 @@
 .form-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 30px;
     align-items: start;
 }
 
 .form-column {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 /* Form Styles untuk Register */
 .register-form-group {
     position: relative;
     margin-bottom: 0;
-}
-
-/* Pastikan semua form group sejajar kiri */
-.register-form-group {
-    position: relative;
-    margin-bottom: 0;
     width: 100%;
-}
-
-/* Pastikan form controls memiliki width 100% */
-.register-form-control {
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 16px 16px 16px 50px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-    height: 56px;
-    background: #f8f9fa;
-    box-sizing: border-box;
-}
-
-/* Pastikan columns memiliki alignment yang konsisten */
-.form-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-    justify-items: start;
-}
-
-.form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-/* Role selection alignment */
-.register-role-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-}
-
-.register-role-selection {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%;
-}
-
-/* Terms and conditions alignment */
-.register-terms-wrapper {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 10px 0;
-    width: 100%;
-}
-
-/* Submit button alignment */
-.register-btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: white;
-    padding: 14px 20px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    width: 100%;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 10px 0;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-/* Auth footer alignment */
-.register-auth-footer {
-    text-align: center;
-    color: #6c757d;
-    margin-top: 10px;
-    width: 100%;
-}
-
-/* Back to login alignment */
-.register-back-login {
-    text-align: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
-    width: 100%;
-}
-
-/* Responsive design - pastikan alignment tetap konsisten */
-@media (max-width: 992px) {
-    .form-columns {
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-
-    .form-column {
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .register-role-selection {
-        grid-template-columns: 1fr;
-    }
-
-    .form-column {
-        gap: 15px;
-    }
 }
 
 .register-form-control {
     border: 2px solid #e0e0e0;
     border-radius: 10px;
-    padding: 16px 16px 16px 50px;
-    font-size: 1rem;
+    padding: 14px 14px 14px 45px;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     width: 100%;
-    height: 56px;
+    height: 52px;
     background: #f8f9fa;
+    box-sizing: border-box;
 }
 
 .register-form-control:focus {
@@ -757,11 +707,11 @@
 /* Label Styles untuk Register */
 .register-form-label {
     position: absolute;
-    left: 50px;
+    left: 45px;
     top: 50%;
     transform: translateY(-50%);
     color: #999;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     background: #f8f9fa;
@@ -773,8 +723,8 @@
 .register-form-control:focus+.register-form-label,
 .register-form-control:not(:placeholder-shown)+.register-form-label {
     top: 0;
-    left: 42px;
-    font-size: 0.8rem;
+    left: 37px;
+    font-size: 0.75rem;
     color: #667eea;
     background: white;
     transform: translateY(-50%);
@@ -791,6 +741,7 @@
     z-index: 10;
     pointer-events: none;
     transition: all 0.3s ease;
+    font-size: 0.9rem;
 }
 
 .register-form-control:focus~.register-form-icon {
@@ -814,6 +765,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.9rem;
 }
 
 .register-password-toggle:hover {
@@ -825,13 +777,14 @@
 .register-role-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 5px;
 }
 
 .register-role-label {
     font-weight: 600;
     color: #333;
-    font-size: 1rem;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
     margin: 0;
@@ -839,12 +792,12 @@
 
 .register-role-selection {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }
 
 .register-role-option {
-    padding: 15px 80px;
+    padding: 12px 15px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     text-align: center;
@@ -857,6 +810,7 @@
     align-items: center;
     gap: 5px;
     color: #666;
+    font-size: 0.9rem;
 }
 
 .register-role-option:hover {
@@ -869,7 +823,7 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border-color: #667eea;
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
     animation: rolePulse 2s infinite;
 }
@@ -887,24 +841,24 @@
 }
 
 .register-role-option i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .register-role-option span {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 /* Terms and Conditions untuk Register */
 .register-terms-wrapper {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    margin: 10px 0;
+    gap: 8px;
+    margin: 8px 0;
 }
 
 .register-terms-checkbox {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-top: 2px;
     cursor: pointer;
     accent-color: #667eea;
@@ -917,9 +871,9 @@
 }
 
 .register-terms-label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #666;
-    line-height: 1.5;
+    line-height: 1.4;
     cursor: pointer;
     margin: 0;
 }
@@ -941,9 +895,9 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 14px 20px;
+    padding: 12px 20px;
     border-radius: 10px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     width: 100%;
     transition: all 0.3s ease;
@@ -953,9 +907,10 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin: 10px 0;
+    margin: 8px 0;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .register-btn-submit::before {
@@ -1008,13 +963,14 @@
     text-align: center;
     color: #6c757d;
     margin-top: 10px;
+    font-size: 0.9rem;
 }
 
 /* Back to Login untuk Register */
 .register-back-login {
     text-align: center;
-    margin-top: 20px;
-    padding-top: 20px;
+    margin-top: 15px;
+    padding-top: 15px;
     border-top: 1px solid #e0e0e0;
 }
 
@@ -1027,6 +983,7 @@
     gap: 5px;
     transition: all 0.3s ease;
     position: relative;
+    font-size: 0.9rem;
 }
 
 .register-back-login a::after {
@@ -1068,54 +1025,81 @@
 @media (max-width: 992px) {
     .form-columns {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 20px;
     }
 
     .register-container {
-        padding: 30px 25px;
+        padding: 25px 20px;
+        max-width: 500px;
     }
 }
 
 @media (max-width: 768px) {
     .register-body {
-        padding: 30px 15px;
+        padding: 15px;
     }
 
     .register-container {
-        padding: 25px 20px;
+        padding: 20px 15px;
     }
 
     .register-header {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
     .register-header h2 {
         font-size: 1.5rem;
+    }
+
+    .register-header p {
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 576px) {
     .register-role-selection {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 6px;
     }
 
     .register-role-option {
         flex-direction: row;
         justify-content: center;
-        padding: 12px;
+        padding: 10px;
     }
 
     .register-role-option i {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .form-column {
-        gap: 15px;
+        gap: 12px;
     }
 
     .register-container {
-        padding: 20px 15px;
+        padding: 15px 12px;
+    }
+
+    .register-form-control {
+        padding: 12px 12px 12px 40px;
+        height: 48px;
+        font-size: 0.9rem;
+    }
+
+    .register-form-label {
+        left: 40px;
+        font-size: 0.9rem;
+    }
+
+    .register-form-control:focus+.register-form-label,
+    .register-form-control:not(:placeholder-shown)+.register-form-label {
+        left: 32px;
+        font-size: 0.7rem;
+    }
+
+    .register-form-icon {
+        left: 12px;
+        font-size: 0.85rem;
     }
 }
 
