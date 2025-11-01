@@ -174,7 +174,7 @@
         </div>
     </section>
 
-    <!-- About Section dengan 3D Animation -->
+    <!-- About Section dengan Lottie Animation -->
     <section id="about" class="section">
         <div class="container">
             <div class="row align-items-center">
@@ -213,55 +213,161 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="text-center">
-                        <div class="animation-3d-container">
-                            <!-- 3D Animation dengan CSS -->
-                            <div class="scene-3d">
-                                <div class="cube">
-                                    <div class="face front">
-                                        <i class="fas fa-store"></i>
-                                        <span>Toko Online</span>
-                                    </div>
-                                    <div class="face back">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span>Analytics</span>
-                                    </div>
-                                    <div class="face right">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <span>Penjualan</span>
-                                    </div>
-                                    <div class="face left">
-                                        <i class="fas fa-users"></i>
-                                        <span>Pelanggan</span>
-                                    </div>
-                                    <div class="face top">
-                                        <i class="fas fa-rocket"></i>
-                                        <span>Growth</span>
-                                    </div>
-                                    <div class="face bottom">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>Security</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="floating-elements">
-                                <div class="element element-1">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <div class="element element-2">
-                                    <i class="fas fa-credit-card"></i>
-                                </div>
-                                <div class="element element-3">
-                                    <i class="fas fa-truck"></i>
-                                </div>
-                                <div class="element element-4">
-                                    <i class="fas fa-chart-bar"></i>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="lottie-animation-container">
+                        <!-- Lottie Animation Container -->
+                        <div id="lottie-animation" class="lottie-container"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+@push('styles')
+<style>
+    /* CSS khusus untuk Lottie Animation - Sama persis dengan auth */
+    .lottie-animation-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .lottie-container {
+        width: 100%;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Styling untuk lottie-player element */
+    lottie-player {
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    /* Loading state */
+    .lottie-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        color: #6c757d;
+        width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .lottie-container {
+            height: 350px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .lottie-container {
+            height: 300px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .lottie-container {
+            height: 250px;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const lottieContainer = document.getElementById('lottie-animation');
+        
+        console.log('Initializing Lottie animation...');
+        
+        // Show loading state
+        lottieContainer.innerHTML = `
+            <div class="lottie-loading">
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                    <p>Memuat animasi...</p>
+                </div>
+            </div>
+        `;
+
+        // Gunakan path yang SAMA PERSIS dengan yang berhasil di login page
+        const lottiePath = "{{ asset('js/lottie/shopping Ecommerce.json') }}";
+        
+        console.log('Loading Lottie from:', lottiePath);
+
+        // Clear container dan buat player setelah delay kecil
+        setTimeout(() => {
+            lottieContainer.innerHTML = '';
+            
+            // Create lottie player element - SAMA PERSIS dengan login page
+            const player = document.createElement('lottie-player');
+            player.src = lottiePath;
+            player.background = 'transparent';
+            player.speed = 1;
+            player.style.width = '100%';
+            player.style.height = '100%';
+            player.loop = true;
+            player.autoplay = true;
+            
+            console.log('Lottie player created:', player);
+            
+            // Append to container
+            lottieContainer.appendChild(player);
+            
+            // Event listeners untuk debugging
+            player.addEventListener('load', () => {
+                console.log('✅ Lottie animation loaded successfully');
+            });
+
+            player.addEventListener('error', (error) => {
+                console.error('❌ Lottie animation failed to load:', error);
+                console.log('Error details:', {
+                    src: player.src,
+                    readyState: player.readyState,
+                    currentState: player.currentState
+                });
+                
+                // Fallback content
+                lottieContainer.innerHTML = `
+                    <div style="text-align: center; color: #6c757d; padding: 40px;">
+                        <i class="fas fa-shopping-cart" style="font-size: 80px; margin-bottom: 20px; color: #007bff;"></i>
+                        <h4 style="color: #495057;">Toko Online UMKM</h4>
+                        <p>Animasi tidak dapat dimuat</p>
+                        <small>Path: ${lottiePath}</small>
+                    </div>
+                `;
+            });
+
+            player.addEventListener('ready', () => {
+                console.log('🎉 Lottie player is ready');
+            });
+
+        }, 100);
+        
+        // Tambahkan debug info ke console
+        console.log('Lottie container:', lottieContainer);
+        console.log('Window lottie-player available:', typeof window.lottie !== 'undefined');
+    });
+</script>
+@endpush
