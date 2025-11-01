@@ -23,6 +23,7 @@
     <!-- Main Features Section -->
     <section class="section">
         <div class="container">
+            <!-- Product Management -->
             <div class="row align-items-center mb-5">
                 <div class="col-lg-6">
                     <h2 class="section-title text-start">Manajemen Produk yang Powerful</h2>
@@ -58,53 +59,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="text-center">
-                        <div class="animation-3d-container">
-                            <!-- 3D Animation untuk Manajemen Produk -->
-                            <div class="scene-3d">
-                                <div class="cube">
-                                    <div class="face front">
-                                        <i class="fas fa-boxes"></i>
-                                        <span>Produk</span>
-                                    </div>
-                                    <div class="face back">
-                                        <i class="fas fa-database"></i>
-                                        <span>Stok</span>
-                                    </div>
-                                    <div class="face right">
-                                        <i class="fas fa-tags"></i>
-                                        <span>Harga</span>
-                                    </div>
-                                    <div class="face left">
-                                        <i class="fas fa-layer-group"></i>
-                                        <span>Kategori</span>
-                                    </div>
-                                    <div class="face top">
-                                        <i class="fas fa-upload"></i>
-                                        <span>Upload</span>
-                                    </div>
-                                    <div class="face bottom">
-                                        <i class="fas fa-chart-bar"></i>
-                                        <span>Analytics</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="floating-elements">
-                                <div class="element element-1">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <div class="element element-2">
-                                    <i class="fas fa-cube"></i>
-                                </div>
-                                <div class="element element-3">
-                                    <i class="fas fa-pallet"></i>
-                                </div>
-                                <div class="element element-4">
-                                    <i class="fas fa-barcode"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="lottie-animation-products" class="lottie-container"></div>
                 </div>
             </div>
 
@@ -144,53 +99,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-lg-1">
-                    <div class="text-center">
-                        <div class="animation-3d-container">
-                            <!-- 3D Animation untuk Pesanan -->
-                            <div class="scene-3d">
-                                <div class="cube">
-                                    <div class="face front">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <span>Order</span>
-                                    </div>
-                                    <div class="face back">
-                                        <i class="fas fa-truck"></i>
-                                        <span>Kirim</span>
-                                    </div>
-                                    <div class="face right">
-                                        <i class="fas fa-bell"></i>
-                                        <span>Notif</span>
-                                    </div>
-                                    <div class="face left">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        <span>Retur</span>
-                                    </div>
-                                    <div class="face top">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Track</span>
-                                    </div>
-                                    <div class="face bottom">
-                                        <i class="fas fa-history"></i>
-                                        <span>Riwayat</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="floating-elements">
-                                <div class="element element-1">
-                                    <i class="fas fa-receipt"></i>
-                                </div>
-                                <div class="element element-2">
-                                    <i class="fas fa-shipping-fast"></i>
-                                </div>
-                                <div class="element element-3">
-                                    <i class="fas fa-box-open"></i>
-                                </div>
-                                <div class="element element-4">
-                                    <i class="fas fa-route"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="lottie-animation-orders" class="lottie-container"></div>
                 </div>
             </div>
 
@@ -230,53 +139,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="text-center">
-                        <div class="animation-3d-container">
-                            <!-- 3D Animation untuk Pembayaran -->
-                            <div class="scene-3d">
-                                <div class="cube">
-                                    <div class="face front">
-                                        <i class="fas fa-credit-card"></i>
-                                        <span>Kartu</span>
-                                    </div>
-                                    <div class="face back">
-                                        <i class="fas fa-wallet"></i>
-                                        <span>E-Wallet</span>
-                                    </div>
-                                    <div class="face right">
-                                        <i class="fas fa-university"></i>
-                                        <span>Transfer</span>
-                                    </div>
-                                    <div class="face left">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                        <span>COD</span>
-                                    </div>
-                                    <div class="face top">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>Secure</span>
-                                    </div>
-                                    <div class="face bottom">
-                                        <i class="fas fa-sync"></i>
-                                        <span>Sync</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="floating-elements">
-                                <div class="element element-1">
-                                    <i class="fab fa-cc-visa"></i>
-                                </div>
-                                <div class="element element-2">
-                                    <i class="fab fa-cc-mastercard"></i>
-                                </div>
-                                <div class="element element-3">
-                                    <i class="fas fa-qrcode"></i>
-                                </div>
-                                <div class="element element-4">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="lottie-animation-payments" class="lottie-container"></div>
                 </div>
             </div>
         </div>
@@ -379,3 +242,151 @@
         </div>
     </section>
 @endsection
+
+@push('styles')
+<style>
+    /* Lottie Animation Styles untuk Features Page */
+    .lottie-container {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border-radius: 10px;
+        margin: 1rem 0;
+    }
+
+    lottie-player {
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+    }
+
+    .lottie-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: #f8f9fa;
+        border-radius: 10px;
+        color: #6c757d;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+        .lottie-container {
+            height: 250px;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Initializing Features Lottie animations...');
+
+        // File Lottie untuk Features Page
+        const lottieFiles = {
+            products: "{{ asset('js/lottie/management.json') }}",
+            orders: "{{ asset('js/lottie/pengiriman.json') }}",
+            payments: "{{ asset('js/lottie/pembayaran.json') }}"
+        };
+
+        // Initialize semua Lottie animations
+        function initFeaturesLottie() {
+            // Product Management Animation
+            initSingleLottie('lottie-animation-products', lottieFiles.products, 'Manajemen Produk');
+
+            // Order Management Animation
+            initSingleLottie('lottie-animation-orders', lottieFiles.orders, 'Pesanan');
+
+            // Payment System Animation
+            initSingleLottie('lottie-animation-payments', lottieFiles.payments, 'Pembayaran');
+        }
+
+        function initSingleLottie(containerId, filePath, featureName) {
+            const container = document.getElementById(containerId);
+
+            if (!container) {
+                console.error(`❌ ${featureName} Lottie container not found:`, containerId);
+                return;
+            }
+
+            console.log(`🎯 Initializing ${featureName} Lottie...`);
+
+            // Show loading state
+            container.innerHTML = `
+                <div class="lottie-loading">
+                    <div class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                        <p>Memuat ${featureName}...</p>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+
+                const player = document.createElement('lottie-player');
+                player.src = filePath;
+                player.background = 'transparent';
+                player.speed = 1;
+                player.style.width = '100%';
+                player.style.height = '100%';
+                player.loop = true;
+                player.autoplay = true;
+
+                container.appendChild(player);
+
+                player.addEventListener('load', () => {
+                    console.log(`✅ ${featureName} Lottie loaded successfully`);
+                });
+
+                player.addEventListener('error', (error) => {
+                    console.error(`❌ ${featureName} Lottie failed:`, error);
+                    container.innerHTML = `
+                        <div class="lottie-loading">
+                            <i class="fas fa-cube fa-3x mb-3 text-muted"></i>
+                            <p>${featureName} Animation</p>
+                            <small class="text-muted">Tidak dapat dimuat</small>
+                        </div>
+                    `;
+                });
+
+            }, 100);
+        }
+
+        // Test file availability untuk semua files
+        function testAllLottieFiles() {
+            let tested = 0;
+            const total = Object.keys(lottieFiles).length;
+
+            Object.entries(lottieFiles).forEach(([feature, path]) => {
+                fetch(path)
+                    .then(response => {
+                        if (response.ok) {
+                            console.log(`✅ ${feature} file accessible`);
+                        } else {
+                            console.warn(`⚠️ ${feature} file not found:`, path);
+                        }
+                    })
+                    .catch(error => {
+                        console.warn(`⚠️ ${feature} file error:`, path);
+                    })
+                    .finally(() => {
+                        tested++;
+                        if (tested === total) {
+                            initFeaturesLottie();
+                        }
+                    });
+            });
+        }
+
+        // Initialize features Lottie
+        testAllLottieFiles();
+    });
+</script>
+@endpush

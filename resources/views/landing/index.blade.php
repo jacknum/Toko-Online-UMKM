@@ -154,7 +154,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="{{ route('features') }}" class="btn btn-outline-primary btn-lg">
+                <a href="{{ route('features') }}" class="btn btn-outline-secondary btn-lg">
                     <i class="fas fa-arrow-right me-2"></i>Lihat Semua Fitur
                 </a>
             </div>
@@ -213,10 +213,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="lottie-animation-container">
-                        <!-- Lottie Animation Container -->
-                        <div id="lottie-animation" class="lottie-container"></div>
-                    </div>
+                    <!-- Container untuk Lottie Animation -->
+                    <div id="lottie-animation-home" class="lottie-container"></div>
                 </div>
             </div>
         </div>
@@ -225,17 +223,7 @@
 
 @push('styles')
 <style>
-    /* CSS khusus untuk Lottie Animation - Sama persis dengan auth */
-    .lottie-animation-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-
+    /* Lottie Animation Styles untuk Home Page */
     .lottie-container {
         width: 100%;
         height: 400px;
@@ -243,40 +231,25 @@
         align-items: center;
         justify-content: center;
         background: transparent;
-        position: relative;
-        z-index: 1;
+        border-radius: 10px;
     }
 
-    /* Styling untuk lottie-player element */
     lottie-player {
         width: 100% !important;
         height: 100% !important;
         background: transparent !important;
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        display: block !important;
     }
 
-    /* Loading state */
     .lottie-loading {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 400px;
+        height: 100%;
         background: #f8f9fa;
         border-radius: 10px;
         color: #6c757d;
         width: 100%;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .lottie-container {
-            height: 350px;
-        }
+        flex-direction: column;
     }
 
     @media (max-width: 768px) {
@@ -284,90 +257,94 @@
             height: 300px;
         }
     }
-
-    @media (max-width: 576px) {
-        .lottie-container {
-            height: 250px;
-        }
-    }
 </style>
 @endpush
 
 @push('scripts')
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const lottieContainer = document.getElementById('lottie-animation');
-        
-        console.log('Initializing Lottie animation...');
-        
-        // Show loading state
-        lottieContainer.innerHTML = `
-            <div class="lottie-loading">
-                <div class="text-center">
-                    <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
-                    <p>Memuat animasi...</p>
-                </div>
-            </div>
-        `;
+        // Initialize Lottie Animation untuk Home Page
+        function initHomeLottie() {
+            const lottieContainer = document.getElementById('lottie-animation-home');
 
-        // Gunakan path yang SAMA PERSIS dengan yang berhasil di login page
-        const lottiePath = "{{ asset('js/lottie/shopping Ecommerce.json') }}";
-        
-        console.log('Loading Lottie from:', lottiePath);
+            if (!lottieContainer) {
+                console.error('❌ Home Lottie container not found');
+                return;
+            }
 
-        // Clear container dan buat player setelah delay kecil
-        setTimeout(() => {
-            lottieContainer.innerHTML = '';
-            
-            // Create lottie player element - SAMA PERSIS dengan login page
-            const player = document.createElement('lottie-player');
-            player.src = lottiePath;
-            player.background = 'transparent';
-            player.speed = 1;
-            player.style.width = '100%';
-            player.style.height = '100%';
-            player.loop = true;
-            player.autoplay = true;
-            
-            console.log('Lottie player created:', player);
-            
-            // Append to container
-            lottieContainer.appendChild(player);
-            
-            // Event listeners untuk debugging
-            player.addEventListener('load', () => {
-                console.log('✅ Lottie animation loaded successfully');
-            });
+            console.log('🏠 Initializing Home Lottie animation...');
 
-            player.addEventListener('error', (error) => {
-                console.error('❌ Lottie animation failed to load:', error);
-                console.log('Error details:', {
-                    src: player.src,
-                    readyState: player.readyState,
-                    currentState: player.currentState
-                });
-                
-                // Fallback content
-                lottieContainer.innerHTML = `
-                    <div style="text-align: center; color: #6c757d; padding: 40px;">
-                        <i class="fas fa-shopping-cart" style="font-size: 80px; margin-bottom: 20px; color: #007bff;"></i>
-                        <h4 style="color: #495057;">Toko Online UMKM</h4>
-                        <p>Animasi tidak dapat dimuat</p>
-                        <small>Path: ${lottiePath}</small>
+            // Show loading state
+            lottieContainer.innerHTML = `
+                <div class="lottie-loading">
+                    <div class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                        <p>Memuat animasi...</p>
                     </div>
-                `;
-            });
+                </div>
+            `;
 
-            player.addEventListener('ready', () => {
-                console.log('🎉 Lottie player is ready');
-            });
+            // File Lottie untuk Home Page
+            const lottiePath = "{{ asset('js/lottie/about.json') }}";
 
-        }, 100);
-        
-        // Tambahkan debug info ke console
-        console.log('Lottie container:', lottieContainer);
-        console.log('Window lottie-player available:', typeof window.lottie !== 'undefined');
+            console.log('📁 Home Lottie path:', lottiePath);
+
+            setTimeout(() => {
+                lottieContainer.innerHTML = '';
+
+                const player = document.createElement('lottie-player');
+                player.src = lottiePath;
+                player.background = 'transparent';
+                player.speed = 1;
+                player.style.width = '100%';
+                player.style.height = '100%';
+                player.loop = true;
+                player.autoplay = true;
+
+                lottieContainer.appendChild(player);
+
+                player.addEventListener('load', () => {
+                    console.log('✅ Home Lottie animation loaded successfully');
+                });
+
+                player.addEventListener('error', (error) => {
+                    console.error('❌ Home Lottie failed to load:', error);
+                    lottieContainer.innerHTML = `
+                        <div class="lottie-loading">
+                            <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                            <p>Animasi Home tidak dapat dimuat</p>
+                        </div>
+                    `;
+                });
+
+            }, 100);
+        }
+
+        // Test file availability
+        function testLottieFile(path, callback) {
+            fetch(path)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ Lottie file is accessible:', path);
+                        callback(true);
+                    } else {
+                        throw new Error('File not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Lottie file not accessible:', path, error);
+                    callback(false);
+                });
+        }
+
+        // Initialize home Lottie
+        testLottieFile("{{ asset('js/lottie/about.json') }}", function(success) {
+            if (success) {
+                initHomeLottie();
+            } else {
+                console.log('🔄 Home Lottie file not found, skipping...');
+            }
+        });
     });
 </script>
 @endpush

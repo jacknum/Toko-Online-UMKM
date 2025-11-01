@@ -122,7 +122,7 @@
 
             // Create lottie player
             const player = document.createElement('lottie-player');
-            player.src = "{{ asset('js/lottie/shopping Ecommerce.json') }}";
+            player.src = "{{ asset('js/lottie/login.json') }}";
             player.background = 'transparent';
             player.speed = 1;
             player.style.width = '100%';
