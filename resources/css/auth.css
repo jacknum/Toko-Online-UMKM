@@ -172,6 +172,7 @@
 .form-floating {
     margin-bottom: 1.5rem;
     width: 100%;
+    background: white;
 }
 
 .form-control {
@@ -1191,6 +1192,322 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.5);
     color: #fff;
+}
+
+/* ===== STYLE UNTUK FORGET PASSWORD ===== */
+.forgot-password-container {
+    width: 100%;
+    max-width: 400px;
+    margin-right: 150px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.forget-form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Description styles untuk forget password */
+.auth-description {
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(63, 55, 201, 0.1) 100%);
+    padding: 1.25rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.auth-description p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Form styles khusus forget password */
+.forgot-password-container .form-floating {
+    margin-bottom: 1.5rem;
+}
+
+.forgot-password-container .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1rem 0.75rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.forgot-password-container .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+/* Button styles untuk forget password */
+.forgot-password-container .btn-auth {
+    background: var(--gradient);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.forgot-password-container .btn-auth::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.forgot-password-container .btn-auth:hover::before {
+    left: 100%;
+}
+
+.forgot-password-container .btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+}
+
+.forgot-password-container .btn-auth:active {
+    transform: translateY(0);
+}
+
+/* Back to login button styles */
+.btn-back-login {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--primary);
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    display: block;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-back-login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.btn-back-login:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+.btn-back-login:hover::before {
+    left: 0;
+}
+
+.btn-back-login:active {
+    transform: translateY(0);
+}
+
+/* Footer styles untuk forget password */
+.forgot-password-container .auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+    width: 100%;
+}
+
+.forgot-password-container .auth-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.forgot-password-container .auth-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.forgot-password-container .auth-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.forgot-password-container .auth-link:hover {
+    color: var(--secondary);
+}
+
+.forgot-password-container .auth-link:hover::after {
+    width: 100%;
+}
+
+/* Loading animation */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Success message styles */
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #c3e6cb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Error message styles */
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Responsive Design untuk Forget Password */
+@media (max-width: 768px) {
+    .forgot-password-container {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: none;
+    }
+
+    .auth-description {
+        padding: 1rem;
+    }
+
+    .auth-description p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .forgot-password-container {
+        margin: 0.5rem;
+        padding: 1.25rem;
+    }
+
+    .forgot-password-container .btn-auth,
+    .btn-back-login {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .forgot-password-container .auth-footer p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .forgot-password-container {
+        background: rgba(33, 37, 41, 0.95);
+        color: #f8f9fa;
+    }
+
+    .forgot-password-container .form-control {
+        background: #ffffff;
+        border-color: #6c757d;
+        color: #f8f9fa;
+    }
+
+    .forgot-password-container .form-control:focus {
+        background: #ffffff;
+        color: #f8f9fa;
+    }
+
+    .auth-description p {
+        color: #adb5bd;
+    }
+
+    .forgot-password-container .auth-footer p {
+        color: #adb5bd;
+    }
 }
 
 /* Auth Pages End */

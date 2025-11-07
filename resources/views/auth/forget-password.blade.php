@@ -2,42 +2,46 @@
 
 @section('title', 'Lupa Password - Nama Perusahaan')
 
-@section('auth-title', 'LUPA PASSWORD')
-
 @section('auth-content')
-    <form id="forgotPasswordForm" method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <div class="auth-description mb-4">
-            <p class="text-muted text-center">
-                Masukkan email Anda yang terdaftar untuk mereset password.
-            </p>
+    <div class="forgot-password-container bg-white">
+        <div class="forget-form-header text-black">
+            <h2>Lupa Password</h2>
         </div>
 
-        <div class="form-floating mb-4">
-            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
-                value="{{ old('email') }}" placeholder="name@example.com" required>
-            <label for="email"><i class="fas fa-envelope me-2"></i>Alamat Email</label>
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+        <form id="forgotPasswordForm" method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-        <button type="submit" class="btn btn-auth mb-3">
-            <i class="fas fa-arrow-right me-2"></i>Lanjutkan
-        </button>
+            <div class="auth-description mb-4">
+                <p class="text-black text-center">
+                    Masukkan email Anda yang terdaftar untuk mereset password.
+                </p>
+            </div>
 
-        <!-- Tombol Kembali ke Login -->
-        <a href="{{ route('login') }}" class="btn btn-back-login">
-            <i class="fas fa-arrow-left me-2"></i>Kembali ke Login
-        </a>
+            <div class="form-floating">
+                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+                    value="{{ old('email') }}" placeholder="name@example.com" required>
+                <label for="email" class="text-black"><i class="fas fa-envelope me-2 text-black"></i>Alamat Email</label>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <div class="auth-footer">
-            <p class="mb-0">Ingat password Anda?
-                <a href="{{ route('login') }}" class="auth-link">Login di sini</a>
-            </p>
-        </div>
-    </form>
+            <button type="submit" class="btn btn-auth mb-3">
+                <i class="fas fa-arrow-right me-2"></i>Lanjutkan
+            </button>
+
+            <!-- Tombol Kembali ke Login -->
+            <a href="{{ route('login') }}" class="btn btn-back-login">
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Login
+            </a>
+
+            <div class="auth-footer">
+                <p class="mb-0">Ingat password Anda?
+                    <a href="{{ route('login') }}" class="auth-link">Login di sini</a>
+                </p>
+            </div>
+        </form>
+    </div>
 @endsection
 
 @section('scripts')
@@ -48,7 +52,7 @@
             // Form submission handling
             forgotPasswordForm.addEventListener('submit', function(e) {
                 // Validasi form sebelum submit
-                if (!this.checkValidity()) {
+                if (!this.checkValibility()) {
                     e.preventDefault();
                     e.stopPropagation();
                 }

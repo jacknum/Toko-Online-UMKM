@@ -2,62 +2,66 @@
 
 @section('title', 'Reset Password - Nama Perusahaan')
 
-@section('auth-title', 'RESET PASSWORD')
-
 @section('auth-content')
-    <form id="resetPasswordForm" method="POST" action="{{ route('password.update') }}">
-        @csrf
+    <div class="forgot-password-container bg-white">
+        <div class="forget-form-header text-black">
+            <h2>Reset Password</h2>
+        </div>
 
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <form id="resetPasswordForm" method="POST" action="{{ route('password.update') }}">
+            @csrf
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            <div class="auth-description mb-4">
+                <p class="text-black text-center">
+                    Buat password baru untuk akun Anda.
+                </p>
             </div>
-        @endif
 
-        <div class="auth-description mb-4">
-            <p class="text-muted text-center">
-                Buat password baru untuk akun Anda.
-            </p>
-        </div>
+            <!-- Email (hidden) -->
+            <input type="hidden" name="email" value="{{ $email }}">
 
-        <!-- Email (hidden) -->
-        <input type="hidden" name="email" value="{{ $email }}">
+            <div class="form-floating mb-3 position-relative">
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                    name="password" placeholder="Password Baru" required minlength="8">
+                <label for="password" class="text-black"><i class="fas fa-lock me-2 text-black"></i>Password Baru</label>
+                <button type="button" class="password-toggle">
+                    <i class="fas fa-eye"></i>
+                </button>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="form-text">Minimal 8 karakter</div>
+            </div>
 
-        <div class="form-floating mb-3 position-relative">
-            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                name="password" placeholder="Password Baru" required minlength="8">
-            <label for="password"><i class="fas fa-lock me-2"></i>Password Baru</label>
-            <button type="button" class="password-toggle">
-                <i class="fas fa-eye"></i>
+            <div class="form-floating mb-4 position-relative">
+                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                    id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password Baru" required>
+                <label for="password_confirmation" class="text-black"><i class="fas fa-lock me-2 text-black"></i>Konfirmasi Password Baru</label>
+                <button type="button" class="password-toggle">
+                    <i class="fas fa-eye"></i>
+                </button>
+                @error('password_confirmation')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-auth mb-3">
+                <i class="fas fa-save me-2"></i>Reset Password
             </button>
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-            <div class="form-text">Minimal 8 karakter</div>
-        </div>
 
-        <div class="form-floating mb-4 position-relative">
-            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password Baru" required>
-            <label for="password_confirmation"><i class="fas fa-lock me-2"></i>Konfirmasi Password Baru</label>
-            <button type="button" class="password-toggle">
-                <i class="fas fa-eye"></i>
-            </button>
-            @error('password_confirmation')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <button type="submit" class="btn btn-auth mb-3">
-            <i class="fas fa-save me-2"></i>Reset Password
-        </button>
-
-        <!-- Tombol Kembali -->
-        <a href="{{ route('password.request') }}" class="btn btn-back-login">
-            <i class="fas fa-arrow-left me-2"></i>Kembali
-        </a>
-    </form>
+            <!-- Tombol Kembali -->
+            <a href="{{ route('password.request') }}" class="btn btn-back-login">
+                <i class="fas fa-arrow-left me-2"></i>Kembali
+            </a>
+        </form>
+    </div>
 
     <!-- Modal Success -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -121,7 +125,7 @@
             // Password toggle functionality
             document.querySelectorAll('.password-toggle').forEach(toggle => {
                 toggle.addEventListener('click', function() {
-                    const passwordInput = this.previousElementSibling;
+                    const passwordInput = this.previousElementSibling.previousElementSibling;
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
                     this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';

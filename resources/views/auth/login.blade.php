@@ -46,13 +46,7 @@
                     @enderror
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
-                        <label class="form-check-label" for="rememberMe">
-                            Ingat saya
-                        </label>
-                    </div>
+                <div class="d-flex justify-content-end align-items-center mb-3">
                     <a href="{{ route('password.request') }}" class="auth-link small">Lupa password?</a>
                 </div>
 
