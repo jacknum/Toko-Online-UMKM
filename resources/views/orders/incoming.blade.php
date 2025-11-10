@@ -28,45 +28,45 @@
 <!-- Stats Cards -->
 <div class="row mb-4">
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card card-custom border-left-primary">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-primary-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-shopping-cart"></i>
+        <div class="card card-custom shadow stat-card-primary">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-shopping-cart text-white"></i>
                 </div>
-                <div class="stat-number text-primary">{{ $stats['new_orders'] }}</div>
+                <div class="stat-number">{{ $stats['new_orders'] }}</div>
                 <div class="stat-title">Pesanan Baru</div>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card card-custom border-left-warning">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-warning-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-clock"></i>
+        <div class="card card-custom shadow stat-card-warning">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-clock text-white"></i>
                 </div>
-                <div class="stat-number text-warning">{{ $stats['pending_confirmation'] }}</div>
+                <div class="stat-number">{{ $stats['pending_confirmation'] }}</div>
                 <div class="stat-title">Menunggu Konfirmasi</div>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card card-custom border-left-success">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-success-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-calendar-day"></i>
+        <div class="card card-custom shadow stat-card-success">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-calendar-day text-white"></i>
                 </div>
-                <div class="stat-number text-success">{{ $stats['today_orders'] }}</div>
+                <div class="stat-number">{{ $stats['today_orders'] }}</div>
                 <div class="stat-title">Pesanan Hari Ini</div>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card card-custom border-left-info">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-danger-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-money-bill-wave"></i>
+        <div class="card card-custom shadow stat-card-info">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-money-bill-wave text-white"></i>
                 </div>
-                <div class="stat-number text-info">Rp {{ number_format($stats['total_value'], 0, ',', '.') }}</div>
+                <div class="stat-number">Rp {{ number_format($stats['total_value'], 0, ',', '.') }}</div>
                 <div class="stat-title">Total Nilai Pesanan</div>
             </div>
         </div>
@@ -74,15 +74,15 @@
 </div>
 
 <!-- Orders Section -->
-<div class="card card-custom">
-    <div class="card-header">
+<div class="card card-custom shadow">
+    <div class="card-header py-3">
         <div class="row align-items-center">
             <div class="col">
-                <h5 class="card-title mb-0">Daftar Pesanan</h5>
+                <h5 class="card-title mb-0 fw-bold text-primary">Daftar Pesanan</h5>
             </div>
             <div class="col-auto">
                 <div class="filter-options btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary active" data-filter="all">Semua</button>
+                    <button type="button" class="btn btn-primary active" data-filter="all">Semua</button>
                     <button type="button" class="btn btn-outline-primary" data-filter="pending">Baru</button>
                     <button type="button" class="btn btn-outline-primary" data-filter="confirmed">Diproses</button>
                     <button type="button" class="btn btn-outline-primary" data-filter="shipped">Selesai</button>
@@ -90,23 +90,23 @@
             </div>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body p-4">
         <div class="table-responsive">
             <table class="table table-hover table-custom">
                 <thead>
                     <tr>
-                        <th>Produk</th>
+                        <th class="ps-4">Produk</th>
                         <th>Customer</th>
                         <th>Qty</th>
                         <th>Harga</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="pe-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($orders as $order)
                     <tr class="order-row" data-status="{{ $order->status }}">
-                        <td>
+                        <td class="ps-4">
                             <div class="d-flex align-items-center">
                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; font-size: 0.8rem; font-weight: bold;">
                                     {{ substr($order->product_name, 0, 2) }}
@@ -124,45 +124,45 @@
                             </div>
                         </td>
                         <td>
-                            <span class="badge bg-light text-dark border">{{ $order->quantity }}</span>
+                            <span class="badge bg-light text-dark border px-3 py-2">{{ $order->quantity }}</span>
                         </td>
                         <td>
                             <strong>Rp {{ number_format($order->price, 0, ',', '.') }}</strong>
                         </td>
                         <td>
                             @if($order->status == 'pending')
-                                <span class="badge badge-custom bg-warning text-dark">
+                                <span class="badge badge-custom bg-warning text-white px-3 py-2">
                                     <i class="fas fa-clock me-1"></i>Menunggu Konfirmasi
                                 </span>
                             @elseif($order->status == 'confirmed')
-                                <span class="badge badge-custom bg-info text-white">
+                                <span class="badge badge-custom bg-info text-white px-3 py-2">
                                     <i class="fas fa-check me-1"></i>Dikonfirmasi
                                 </span>
                             @elseif($order->status == 'shipped')
-                                <span class="badge badge-custom bg-success text-white">
+                                <span class="badge badge-custom bg-success text-white px-3 py-2">
                                     <i class="fas fa-shipping-fast me-1"></i>Dikirim
                                 </span>
                             @endif
                         </td>
-                        <td>
+                        <td class="pe-4">
                             <div class="btn-group" role="group">
-                                <button class="btn btn-sm btn-outline-primary" onclick="showOrderDetail({{ $order->id }})" title="Detail">
+                                <button class="btn btn-sm btn-outline-primary px-3" onclick="showOrderDetail({{ $order->id }})" title="Detail">
                                     <i class="fas fa-eye"></i>
                                 </button>
 
                                 @if($order->status == 'pending')
-                                    <button class="btn btn-sm btn-outline-success" onclick="showAcceptModal({{ $order->id }}, '{{ $order->product_name }}')" title="Terima">
+                                    <button class="btn btn-sm btn-outline-success px-3" onclick="showAcceptModal({{ $order->id }}, '{{ $order->product_name }}')" title="Terima">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger" onclick="showRejectModal({{ $order->id }}, '{{ $order->product_name }}')" title="Tolak">
+                                    <button class="btn btn-sm btn-outline-danger px-3" onclick="showRejectModal({{ $order->id }}, '{{ $order->product_name }}')" title="Tolak">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 @elseif($order->status == 'confirmed')
-                                    <button class="btn btn-sm btn-outline-info" onclick="showProcessModal({{ $order->id }}, '{{ $order->product_name }}')" title="Proses">
+                                    <button class="btn btn-sm btn-outline-info px-3" onclick="showProcessModal({{ $order->id }}, '{{ $order->product_name }}')" title="Proses">
                                         <i class="fas fa-cog"></i>
                                     </button>
                                 @elseif($order->status == 'shipped')
-                                    <button class="btn btn-sm btn-outline-warning" onclick="showTrackModal({{ $order->id }}, '{{ $order->product_name }}')" title="Lacak">
+                                    <button class="btn btn-sm btn-outline-warning px-3" onclick="showTrackModal({{ $order->id }}, '{{ $order->product_name }}')" title="Lacak">
                                         <i class="fas fa-map-marker-alt"></i>
                                     </button>
                                 @endif
@@ -175,7 +175,7 @@
         </div>
 
         <!-- Pagination -->
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
                 <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -326,33 +326,63 @@
 <script>
     let currentOrderId = null;
 
-    // Fungsi untuk mengelola filter pesanan
-    document.querySelectorAll('[data-filter]').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('[data-filter]').forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-outline-primary');
+    // Inisialisasi filter saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fungsi untuk mengelola filter pesanan
+        document.querySelectorAll('[data-filter]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Reset semua button ke state outline
+                document.querySelectorAll('[data-filter]').forEach(btn => {
+                    btn.classList.remove('active', 'btn-primary');
+                    btn.classList.add('btn-outline-primary');
+                });
+
+                // Set button yang aktif ke state solid
+                this.classList.add('active', 'btn-primary');
+                this.classList.remove('btn-outline-primary');
+
+                const filter = this.dataset.filter;
+                filterOrders(filter);
             });
-
-            this.classList.add('active');
-            this.classList.remove('btn-outline-primary');
-            this.classList.add('btn-primary');
-
-            const filter = this.dataset.filter;
-            filterOrders(filter);
         });
+
+        // Set filter default ke "all"
+        filterOrders('all');
     });
 
     function filterOrders(status) {
         const orders = document.querySelectorAll('.order-row');
+        let hasVisibleRows = false;
+
         orders.forEach(order => {
             if (status === 'all' || order.dataset.status === status) {
                 order.style.display = 'table-row';
+                hasVisibleRows = true;
             } else {
                 order.style.display = 'none';
             }
         });
+
+        // Jika tidak ada row yang visible, tampilkan pesan
+        const tbody = document.querySelector('tbody');
+        let noResultsRow = tbody.querySelector('.no-results-row');
+
+        if (!hasVisibleRows) {
+            if (!noResultsRow) {
+                noResultsRow = document.createElement('tr');
+                noResultsRow.className = 'no-results-row text-center';
+                noResultsRow.innerHTML = `
+                    <td colspan="6" class="py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Tidak ada pesanan dengan status yang dipilih</p>
+                    </td>
+                `;
+                tbody.appendChild(noResultsRow);
+            }
+            noResultsRow.style.display = 'table-row';
+        } else if (noResultsRow) {
+            noResultsRow.style.display = 'none';
+        }
     }
 
     // Fungsi untuk menangani aksi pada pesanan
