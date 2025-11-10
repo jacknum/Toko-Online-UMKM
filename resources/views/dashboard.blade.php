@@ -11,13 +11,9 @@
             <p class="mb-0 text-muted">Ringkasan performa toko online Anda</p>
         </div>
         <div class="col-auto">
-            <div class="card report-card" onclick="generateReport()" style="cursor: pointer;">
-                <div class="card-body text-center">
-                    <i class="fas fa-download fa-2x mb-3 text-primary"></i>
-                    <h5 class="text-primary">Generate Report</h5>
-                    <p class="small mb-0 text-muted">Download laporan lengkap</p>
-                </div>
-            </div>
+            <button class="btn btn-outline-primary btn-sm" onclick="generateReport()">
+                <i class="fas fa-download me-1"></i> Download Report
+            </button>
         </div>
     </div>
 </div>
@@ -183,6 +179,7 @@
                                         <input class="form-check-input" type="checkbox" id="selectAll">
                                     </div>
                                 </th>
+                                <th width="50">No</th>
                                 <th width="80">Gambar</th>
                                 <th>Nama Produk</th>
                                 <th>Kategori</th>
@@ -192,110 +189,17 @@
                                 <th width="120">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input product-checkbox" type="checkbox" value="1">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-image-container">
-                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Sepatu Running" class="product-image">
-                                    </div>
-                                </td>
-                                <td>Sepatu Running Premium</td>
-                                <td>Olahraga</td>
-                                <td>Rp 450.000</td>
-                                <td>24</td>
-                                <td><span class="badge bg-success badge-custom">Aktif</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editProduct(1)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(1)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input product-checkbox" type="checkbox" value="2">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-image-container">
-                                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Tas Laptop" class="product-image">
-                                    </div>
-                                </td>
-                                <td>Tas Laptop Minimalis</td>
-                                <td>Aksesoris</td>
-                                <td>Rp 320.000</td>
-                                <td>15</td>
-                                <td><span class="badge bg-success badge-custom">Aktif</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editProduct(2)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(2)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input product-checkbox" type="checkbox" value="3">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-image-container">
-                                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Smartwatch" class="product-image">
-                                    </div>
-                                </td>
-                                <td>Smartwatch Series 5</td>
-                                <td>Elektronik</td>
-                                <td>Rp 1.200.000</td>
-                                <td>8</td>
-                                <td><span class="badge bg-warning badge-custom">Stok Sedikit</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editProduct(3)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(3)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input product-checkbox" type="checkbox" value="4">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-image-container">
-                                        <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Kaos Polo" class="product-image">
-                                    </div>
-                                </td>
-                                <td>Kaos Polo Cotton</td>
-                                <td>Pakaian</td>
-                                <td>Rp 125.000</td>
-                                <td>0</td>
-                                <td><span class="badge bg-danger badge-custom">Habis</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editProduct(4)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(4)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                        <tbody id="productsTableBody">
+                            <!-- Data produk akan diisi oleh JavaScript -->
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination -->
+                <nav aria-label="Product pagination">
+                    <ul class="pagination justify-content-center mb-0" id="productsPagination">
+                        <!-- Pagination akan diisi oleh JavaScript -->
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -432,14 +336,15 @@
     }
     
     .product-image-container {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: #f8f9fa;
+        margin: 0 auto;
     }
     
     .product-image {
@@ -472,15 +377,45 @@
         background-color: #4e73df;
         border-color: #4e73df;
     }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+
+    .pagination .page-link {
+        color: #4e73df;
+    }
+
+    .pagination .page-link:hover {
+        color: #224abe;
+    }
 </style>
 @endsection
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // Data produk dengan lebih banyak item untuk demo pagination
+    const allProducts = [
+        { id: 1, name: 'Sepatu Running Premium', category: 'Olahraga', price: '450000', stock: '24', status: 'active', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Sepatu running dengan teknologi terbaru untuk kenyamanan maksimal' },
+        { id: 2, name: 'Tas Laptop Minimalis', category: 'Aksesoris', price: '320000', stock: '15', status: 'active', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Tas laptop dengan desain minimalis dan bahan waterproof' },
+        { id: 3, name: 'Smartwatch Series 5', category: 'Elektronik', price: '1200000', stock: '8', status: 'warning', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Smartwatch dengan fitur kesehatan dan konektivitas lengkap' },
+        { id: 4, name: 'Kaos Polo Cotton', category: 'Pakaian', price: '125000', stock: '0', status: 'danger', image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Kaos polo berbahan cotton premium dengan jahitan rapi' },
+        { id: 5, name: 'Headphone Wireless', category: 'Elektronik', price: '750000', stock: '12', status: 'active', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Headphone wireless dengan noise cancellation' },
+        { id: 6, name: 'Kamera DSLR', category: 'Elektronik', price: '8500000', stock: '3', status: 'warning', image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Kamera DSLR profesional untuk fotografi' },
+        { id: 7, name: 'Sepatu Formal', category: 'Pakaian', price: '380000', stock: '18', status: 'active', image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Sepatu formal untuk acara resmi' },
+        { id: 8, name: 'Mouse Gaming', category: 'Elektronik', price: '280000', stock: '25', status: 'active', image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80', description: 'Mouse gaming dengan sensor presisi tinggi' }
+    ];
+
+    let currentPage = 1;
+    const productsPerPage = 4;
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Load products table
+        loadProductsTable();
+
         // Simple chart implementation
         const ctx = document.getElementById('revenueChart').getContext('2d');
 
@@ -617,10 +552,10 @@
                 title: productId ? 'Produk Diperbarui' : 'Produk Ditambahkan',
                 text: `Produk "${productName}" berhasil ${productId ? 'diperbarui' : 'ditambahkan'}.`,
                 confirmButtonText: 'OK'
+            }).then(() => {
+                // Tutup modal setelah konfirmasi
+                $('#productModal').modal('hide');
             });
-            
-            // Tutup modal
-            $('#productModal').modal('hide');
         });
 
         // Image preview handler
@@ -641,84 +576,148 @@
             updateBulkDeleteButton();
         });
 
-        $('.product-checkbox').on('change', function() {
-            updateBulkDeleteButton();
-        });
+        // Attach event listeners to dynamically created checkboxes
+        $(document).on('change', '.product-checkbox', updateBulkDeleteButton);
     });
 
+    function loadProductsTable() {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const currentProducts = allProducts.slice(startIndex, endIndex);
+        
+        const tableBody = document.getElementById('productsTableBody');
+        tableBody.innerHTML = '';
+
+        currentProducts.forEach((product, index) => {
+            const rowNumber = startIndex + index + 1;
+            const statusBadge = getStatusBadge(product.status);
+            
+            const row = `
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input product-checkbox" type="checkbox" value="${product.id}">
+                        </div>
+                    </td>
+                    <td>${rowNumber}</td>
+                    <td>
+                        <div class="product-image-container">
+                            <img src="${product.image}" alt="${product.name}" class="product-image">
+                        </div>
+                    </td>
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>Rp ${formatPrice(product.price)}</td>
+                    <td>${product.stock}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editProduct(${product.id})" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(${product.id})" title="Hapus">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+        // Update pagination
+        updatePagination();
+    }
+
+    function getStatusBadge(status) {
+        switch(status) {
+            case 'active':
+                return '<span class="badge bg-success badge-custom">Aktif</span>';
+            case 'warning':
+                return '<span class="badge bg-warning badge-custom">Stok Sedikit</span>';
+            case 'danger':
+                return '<span class="badge bg-danger badge-custom">Habis</span>';
+            default:
+                return '<span class="badge bg-secondary badge-custom">Tidak Aktif</span>';
+        }
+    }
+
+    function formatPrice(price) {
+        return parseInt(price).toLocaleString('id-ID');
+    }
+
+    function updatePagination() {
+        const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        const pagination = document.getElementById('productsPagination');
+        pagination.innerHTML = '';
+
+        // Previous button
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        pagination.innerHTML += `
+            <li class="page-item ${prevDisabled}">
+                <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        `;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const active = i === currentPage ? 'active' : '';
+            pagination.innerHTML += `
+                <li class="page-item ${active}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>
+            `;
+        }
+
+        // Next button
+        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+        pagination.innerHTML += `
+            <li class="page-item ${nextDisabled}">
+                <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        `;
+    }
+
+    function changePage(page) {
+        currentPage = page;
+        loadProductsTable();
+    }
+
     function updateBulkDeleteButton() {
-        const selectedCount = $('.product-checkbox:checked').length;
-        const bulkDeleteBtn = $('#bulkDeleteBtn');
+        const selectedCount = document.querySelectorAll('.product-checkbox:checked').length;
+        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
         
         if (selectedCount > 0) {
-            bulkDeleteBtn.show();
-            bulkDeleteBtn.html(`<i class="fas fa-trash me-1"></i> Hapus ${selectedCount} Item`);
+            bulkDeleteBtn.style.display = 'block';
+            bulkDeleteBtn.innerHTML = `<i class="fas fa-trash me-1"></i> Hapus ${selectedCount} Item`;
         } else {
-            bulkDeleteBtn.hide();
+            bulkDeleteBtn.style.display = 'none';
         }
     }
 
     // Product Management Functions
     function showAddProductModal() {
-        $('#productId').val('');
-        $('#productForm')[0].reset();
-        $('#productImagePreview').attr('src', 'https://via.placeholder.com/150/6c757d/ffffff?text=Preview');
-        $('#productModalLabel').text('Tambah Produk Baru');
+        document.getElementById('productId').value = '';
+        document.getElementById('productForm').reset();
+        document.getElementById('productImagePreview').src = 'https://via.placeholder.com/150/6c757d/ffffff?text=Preview';
+        document.getElementById('productModalLabel').textContent = 'Tambah Produk Baru';
         $('#productModal').modal('show');
     }
     
     function editProduct(id) {
-        // Simulasi data produk (dalam aplikasi nyata, data ini akan diambil dari API/database)
-        const products = {
-            1: { 
-                name: 'Sepatu Running Premium', 
-                category: 'Olahraga', 
-                price: '450000', 
-                stock: '24',
-                description: 'Sepatu running dengan teknologi terbaru untuk kenyamanan maksimal',
-                status: 'active',
-                image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80'
-            },
-            2: { 
-                name: 'Tas Laptop Minimalis', 
-                category: 'Aksesoris', 
-                price: '320000', 
-                stock: '15',
-                description: 'Tas laptop dengan desain minimalis dan bahan waterproof',
-                status: 'active',
-                image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80'
-            },
-            3: { 
-                name: 'Smartwatch Series 5', 
-                category: 'Elektronik', 
-                price: '1200000', 
-                stock: '8',
-                description: 'Smartwatch dengan fitur kesehatan dan konektivitas lengkap',
-                status: 'active',
-                image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80'
-            },
-            4: { 
-                name: 'Kaos Polo Cotton', 
-                category: 'Pakaian', 
-                price: '125000', 
-                stock: '0',
-                description: 'Kaos polo berbahan cotton premium dengan jahitan rapi',
-                status: 'inactive',
-                image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80'
-            }
-        };
-        
-        const product = products[id];
+        const product = allProducts.find(p => p.id === id);
         if (product) {
-            $('#productId').val(id);
-            $('#productName').val(product.name);
-            $('#productCategory').val(product.category);
-            $('#productPrice').val(product.price);
-            $('#productStock').val(product.stock);
-            $('#productDescription').val(product.description);
-            $('#productStatus').val(product.status);
-            $('#productImagePreview').attr('src', product.image);
-            $('#productModalLabel').text('Edit Produk');
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productStock').value = product.stock;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productStatus').value = product.status;
+            document.getElementById('productImagePreview').src = product.image;
+            document.getElementById('productModalLabel').textContent = 'Edit Produk';
             $('#productModal').modal('show');
         }
     }
@@ -736,6 +735,12 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // Simulasi penghapusan produk
+                const index = allProducts.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    allProducts.splice(index, 1);
+                    loadProductsTable();
+                }
+                
                 Swal.fire(
                     'Terhapus!',
                     'Produk telah berhasil dihapus.',
@@ -746,9 +751,8 @@
     }
 
     function bulkDeleteProducts() {
-        const selectedProducts = $('.product-checkbox:checked').map(function() {
-            return this.value;
-        }).get();
+        const selectedProducts = Array.from(document.querySelectorAll('.product-checkbox:checked'))
+            .map(checkbox => parseInt(checkbox.value));
         
         if (selectedProducts.length === 0) {
             Swal.fire({
@@ -773,11 +777,13 @@
             if (result.isConfirmed) {
                 // Simulasi penghapusan produk
                 selectedProducts.forEach(id => {
-                    $(`.product-checkbox[value="${id}"]`).closest('tr').fadeOut(300, function() {
-                        $(this).remove();
-                        updateBulkDeleteButton();
-                    });
+                    const index = allProducts.findIndex(p => p.id === id);
+                    if (index !== -1) {
+                        allProducts.splice(index, 1);
+                    }
                 });
+                
+                loadProductsTable();
                 
                 Swal.fire(
                     'Terhapus!',
@@ -801,135 +807,233 @@
         });
 
         try {
-            // Use html2canvas to capture the dashboard
-            html2canvas(document.querySelector('.page-header')).then(headerCanvas => {
-                html2canvas(document.querySelector('.row:first-child')).then(statsCanvas => {
-                    html2canvas(document.querySelector('#revenueChart').closest('.card')).then(chartCanvas => {
-                        html2canvas(document.querySelector('.table-responsive')).then(tableCanvas => {
-                            // Initialize PDF
-                            const { jsPDF } = window.jspdf;
-                            const doc = new jsPDF('p', 'mm', 'a4');
-                            
-                            // Add kop surat/header
-                            doc.setFillColor(78, 115, 223);
-                            doc.rect(0, 0, 210, 30, 'F');
-                            
-                            doc.setTextColor(255, 255, 255);
-                            doc.setFontSize(20);
-                            doc.text('TOKO ONLINE ELEGAN', 105, 15, { align: 'center' });
-                            
-                            doc.setFontSize(12);
-                            doc.text('LAPORAN DASHBOARD PERFORMANCE', 105, 22, { align: 'center' });
-                            
-                            // Add header info
-                            doc.setTextColor(0, 0, 0);
-                            doc.setFontSize(10);
-                            doc.text(`Dibuat pada: ${new Date().toLocaleDateString('id-ID', { 
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}`, 105, 35, { align: 'center' });
-                            
-                            // Add stats summary
-                            doc.setFontSize(14);
-                            doc.text('RINGKASAN PERFORMANCE', 15, 50);
-                            
-                            doc.setFontSize(10);
-                            const statsData = [
-                                ['Metrik', 'Nilai', 'Keterangan'],
-                                ['Total Produk', '145 item', '+5 dari bulan lalu'],
-                                ['Pesanan Masuk', '67 pesanan', '12 menunggu konfirmasi'],
-                                ['Pesanan Keluar', '42 pesanan', '8 dalam pengiriman'],
-                                ['Total Pendapatan', 'Rp 18.250.000', 'Bersih setelah potongan']
-                            ];
-                            
-                            let yPosition = 60;
-                            statsData.forEach((row, index) => {
-                                if (index === 0) {
-                                    // Header row
-                                    doc.setFillColor(240, 240, 240);
-                                    doc.rect(15, yPosition - 5, 180, 8, 'F');
-                                    doc.setTextColor(0, 0, 0);
-                                    doc.setFont(undefined, 'bold');
-                                } else {
-                                    doc.setTextColor(0, 0, 0);
-                                    doc.setFont(undefined, 'normal');
-                                }
-                                
-                                doc.text(row[0], 20, yPosition);
-                                doc.text(row[1], 80, yPosition);
-                                doc.text(row[2], 130, yPosition);
-                                yPosition += 8;
-                            });
-                            
-                            // Add chart
-                            const chartImg = chartCanvas.toDataURL('image/jpeg', 0.8);
-                            doc.addImage(chartImg, 'JPEG', 15, yPosition + 10, 180, 60);
-                            
-                            // Add products table
-                            doc.addPage();
-                            doc.setFontSize(14);
-                            doc.text('PRODUK TERBARU', 15, 20);
-                            
-                            const tableImg = tableCanvas.toDataURL('image/jpeg', 0.7);
-                            doc.addImage(tableImg, 'JPEG', 15, 25, 180, 80);
-                            
-                            // Add summary
-                            doc.setFontSize(12);
-                            doc.text('ANALISIS PERFORMANCE:', 15, 120);
-                            
-                            doc.setFontSize(10);
-                            const analysis = [
-                                '• Pertumbuhan pendapatan menunjukkan tren positif dengan peningkatan 15% dari bulan sebelumnya',
-                                '• Stok produk perlu diperhatikan, terutama untuk produk yang hampir habis',
-                                '• Rasio konversi pesanan masuk ke pesanan keluar sebesar 62.7%',
-                                '• Rekomendasi: Fokus pada restock produk populer dan optimasi proses pengiriman'
-                            ];
-                            
-                            yPosition = 130;
-                            analysis.forEach(item => {
-                                doc.text(item, 20, yPosition, { maxWidth: 170 });
-                                yPosition += 8;
-                            });
-                            
-                            // Add footer
-                            const pageCount = doc.internal.getNumberOfPages();
-                            for(let i = 1; i <= pageCount; i++) {
-                                doc.setPage(i);
-                                doc.setFontSize(8);
-                                doc.setTextColor(100, 100, 100);
-                                doc.text(`Halaman ${i} dari ${pageCount}`, 105, 290, { align: 'center' });
-                                doc.text('Laporan ini dibuat otomatis oleh sistem', 105, 295, { align: 'center' });
-                            }
-                            
-                            // Save the PDF
-                            doc.save(`Laporan-Performance-${new Date().toISOString().slice(0,10)}.pdf`);
-                            
-                            // Close loading indicator
-                            Swal.close();
-                            
-                            // Show success message
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Laporan Berhasil Diunduh',
-                                text: 'Laporan dashboard telah berhasil diunduh dalam format PDF.',
-                                confirmButtonText: 'OK'
-                            });
-                        });
-                    });
-                });
-            }).catch(error => {
-                console.error('Error generating report:', error);
+            // Initialize PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // Add kop surat/header
+            doc.setFillColor(78, 115, 223);
+            doc.rect(0, 0, 210, 30, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(20);
+            doc.text('TOKO ONLINE ELEGAN', 105, 15, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text('LAPORAN DASHBOARD PERFORMANCE', 105, 22, { align: 'center' });
+            
+            // Add header info
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.text(`Dibuat pada: ${new Date().toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}`, 105, 35, { align: 'center' });
+            
+            // Add stats summary with table borders
+            doc.setFontSize(14);
+            doc.text('RINGKASAN PERFORMANCE', 15, 50);
+            
+            doc.setFontSize(10);
+            const statsData = [
+                ['Metrik', 'Nilai', 'Keterangan'],
+                ['Total Produk', '145 item', '+5 dari bulan lalu'],
+                ['Pesanan Masuk', '67 pesanan', '12 menunggu konfirmasi'],
+                ['Pesanan Keluar', '42 pesanan', '8 dalam pengiriman'],
+                ['Total Pendapatan', 'Rp 18.250.000', 'Bersih setelah potongan']
+            ];
+            
+            let yPosition = 60;
+            
+            // Draw table with borders
+            statsData.forEach((row, index) => {
+                // Header background
+                if (index === 0) {
+                    doc.setFillColor(78, 115, 223);
+                    doc.rect(15, yPosition - 5, 180, 8, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont(undefined, 'bold');
+                } else {
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont(undefined, 'normal');
+                }
+                
+                // Draw cell borders
+                doc.setDrawColor(200, 200, 200);
+                doc.rect(15, yPosition - 5, 180, 8);
+                doc.rect(15, yPosition - 5, 60, 8); // Column 1
+                doc.rect(75, yPosition - 5, 50, 8); // Column 2
+                doc.rect(125, yPosition - 5, 70, 8); // Column 3
+                
+                doc.text(row[0], 20, yPosition);
+                doc.text(row[1], 80, yPosition);
+                doc.text(row[2], 130, yPosition);
+                yPosition += 8;
+            });
+            
+            // Add revenue chart data as table
+            yPosition += 10;
+            doc.setFontSize(14);
+            doc.text('DATA PENDAPATAN BULANAN', 15, yPosition);
+            
+            yPosition += 10;
+            doc.setFontSize(10);
+            const revenueData = [
+                ['Bulan', 'Pendapatan'],
+                ['Januari', 'Rp 5.000.000'],
+                ['Februari', 'Rp 7.000.000'],
+                ['Maret', 'Rp 8.000.000'],
+                ['April', 'Rp 10.000.000'],
+                ['Mei', 'Rp 12.000.000'],
+                ['Juni', 'Rp 15.000.000'],
+                ['Juli', 'Rp 18.000.000'],
+                ['Agustus', 'Rp 16.000.000'],
+                ['September', 'Rp 14.000.000'],
+                ['Oktober', 'Rp 12.000.000'],
+                ['November', 'Rp 10.000.000'],
+                ['Desember', 'Rp 8.000.000']
+            ];
+            
+            // Draw revenue table with borders
+            revenueData.forEach((row, index) => {
+                if (index === 0) {
+                    doc.setFillColor(78, 115, 223);
+                    doc.rect(15, yPosition - 5, 180, 8, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont(undefined, 'bold');
+                } else {
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont(undefined, 'normal');
+                }
+                
+                // Draw cell borders
+                doc.setDrawColor(200, 200, 200);
+                doc.rect(15, yPosition - 5, 180, 8);
+                doc.rect(15, yPosition - 5, 90, 8); // Column 1
+                doc.rect(105, yPosition - 5, 90, 8); // Column 2
+                
+                doc.text(row[0], 20, yPosition);
+                doc.text(row[1], 110, yPosition);
+                yPosition += 8;
+                
+                // Check if we need a new page
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+            });
+            
+            // Add products table
+            yPosition += 10;
+            doc.setFontSize(14);
+            doc.text('PRODUK TERBARU', 15, yPosition);
+            
+            yPosition += 10;
+            doc.setFontSize(8); // Smaller font for product table
+            const productsData = [
+                ['No', 'Nama Produk', 'Kategori', 'Harga', 'Stok', 'Status'],
+                ...allProducts.map((product, index) => [
+                    (index + 1).toString(),
+                    product.name,
+                    product.category,
+                    `Rp ${formatPrice(product.price)}`,
+                    product.stock,
+                    product.status === 'active' ? 'Aktif' : product.status === 'warning' ? 'Stok Sedikit' : 'Habis'
+                ])
+            ];
+            
+            // Draw products table with borders
+            productsData.forEach((row, index) => {
+                if (index === 0) {
+                    doc.setFillColor(78, 115, 223);
+                    doc.rect(15, yPosition - 5, 180, 8, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont(undefined, 'bold');
+                } else {
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont(undefined, 'normal');
+                }
+                
+                // Draw cell borders
+                doc.setDrawColor(200, 200, 200);
+                doc.rect(15, yPosition - 5, 180, 8);
+                doc.rect(15, yPosition - 5, 10, 8);  // No
+                doc.rect(25, yPosition - 5, 50, 8);  // Nama
+                doc.rect(75, yPosition - 5, 30, 8);  // Kategori
+                doc.rect(105, yPosition - 5, 35, 8); // Harga
+                doc.rect(140, yPosition - 5, 20, 8); // Stok
+                doc.rect(160, yPosition - 5, 35, 8); // Status
+                
+                doc.text(row[0], 17, yPosition);
+                doc.text(row[1], 27, yPosition, { maxWidth: 45 });
+                doc.text(row[2], 77, yPosition);
+                doc.text(row[3], 107, yPosition);
+                doc.text(row[4], 142, yPosition);
+                doc.text(row[5], 162, yPosition);
+                yPosition += 8;
+                
+                // Check if we need a new page
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+            });
+            
+            // Add summary
+            yPosition += 10;
+            doc.setFontSize(12);
+            doc.text('ANALISIS PERFORMANCE:', 15, yPosition);
+            
+            doc.setFontSize(10);
+            const analysis = [
+                '• Pertumbuhan pendapatan menunjukkan tren positif dengan peningkatan 15% dari bulan sebelumnya',
+                '• Stok produk perlu diperhatikan, terutama untuk produk yang hampir habis',
+                '• Rasio konversi pesanan masuk ke pesanan keluar sebesar 62.7%',
+                '• Rekomendasi: Fokus pada restock produk populer dan optimasi proses pengiriman'
+            ];
+            
+            yPosition += 8;
+            analysis.forEach(item => {
+                doc.text(item, 20, yPosition, { maxWidth: 170 });
+                yPosition += 8;
+                
+                // Check if we need a new page
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+            });
+            
+            // Add footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for(let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Halaman ${i} dari ${pageCount}`, 105, 290, { align: 'center' });
+                doc.text('Laporan ini dibuat otomatis oleh sistem', 105, 295, { align: 'center' });
+            }
+            
+            // Save the PDF
+            setTimeout(() => {
+                doc.save(`Laporan-Performance-${new Date().toISOString().slice(0,10)}.pdf`);
+                
+                // Close loading indicator
+                Swal.close();
+                
+                // Show success message
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan',
-                    text: 'Gagal membuat laporan. Silakan coba lagi.',
+                    icon: 'success',
+                    title: 'Laporan Berhasil Diunduh',
+                    text: 'Laporan dashboard telah berhasil diunduh dalam format PDF.',
                     confirmButtonText: 'OK'
                 });
-            });
+            }, 1000);
+            
         } catch (error) {
             console.error('Error in generateReport:', error);
             Swal.fire({
