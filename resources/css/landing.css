@@ -51,6 +51,7 @@ body {
     font-weight: 500;
     color: var(--dark) !important;
     margin: 0 0.5rem;
+    margin-top: 5px;
     transition: all 0.3s ease;
 }
 

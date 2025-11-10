@@ -75,17 +75,39 @@
 
 <!-- Orders Section -->
 <div class="card card-custom shadow">
-    <div class="card-header py-3">
+    <div class="card-header">
         <div class="row align-items-center">
             <div class="col">
                 <h5 class="card-title mb-0 fw-bold text-primary">Daftar Pesanan</h5>
             </div>
-            <div class="col-auto">
-                <div class="filter-options btn-group" role="group">
-                    <button type="button" class="btn btn-primary active" data-filter="all">Semua</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="pending">Baru</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="confirmed">Diproses</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter="shipped">Selesai</button>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card card-custom">
+                    <div class="card-body py-3 px-4">
+                        <ul class="nav nav-pills nav-fill" id="incomingFilterTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link active" data-filter="all">
+                                    Semua
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link" data-filter="pending">
+                                    Baru
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link" data-filter="confirmed">
+                                    Diproses
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link" data-filter="shipped">
+                                    Selesai
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,7 +122,7 @@
                         <th>Qty</th>
                         <th>Harga</th>
                         <th>Status</th>
-                        <th class="pe-4 text-center">Aksi</th>
+                        <th class="pe-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -329,17 +351,17 @@
     // Inisialisasi filter saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
         // Fungsi untuk mengelola filter pesanan
-        document.querySelectorAll('[data-filter]').forEach(button => {
-            button.addEventListener('click', function() {
-                // Reset semua button ke state outline
-                document.querySelectorAll('[data-filter]').forEach(btn => {
-                    btn.classList.remove('active', 'btn-primary');
-                    btn.classList.add('btn-outline-primary');
+        document.querySelectorAll('#incomingFilterTabs [data-filter]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Reset semua tab ke state tidak aktif
+                document.querySelectorAll('#incomingFilterTabs .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
                 });
 
-                // Set button yang aktif ke state solid
-                this.classList.add('active', 'btn-primary');
-                this.classList.remove('btn-outline-primary');
+                // Set tab yang aktif
+                this.classList.add('active');
 
                 const filter = this.dataset.filter;
                 filterOrders(filter);

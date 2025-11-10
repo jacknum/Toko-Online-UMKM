@@ -28,67 +28,67 @@
 <!-- Stats Cards -->
 <div class="row mb-4">
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #007bff;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-primary-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-clock"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-clock text-white"></i>
                 </div>
-                <div class="stat-number text-primary">{{ $stats['unpaid'] ?? 0 }}</div>
+                <div class="stat-number">{{ $stats['unpaid'] ?? 0 }}</div>
                 <div class="stat-title">Belum Bayar</div>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #ffc107;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-warning-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-tasks"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-tasks text-white"></i>
                 </div>
-                <div class="stat-number text-warning">{{ $stats['processing'] }}</div>
+                <div class="stat-number">{{ $stats['processing'] }}</div>
                 <div class="stat-title">Sedang Diproses</div>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #17a2b8;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-info-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-shipping-fast"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #36b9cc 0%, #258391 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-shipping-fast text-white"></i>
                 </div>
-                <div class="stat-number text-info">{{ $stats['shipped'] }}</div>
+                <div class="stat-number">{{ $stats['shipped'] }}</div>
                 <div class="stat-title">Dalam Pengiriman</div>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #28a745;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-success-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-check-circle"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-check-circle text-white"></i>
                 </div>
-                <div class="stat-number text-success">{{ $stats['delivered'] }}</div>
+                <div class="stat-number">{{ $stats['delivered'] }}</div>
                 <div class="stat-title">Berhasil Dikirim</div>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #6c757d;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-secondary-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-archive"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #858796 0%, #6c757d 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-archive text-white"></i>
                 </div>
-                <div class="stat-number text-secondary">{{ $stats['completed'] ?? 0 }}</div>
+                <div class="stat-number">{{ $stats['completed'] ?? 0 }}</div>
                 <div class="stat-title">Selesai</div>
             </div>
         </div>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-        <div class="card card-custom" style="border-left: 4px solid #dc3545;">
-            <div class="card-body stat-card">
-                <div class="stat-icon bg-danger-light rounded-circle p-3 mb-3">
-                    <i class="fas fa-times-circle"></i>
+        <div class="card card-custom shadow" style="background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%);">
+            <div class="card-body stat-card text-white">
+                <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
+                    <i class="fas fa-times-circle text-white"></i>
                 </div>
-                <div class="stat-number text-danger">{{ $stats['cancelled'] ?? 0 }}</div>
+                <div class="stat-number">{{ $stats['cancelled'] ?? 0 }}</div>
                 <div class="stat-title">Dibatalkan</div>
             </div>
         </div>
@@ -100,38 +100,65 @@
     <div class="card-header">
         <div class="row align-items-center">
             <div class="col">
-                <h5 class="card-title mb-0">Daftar Pesanan Keluar</h5>
+                <h5 class="card-title mb-0 fw-bold text-primary">Daftar Pesanan Keluar</h5>
             </div>
-            <div class="col-auto">
-                <div class="filter-options btn-group" role="group">
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'all', 'page' => 1]) }}"
-                       class="btn {{ request('filter', 'all') == 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Semua
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'unpaid', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'unpaid' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Belum Bayar
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'processing', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'processing' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Diproses
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'shipped', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'shipped' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Dikirim
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'delivered', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'delivered' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Terkirim
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'completed', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'completed' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Selesai
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['filter' => 'cancelled', 'page' => 1]) }}"
-                       class="btn {{ request('filter') == 'cancelled' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Dibatalkan
-                    </a>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card card-custom">
+                    <div class="card-body py-3 px-4">
+                        <ul class="nav nav-pills nav-fill" id="orderFilterTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'all', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter', 'all') == 'all' ? 'active' : '' }}"
+                                   data-filter="all">
+                                    Semua
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'unpaid', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'unpaid' ? 'active' : '' }}"
+                                   data-filter="unpaid">
+                                    Belum Bayar
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'processing', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'processing' ? 'active' : '' }}"
+                                   data-filter="processing">
+                                    Diproses
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'shipped', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'shipped' ? 'active' : '' }}"
+                                   data-filter="shipped">
+                                    Dikirim
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'delivered', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'delivered' ? 'active' : '' }}"
+                                   data-filter="delivered">
+                                    Terkirim
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'completed', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'completed' ? 'active' : '' }}"
+                                   data-filter="completed">
+                                    Selesai
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ request()->fullUrlWithQuery(['filter' => 'cancelled', 'page' => 1]) }}"
+                                   class="nav-link {{ request('filter') == 'cancelled' ? 'active' : '' }}"
+                                   data-filter="cancelled">
+                                    Dibatalkan
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,7 +320,7 @@
                         <div class="d-flex justify-content-between">
                             <!-- Actions based on status -->
                             @if($order->status == 'unpaid')
-                                <button class="btn btn-sm btn-outline-primary" onclick="showPaymentDetail({{ $order->id }})">
+                                <button class="btn btn-sm btn-outline-primary" onclick="showOrderDetail({{ $order->id }})">
                                     <i class="fas fa-eye me-1"></i>Detail
                                 </button>
                                 <div>
@@ -646,6 +673,32 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk Detail Pesanan -->
+<div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Pesanan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetailContent">
+                    <!-- Content akan diisi oleh JavaScript -->
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Memuat detail pesanan...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -661,9 +714,453 @@
         modal.show();
     }
 
-    // Fungsi untuk menangani aksi pada pesanan keluar
+    // Fungsi untuk menampilkan detail pesanan - DIPERBAIKI
     function showOrderDetail(orderId) {
-        window.location.href = `/orders/${orderId}`;
+        currentOrderId = orderId;
+
+        // Tampilkan modal loading
+        const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+        modal.show();
+
+        // Load detail pesanan
+        loadOrderDetail(orderId);
+    }
+
+    // Fungsi untuk memuat detail pesanan - DIPERBAIKI
+    function loadOrderDetail(orderId) {
+        // Simulasi data detail pesanan berdasarkan status
+        const orderDetails = {
+            1: {
+                status: 'unpaid',
+                title: 'Detail Pesanan - Belum Bayar',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2344</p>
+                                <p><strong>Tanggal Pesanan:</strong> 15 Jan 2024 10:30</p>
+                                <p><strong>Status:</strong> <span class="badge bg-warning">Belum Bayar</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Budi Santoso</p>
+                                <p><strong>Email:</strong> budi.santoso@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567890</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SLINGBAG</td>
+                                            <td>1</td>
+                                            <td>Rp 150.000</td>
+                                            <td>Rp 150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 10.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 160.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="payment-info">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Pembayaran Belum Dikonfirmasi</strong><br>
+                                Segera lakukan pembayaran dalam 1x24 jam, atau pesanan akan otomatis dibatalkan.
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            4: {
+                status: 'processing',
+                title: 'Detail Pesanan - Sedang Diproses',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2347</p>
+                                <p><strong>Tanggal Pesanan:</strong> 13 Jan 2024 14:20</p>
+                                <p><strong>Status:</strong> <span class="badge bg-info">Sedang Diproses</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Andi Pratama</p>
+                                <p><strong>Email:</strong> andi.pratama@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567891</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Kaos Polos</td>
+                                            <td>3</td>
+                                            <td>Rp 70.000</td>
+                                            <td>Rp 210.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 225.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="processing-info">
+                            <div class="alert alert-info">
+                                <i class="fas fa-box me-2"></i>
+                                <strong>Pesanan Sedang Dikemas</strong><br>
+                                Pesanan sedang dipersiapkan untuk pengiriman. Perkiraan tiba: 28 - 30 September 2025.
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            6: {
+                status: 'shipped',
+                title: 'Detail Pesanan - Dalam Pengiriman',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2349</p>
+                                <p><strong>Tanggal Pesanan:</strong> 11 Jan 2024 16:30</p>
+                                <p><strong>Status:</strong> <span class="badge bg-primary">Dalam Pengiriman</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Fajar Nugroho</p>
+                                <p><strong>Email:</strong> fajar.nugroho@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567892</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Celana Jeans</td>
+                                            <td>2</td>
+                                            <td>Rp 190.000</td>
+                                            <td>Rp 380.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 395.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="shipping-info">
+                            <h6>Informasi Pengiriman</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Kurir:</strong> JNE</p>
+                                    <p><strong>No. Resi:</strong> RESI001234570</p>
+                                    <p><strong>Estimasi:</strong> 28 - 30 September 2025</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Alamat Pengiriman:</strong></p>
+                                    <p>Jl. Merdeka No. 123<br>Jakarta Pusat<br>DKI Jakarta 10110</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            8: {
+                status: 'delivered',
+                title: 'Detail Pesanan - Berhasil Dikirim',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2351</p>
+                                <p><strong>Tanggal Pesanan:</strong> 9 Jan 2024 14:15</p>
+                                <p><strong>Status:</strong> <span class="badge bg-success">Berhasil Dikirim</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Hendra Setiawan</p>
+                                <p><strong>Email:</strong> hendra.setiawan@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567893</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dompet Kulit</td>
+                                            <td>1</td>
+                                            <td>Rp 120.000</td>
+                                            <td>Rp 120.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 135.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="delivery-info">
+                            <h6>Informasi Pengiriman</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Kurir:</strong> SiCepat</p>
+                                    <p><strong>No. Resi:</strong> RESI001234572</p>
+                                    <p><strong>Tanggal Diterima:</strong> 25 Jan 2024</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Alamat Pengiriman:</strong></p>
+                                    <p>Jl. Sudirman No. 456<br>Jakarta Selatan<br>DKI Jakarta 12190</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            10: {
+                status: 'completed',
+                title: 'Detail Pesanan - Selesai',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2353</p>
+                                <p><strong>Tanggal Pesanan:</strong> 5 Jan 2024 13:45</p>
+                                <p><strong>Status:</strong> <span class="badge bg-secondary">Selesai</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Joko Widodo</p>
+                                <p><strong>Email:</strong> joko.widodo@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567894</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tas Laptop</td>
+                                            <td>1</td>
+                                            <td>Rp 350.000</td>
+                                            <td>Rp 350.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 365.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="completion-info">
+                            <h6>Informasi Penyelesaian</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Tanggal Diterima:</strong> 20 Jan 2024</p>
+                                    <p><strong>Rating Pembeli:</strong>
+                                        <span class="text-warning">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </span>
+                                        4.5/5
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Ulasan Pembeli:</strong></p>
+                                    <div class="alert alert-light">
+                                        "Produknya bagus sekali, kualitasnya sesuai dengan harga. Pengirimannya juga cepat. Terima kasih!"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            13: {
+                status: 'cancelled',
+                title: 'Detail Pesanan - Dibatalkan',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2356</p>
+                                <p><strong>Tanggal Pesanan:</strong> 15 Jan 2024 08:30</p>
+                                <p><strong>Status:</strong> <span class="badge bg-danger">Dibatalkan</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Maya Sari</p>
+                                <p><strong>Email:</strong> maya.sari@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567895</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Kacamata Hitam</td>
+                                            <td>1</td>
+                                            <td>Rp 150.000</td>
+                                            <td>Rp 150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 165.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="cancellation-info">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Pesanan Dibatalkan</strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Alasan Pembatalan:</strong> Pembayaran Gagal</p>
+                                    <p><strong>Tanggal Pembatalan:</strong> 16 Jan 2024</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Catatan Pembatalan:</strong></p>
+                                    <p>Pembayaran tidak dilakukan dalam waktu 24 jam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Default content jika orderId tidak ditemukan
+        const defaultContent = {
+            title: 'Detail Pesanan',
+            content: `
+                <div class="text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5>Detail pesanan tidak ditemukan</h5>
+                    <p class="text-muted">Data untuk pesanan ini tidak tersedia.</p>
+                </div>
+            `
+        };
+
+        const detail = orderDetails[orderId] || defaultContent;
+
+        // Update modal content
+        document.querySelector('#orderDetailModal .modal-title').textContent = detail.title;
+        document.getElementById('orderDetailContent').innerHTML = detail.content;
     }
 
     function showPaymentDetail(orderId) {
@@ -863,155 +1360,4 @@
         }, 3000);
     }
 </script>
-
-<style>
-    /* Order Card Styles */
-    .order-item-card {
-        border: 1px solid #e0e0e0;
-        transition: all 0.3s ease;
-    }
-
-    .order-item-card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transform: translateY(-2px);
-    }
-
-    .order-item-card .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #e0e0e0;
-        padding: 0.75rem 1rem;
-    }
-
-    .order-id {
-        font-weight: 600;
-        color: #495057;
-    }
-
-    .order-date {
-        font-size: 0.85rem;
-        color: #6c757d;
-    }
-
-    .product-image {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .payment-info {
-        border-top: 1px dashed #e0e0e0;
-        border-bottom: 1px dashed #e0e0e0;
-        padding: 0.75rem 0;
-    }
-
-    .status-info .alert {
-        margin-bottom: 0.5rem;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #e0e0e0;
-        padding: 0.75rem 1rem;
-    }
-
-    /* Proof Images Styles */
-    .proof-image {
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-    }
-
-    .proof-image:hover {
-        transform: scale(1.05);
-        border-color: #007bff;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    /* Timeline Styles */
-    .timeline {
-        position: relative;
-        padding-left: 30px;
-    }
-
-    .timeline-item {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    .timeline-marker {
-        position: absolute;
-        left: -30px;
-        top: 5px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: #dee2e6;
-        border: 2px solid #fff;
-    }
-
-    .timeline-item.active .timeline-marker {
-        background-color: #0d6efd;
-    }
-
-    .timeline-content {
-        background: #f8f9fa;
-        padding: 10px 15px;
-        border-radius: 5px;
-        border-left: 3px solid #dee2e6;
-    }
-
-    .timeline-item.active .timeline-content {
-        border-left-color: #0d6efd;
-    }
-
-    .timeline-time {
-        font-size: 0.8rem;
-        color: #6c757d;
-        font-weight: 500;
-    }
-
-    .timeline-description {
-        font-size: 0.9rem;
-        color: #495057;
-        margin-top: 5px;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: -24px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background-color: #dee2e6;
-    }
-
-    /* Rating Styles */
-    .rating-display .fa-star {
-        color: #ffc107;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .filter-options .btn {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .stat-card .stat-number {
-            font-size: 1.2rem;
-        }
-
-        .stat-card .stat-title {
-            font-size: 0.8rem;
-        }
-
-        .order-item-card .card-footer .btn {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .proof-image {
-            width: 60px !important;
-            height: 60px !important;
-        }
-    }
-</style>
 @endsection
