@@ -28,7 +28,7 @@
             <input type="hidden" name="email" value="{{ $email }}">
 
             <div class="form-floating mb-3 position-relative">
-                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                <input type="password" class="form-control text-black @error('password') is-invalid @enderror" id="password"
                     name="password" placeholder="Password Baru" required minlength="8">
                 <label for="password" class="text-black"><i class="fas fa-lock me-2 text-black"></i>Password Baru</label>
                 <button type="button" class="password-toggle">
@@ -41,7 +41,7 @@
             </div>
 
             <div class="form-floating mb-4 position-relative">
-                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                <input type="password" class="form-control text-black @error('password_confirmation') is-invalid @enderror"
                     id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password Baru" required>
                 <label for="password_confirmation" class="text-black"><i class="fas fa-lock me-2 text-black"></i>Konfirmasi Password Baru</label>
                 <button type="button" class="password-toggle">
@@ -128,7 +128,7 @@
                     const passwordInput = this.previousElementSibling.previousElementSibling;
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
-                    this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                    this.innerHTML = type === 'password' ? <i class="fas fa-eye"></i> : <i class="fas fa-eye-slash"></i>;
                 });
             });
 

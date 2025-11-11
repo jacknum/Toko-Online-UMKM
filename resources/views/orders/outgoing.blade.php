@@ -609,14 +609,10 @@
                     Pastikan pembayaran telah diterima sebelum mengkonfirmasi.
                 </div>
                 <div class="mb-3">
-                    <label for="paymentMethod" class="form-label">Metode Pembayaran:</label>
-                    <select class="form-select" id="paymentMethod">
-                        <option value="">Pilih Metode Pembayaran</option>
-                        <option value="transfer">Transfer Bank</option>
-                        <option value="credit_card">Kartu Kredit</option>
-                        <option value="e-wallet">E-Wallet</option>
-                        <option value="cod">COD (Cash on Delivery)</option>
-                    </select>
+                    <label class="form-label">Metode Pembayaran:</label>
+                    <div class="alert alert-light border mt-2" id="paymentMethodDisplay">
+                        <!-- Metode pembayaran akan ditampilkan di sini -->
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="paymentNotes" class="form-label">Catatan Pembayaran (Opsional):</label>
@@ -1063,7 +1059,7 @@
         // Generate tahun dari 2020 sampai tahun sekarang + 1
         const yearSelect = document.getElementById('reportYear');
         const currentYear = new Date().getFullYear();
-        
+
         yearSelect.innerHTML = '<option value="">Pilih Tahun</option>';
         for (let year = 2020; year <= currentYear + 1; year++) {
             const option = document.createElement('option');
@@ -1089,7 +1085,7 @@
         const orderStatus = document.getElementById('orderStatus').value;
         const month = document.getElementById('reportMonth').value;
         const year = document.getElementById('reportYear').value;
-        
+
         // Validasi input
         if (!month || !year) {
             showAlert('error', 'Harap pilih bulan dan tahun untuk periode laporan');
@@ -1132,7 +1128,7 @@
         doc.setFontSize(16);
         doc.setFont(undefined, 'bold');
         doc.text(companyData.name, 105, 20, { align: 'center' });
-        
+
         doc.setFontSize(9);
         doc.setFont(undefined, 'normal');
         doc.text(companyData.address, 105, 27, { align: 'center' });
@@ -1225,7 +1221,7 @@
     // Fungsi untuk generate Excel report untuk pesanan keluar
     function generateExcelReport(month, year, orderStatus) {
         const reportData = getReportData(month, year, orderStatus);
-        
+
         // Data untuk header
         const headerData = [
             ['PT. MAKMUR SEJAHTERA'],
@@ -1264,7 +1260,7 @@
             // Hitung total
             const totalQty = reportData.reduce((sum, order) => sum + order.quantity, 0);
             const totalValue = reportData.reduce((sum, order) => sum + order.total_price, 0);
-            
+
             tableData.push([]);
             tableData.push(['', '', '', '', 'TOTAL:', totalQty, '', `Rp ${formatNumber(totalValue)}`, '']);
         }
@@ -1320,7 +1316,7 @@
             if (orderStatus !== 'all' && order.status !== orderStatus) {
                 return false;
             }
-            
+
             // Filter berdasarkan bulan dan tahun
             return isDateInPeriod(order.created_at, month, year);
         });
@@ -1335,13 +1331,13 @@
                 'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
                 'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
             };
-            
+
             const parts = dateString.split(' ');
             if (parts.length < 3) return false;
-            
+
             const dateMonth = months[parts[1]];
             const dateYear = parseInt(parts[2]);
-            
+
             return dateMonth === parseInt(month) - 1 && dateYear === parseInt(year);
         } catch (error) {
             console.error('Error parsing date:', error);
@@ -1406,8 +1402,8 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6>Informasi Pesanan</h6>
-                                <p><strong>ID Pesanan:</strong> #ORD001</p>
-                                <p><strong>Tanggal Pesanan:</strong> 15 Nov 2024 10:30</p>
+                                <p><strong>ID Pesanan:</strong> #ACG2344</p>
+                                <p><strong>Tanggal Pesanan:</strong> 15 Jan 2024 10:30</p>
                                 <p><strong>Status:</strong> <span class="badge bg-warning">Belum Bayar</span></p>
                             </div>
                             <div class="col-md-6">
@@ -1432,14 +1428,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Laptop ASUS ROG Strix G15</td>
+                                            <td>SLINGBAG</td>
                                             <td>1</td>
-                                            <td>Rp 18.500.000</td>
-                                            <td>Rp 18.500.000</td>
+                                            <td>Rp 150.000</td>
+                                            <td>Rp 150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 10.000</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-end"><strong>Total</strong></td>
-                                            <td><strong>Rp 18.500.000</strong></td>
+                                            <td><strong>Rp 160.000</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1456,7 +1456,7 @@
                     </div>
                 `
             },
-            2: {
+            4: {
                 status: 'processing',
                 title: 'Detail Pesanan - Sedang Diproses',
                 content: `
@@ -1464,14 +1464,14 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6>Informasi Pesanan</h6>
-                                <p><strong>ID Pesanan:</strong> #ORD002</p>
-                                <p><strong>Tanggal Pesanan:</strong> 14 Nov 2024 14:20</p>
+                                <p><strong>ID Pesanan:</strong> #ACG2347</p>
+                                <p><strong>Tanggal Pesanan:</strong> 13 Jan 2024 14:20</p>
                                 <p><strong>Status:</strong> <span class="badge bg-info">Sedang Diproses</span></p>
                             </div>
                             <div class="col-md-6">
                                 <h6>Informasi Pembeli</h6>
-                                <p><strong>Nama:</strong> Sari Indah</p>
-                                <p><strong>Email:</strong> sari.indah@email.com</p>
+                                <p><strong>Nama:</strong> Andi Pratama</p>
+                                <p><strong>Email:</strong> andi.pratama@email.com</p>
                                 <p><strong>Telepon:</strong> 081234567891</p>
                             </div>
                         </div>
@@ -1490,14 +1490,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Smartphone Samsung Galaxy S23</td>
-                                            <td>2</td>
-                                            <td>Rp 12.500.000</td>
-                                            <td>Rp 25.000.000</td>
+                                            <td>Kaos Polos</td>
+                                            <td>3</td>
+                                            <td>Rp 70.000</td>
+                                            <td>Rp 210.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-end"><strong>Total</strong></td>
-                                            <td><strong>Rp 25.000.000</strong></td>
+                                            <td><strong>Rp 225.000</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1508,13 +1512,13 @@
                             <div class="alert alert-info">
                                 <i class="fas fa-box me-2"></i>
                                 <strong>Pesanan Sedang Dikemas</strong><br>
-                                Pesanan sedang dipersiapkan untuk pengiriman. Perkiraan tiba: 28 - 30 November 2024.
+                                Pesanan sedang dipersiapkan untuk pengiriman. Perkiraan tiba: 28 - 30 September 2025.
                             </div>
                         </div>
                     </div>
                 `
             },
-            3: {
+            6: {
                 status: 'shipped',
                 title: 'Detail Pesanan - Dalam Pengiriman',
                 content: `
@@ -1522,14 +1526,14 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6>Informasi Pesanan</h6>
-                                <p><strong>ID Pesanan:</strong> #ORD003</p>
-                                <p><strong>Tanggal Pesanan:</strong> 13 Nov 2024 16:30</p>
+                                <p><strong>ID Pesanan:</strong> #ACG2349</p>
+                                <p><strong>Tanggal Pesanan:</strong> 11 Jan 2024 16:30</p>
                                 <p><strong>Status:</strong> <span class="badge bg-primary">Dalam Pengiriman</span></p>
                             </div>
                             <div class="col-md-6">
                                 <h6>Informasi Pembeli</h6>
-                                <p><strong>Nama:</strong> Ahmad Wijaya</p>
-                                <p><strong>Email:</strong> ahmad.wijaya@email.com</p>
+                                <p><strong>Nama:</strong> Fajar Nugroho</p>
+                                <p><strong>Email:</strong> fajar.nugroho@email.com</p>
                                 <p><strong>Telepon:</strong> 081234567892</p>
                             </div>
                         </div>
@@ -1548,14 +1552,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Tablet iPad Pro 12.9</td>
-                                            <td>1</td>
-                                            <td>Rp 21.500.000</td>
-                                            <td>Rp 21.500.000</td>
+                                            <td>Celana Jeans</td>
+                                            <td>2</td>
+                                            <td>Rp 190.000</td>
+                                            <td>Rp 380.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-end"><strong>Total</strong></td>
-                                            <td><strong>Rp 21.500.000</strong></td>
+                                            <td><strong>Rp 395.000</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1568,11 +1576,230 @@
                                 <div class="col-md-6">
                                     <p><strong>Kurir:</strong> JNE</p>
                                     <p><strong>No. Resi:</strong> RESI001234570</p>
-                                    <p><strong>Estimasi:</strong> 28 - 30 November 2024</p>
+                                    <p><strong>Estimasi:</strong> 28 - 30 September 2025</p>
                                 </div>
                                 <div class="col-md-6">
                                     <p><strong>Alamat Pengiriman:</strong></p>
                                     <p>Jl. Merdeka No. 123<br>Jakarta Pusat<br>DKI Jakarta 10110</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            8: {
+                status: 'delivered',
+                title: 'Detail Pesanan - Berhasil Dikirim',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2351</p>
+                                <p><strong>Tanggal Pesanan:</strong> 9 Jan 2024 14:15</p>
+                                <p><strong>Status:</strong> <span class="badge bg-success">Berhasil Dikirim</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Hendra Setiawan</p>
+                                <p><strong>Email:</strong> hendra.setiawan@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567893</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dompet Kulit</td>
+                                            <td>1</td>
+                                            <td>Rp 120.000</td>
+                                            <td>Rp 120.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 135.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="delivery-info">
+                            <h6>Informasi Pengiriman</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Kurir:</strong> SiCepat</p>
+                                    <p><strong>No. Resi:</strong> RESI001234572</p>
+                                    <p><strong>Tanggal Diterima:</strong> 25 Jan 2024</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Alamat Pengiriman:</strong></p>
+                                    <p>Jl. Sudirman No. 456<br>Jakarta Selatan<br>DKI Jakarta 12190</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            10: {
+                status: 'completed',
+                title: 'Detail Pesanan - Selesai',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2353</p>
+                                <p><strong>Tanggal Pesanan:</strong> 5 Jan 2024 13:45</p>
+                                <p><strong>Status:</strong> <span class="badge bg-secondary">Selesai</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Joko Widodo</p>
+                                <p><strong>Email:</strong> joko.widodo@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567894</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tas Laptop</td>
+                                            <td>1</td>
+                                            <td>Rp 350.000</td>
+                                            <td>Rp 350.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 365.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="completion-info">
+                            <h6>Informasi Penyelesaian</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Tanggal Diterima:</strong> 20 Jan 2024</p>
+                                    <p><strong>Rating Pembeli:</strong>
+                                        <span class="text-warning">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </span>
+                                        4.5/5
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Ulasan Pembeli:</strong></p>
+                                    <div class="alert alert-light">
+                                        "Produknya bagus sekali, kualitasnya sesuai dengan harga. Pengirimannya juga cepat. Terima kasih!"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            13: {
+                status: 'cancelled',
+                title: 'Detail Pesanan - Dibatalkan',
+                content: `
+                    <div class="order-detail">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Informasi Pesanan</h6>
+                                <p><strong>ID Pesanan:</strong> #ACG2356</p>
+                                <p><strong>Tanggal Pesanan:</strong> 15 Jan 2024 08:30</p>
+                                <p><strong>Status:</strong> <span class="badge bg-danger">Dibatalkan</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Informasi Pembeli</h6>
+                                <p><strong>Nama:</strong> Maya Sari</p>
+                                <p><strong>Email:</strong> maya.sari@email.com</p>
+                                <p><strong>Telepon:</strong> 081234567895</p>
+                            </div>
+                        </div>
+
+                        <div class="product-detail mb-4">
+                            <h6>Detail Produk</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Kacamata Hitam</td>
+                                            <td>1</td>
+                                            <td>Rp 150.000</td>
+                                            <td>Rp 150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Ongkos Kirim</strong></td>
+                                            <td>Rp 15.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                            <td><strong>Rp 165.000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="cancellation-info">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Pesanan Dibatalkan</strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Alasan Pembatalan:</strong> Pembayaran Gagal</p>
+                                    <p><strong>Tanggal Pembatalan:</strong> 16 Jan 2024</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Catatan Pembatalan:</strong></p>
+                                    <p>Pembayaran tidak dilakukan dalam waktu 24 jam</p>
                                 </div>
                             </div>
                         </div>
@@ -1601,10 +1828,10 @@
     }
 
     // Modal functions untuk pesanan keluar
-    function showPaymentModal(orderId, productName) {
+    function showPaymentModal(orderId, productName, paymentMethod = "Bank BSI") {
         currentOrderId = orderId;
         document.getElementById('paymentProductName').textContent = productName;
-        document.getElementById('paymentMethod').value = '';
+        document.getElementById('paymentMethodDisplay').textContent = paymentMethod;
         document.getElementById('paymentNotes').value = '';
         const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
         modal.show();

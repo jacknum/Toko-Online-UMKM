@@ -18,7 +18,7 @@
             </div>
 
             <div class="form-floating">
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+                <input type="email" class="form-control text-black @error('email') is-invalid @enderror" id="email" name="email"
                     value="{{ old('email') }}" placeholder="name@example.com" required>
                 <label for="email" class="text-black"><i class="fas fa-envelope me-2 text-black"></i>Alamat Email</label>
                 @error('email')
