@@ -7,7 +7,7 @@
     <title>@yield('title', 'Toko UMKM - Belanja Online')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url('/css/buyer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buyer.css') }}">
 </head>
 
 <body class="store-body">
@@ -20,62 +20,96 @@
                 Toko UMKM
             </a>
 
-            <!-- Search Bar -->
-            <div class="store-search mx-4">
-                <form action="{{ route('store.search') }}" method="GET" class="search-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control search-input"
-                            placeholder="Cari produk, kategori, atau merek..." value="{{ request('q') }}"
-                            autocomplete="off">
-                        <button class="btn search-btn" type="submit">
-                            <i class="fas fa-search"></i>
-                            Cari
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <!-- Navigation Icons -->
-            <div class="store-nav-icons">
-                <a href="{{ url('/store') }}" class="store-nav-icon">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="{{ url('/store/wishlist') }}" class="store-nav-icon">
-                    <i class="fas fa-heart"></i>
-                    <span class="store-badge">3</span>
-                </a>
-                <a href="{{ url('/store/cart') }}" class="store-nav-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="store-badge">5</span>
-                </a>
-                <div class="dropdown">
-                    <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown"
-                        data-bs-toggle="dropdown">
-                        <i class="fas fa-user"></i>
-                        <span>Akun</span>
+            <!-- Search Bar & Navigation -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Search Bar dengan fitur tambahan -->
+                <div class="store-search">
+                    <form action="{{ route('store.search') }}" method="GET" class="search-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control store-search-input"
+                                placeholder="Cari produk, kategori, atau merek..." value="{{ request('q') }}"
+                                autocomplete="off">
+
+                            <!-- Clear button -->
+                            <button type="button" class="store-search-clear">
+                                <i class="fas fa-times"></i>
+                            </button>
+
+                            <button class="btn store-search-btn" type="submit">
+                                <i class="fas fa-search"></i>
+                                <span>Cari</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Search suggestions dropdown -->
+                    <div class="store-search-suggestions">
+                        <div class="suggestion-item">
+                            <i class="fas fa-search me-2"></i>
+                            <span>Produk terpopuler</span>
+                        </div>
+                        <div class="suggestion-item">
+                            <i class="fas fa-search me-2"></i>
+                            <span>Kategori elektronik</span>
+                        </div>
+                        <div class="suggestion-item">
+                            <i class="fas fa-search me-2"></i>
+                            <span>Merek lokal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Icons -->
+                <div class="store-nav-icons ms-lg-auto">
+                    <a href="{{ url('/store') }}" class="store-nav-icon" title="Beranda">
+                        <i class="fas fa-home"></i>
+                        <span>Beranda</span>
                     </a>
-                    <ul class="dropdown-menu store-dropdown">
-                        <li><a class="dropdown-item" href="{{ url('/store/profile') }}"><i
-                                    class="fas fa-user-circle me-2"></i>Profil</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/store/addresses') }}"><i
-                                    class="fas fa-map-marker-alt me-2"></i>Alamat</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/store/security') }}"><i
-                                    class="fas fa-lock me-2"></i>Keamanan</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <!-- Form Logout -->
-                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                                @csrf
-                                <a class="dropdown-item text-danger" href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                </a>
-                            </form>
-                        </li>
-                    </ul>
+                    <a href="{{ url('/store/wishlist') }}" class="store-nav-icon" title="Wishlist">
+                        <i class="fas fa-heart"></i>
+                        <span class="store-badge">3</span>
+                        <span>Wishlist</span>
+                    </a>
+                    <a href="{{ url('/store/cart') }}" class="store-nav-icon" title="Keranjang">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="store-badge">5</span>
+                        <span>Keranjang</span>
+                    </a>
+                    <div class="dropdown">
+                        <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown"
+                            data-bs-toggle="dropdown" title="Akun Saya">
+                            <i class="fas fa-user"></i>
+                            <span>Akun</span>
+                        </a>
+                        <ul class="dropdown-menu store-dropdown" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ url('/store/profile') }}"><i
+                                        class="fas fa-user-circle me-2"></i>Profil Saya</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/store/orders') }}"><i
+                                        class="fas fa-shopping-bag me-2"></i>Pesanan Saya</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/store/addresses') }}"><i
+                                        class="fas fa-map-marker-alt me-2"></i>Alamat Saya</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/store/security') }}"><i
+                                        class="fas fa-lock me-2"></i>Keamanan</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <!-- Form Logout -->
+                                <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                                    @csrf
+                                    <a class="dropdown-item text-danger" href="#"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Keluar
+                                    </a>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,7 +131,7 @@
                 <div class="col-md-2">
                     <h6>Menu</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/store') }}">Home</a></li>
+                        <li><a href="{{ url('/store') }}">Beranda</a></li>
                         <li><a href="{{ url('/store/cart') }}">Keranjang</a></li>
                         <li><a href="{{ url('/store/wishlist') }}">Wishlist</a></li>
                     </ul>
@@ -105,8 +139,9 @@
                 <div class="col-md-2">
                     <h6>Akun</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url('/stores/profile') }}">Profil</a></li>
-                        <li><a href="{{ url('/store/addresses') }}">Alamat</a></li>
+                        <li><a href="{{ url('/store/profile') }}">Profil Saya</a></li>
+                        <li><a href="{{ url('/store/orders') }}">Pesanan Saya</a></li>
+                        <li><a href="{{ url('/store/addresses') }}">Alamat Saya</a></li>
                         <li><a href="{{ url('/store/security') }}">Keamanan</a></li>
                     </ul>
                 </div>
@@ -125,24 +160,94 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Search functionality
+        /// Tambahkan script ini untuk fungsionalitas search yang lebih baik
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.querySelector('.store-search-input');
             const searchBtn = document.querySelector('.store-search-btn');
+            const searchForm = document.querySelector('.search-form');
+            const clearBtn = document.querySelector('.store-search-clear');
+            const suggestions = document.querySelector('.store-search-suggestions');
 
-            searchBtn.addEventListener('click', function() {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm) {
-                    window.location.href = `/store/search?q=${encodeURIComponent(searchTerm)}`;
-                }
-            });
+            // Show/hide clear button based on input
+            if (searchInput && clearBtn) {
+                searchInput.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        clearBtn.classList.add('show');
+                    } else {
+                        clearBtn.classList.remove('show');
+                    }
+                });
 
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
+                // Clear search functionality
+                clearBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    searchInput.focus();
+                    clearBtn.classList.remove('show');
+                    if (suggestions) {
+                        suggestions.classList.remove('show');
+                    }
+                });
+            }
+
+            // Search suggestions (basic implementation)
+            if (searchInput && suggestions) {
+                searchInput.addEventListener('focus', function() {
+                    if (this.value.trim()) {
+                        suggestions.classList.add('show');
+                    }
+                });
+
+                searchInput.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        suggestions.classList.add('show');
+                        // Here you would typically fetch suggestions from an API
+                    } else {
+                        suggestions.classList.remove('show');
+                    }
+                });
+
+                // Hide suggestions when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
+                        suggestions.classList.remove('show');
+                    }
+                });
+            }
+
+            // Enhanced search functionality
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
                     const searchTerm = searchInput.value.trim();
                     if (searchTerm) {
-                        window.location.href = `/store/search?q=${encodeURIComponent(searchTerm)}`;
+                        // Add loading state
+                        searchForm.classList.add('loading');
+
+                        // Simulate search (replace with actual search logic)
+                        setTimeout(() => {
+                            window.location.href =
+                                `/store/search?q=${encodeURIComponent(searchTerm)}`;
+                        }, 500);
                     }
+                });
+            }
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Focus search with Ctrl+K or Cmd+K
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }
+
+                // Clear search with Escape
+                if (e.key === 'Escape' && searchInput) {
+                    searchInput.value = '';
+                    searchInput.blur();
+                    if (clearBtn) clearBtn.classList.remove('show');
+                    if (suggestions) suggestions.classList.remove('show');
                 }
             });
         });
