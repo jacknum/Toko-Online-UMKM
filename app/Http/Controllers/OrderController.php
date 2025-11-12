@@ -18,7 +18,7 @@ class OrderController extends Controller
             'total_value' => 1250000
         ];
 
-        // Data pesanan (contoh)
+        // Data pesanan (contoh) dengan informasi kurir
         $ordersData = [
             (object)[
                 'id' => 1,
@@ -27,7 +27,9 @@ class OrderController extends Controller
                 'quantity' => 1,
                 'price' => 150000,
                 'status' => 'pending',
-                'created_at' => '2024-01-15 10:30:00'
+                'created_at' => '2024-01-15 10:30:00',
+                'buyer_courier' => null, // Pembeli belum memilih kurir
+                'is_courier_locked' => false
             ],
             (object)[
                 'id' => 2,
@@ -36,7 +38,9 @@ class OrderController extends Controller
                 'quantity' => 1,
                 'price' => 45000,
                 'status' => 'confirmed',
-                'created_at' => '2024-01-15 09:15:00'
+                'created_at' => '2024-01-15 09:15:00',
+                'buyer_courier' => 'all', // Pembeli memilih semua kurir
+                'is_courier_locked' => false
             ],
             (object)[
                 'id' => 3,
@@ -45,7 +49,9 @@ class OrderController extends Controller
                 'quantity' => 1,
                 'price' => 130000,
                 'status' => 'shipped',
-                'created_at' => '2024-01-14 14:20:00'
+                'created_at' => '2024-01-14 14:20:00',
+                'buyer_courier' => 'jne', // Pembeli memilih JNE
+                'is_courier_locked' => true // Kurir terkunci
             ],
             (object)[
                 'id' => 4,
@@ -54,8 +60,53 @@ class OrderController extends Controller
                 'quantity' => 1,
                 'price' => 150000,
                 'status' => 'pending',
-                'created_at' => '2024-01-15 08:45:00'
+                'created_at' => '2024-01-15 08:45:00',
+                'buyer_courier' => null, // Pembeli belum memilih kurir
+                'is_courier_locked' => false
+            ],
+            (object)[
+                'id' => 5,
+                'product_name' => 'Gaming PC RTX 4070 Ti',
+                'customer_name' => 'Kevin Maulana',
+                'quantity' => 1,
+                'price' => 28500000,
+                'status' => 'confirmed',
+                'created_at' => '2024-01-15 09:15:00',
+                'buyer_courier' => 'jne', // Pembeli memilih JNE
+                'is_courier_locked' => true // KURIR TERKUNCI - tidak bisa diganti penjual
+            ],
+            (object)[
+                'id' => 6,
+                'product_name' => 'Laptop Gaming ASUS ROG',
+                'customer_name' => 'Budi Santoso',
+                'quantity' => 1,
+                'price' => 18500000,
+                'status' => 'confirmed',
+                'created_at' => '2024-01-14 11:30:00',
+                'buyer_courier' => 'tiki', // Pembeli memilih TIKI
+                'is_courier_locked' => true // Kurir terkunci
+            ],
+            (object)[
+                'id' => 7,
+                'product_name' => 'Smartphone Samsung S23',
+                'customer_name' => 'Sari Indah',
+                'quantity' => 1,
+                'price' => 12500000,
+                'status' => 'pending',
+                'created_at' => '2024-01-15 14:20:00',
+                'buyer_courier' => 'jnt', // Pembeli memilih J&T
+                'is_courier_locked' => true // Kurir terkunci
             ]
+        ];
+
+        // Data kurir yang tersedia untuk penjual
+        $availableCouriers = [
+            ['code' => 'jne', 'name' => 'JNE'],
+            ['code' => 'tiki', 'name' => 'TIKI'],
+            ['code' => 'pos', 'name' => 'POS Indonesia'],
+            ['code' => 'jnt', 'name' => 'J&T Express'],
+            ['code' => 'sicepat', 'name' => 'SiCepat'],
+            ['code' => 'anteraja', 'name' => 'Anteraja']
         ];
 
         // Convert array to paginator
@@ -66,7 +117,7 @@ class OrderController extends Controller
             'path' => LengthAwarePaginator::resolveCurrentPath()
         ]);
 
-        return view('orders.incoming', compact('stats', 'orders'));
+        return view('orders.incoming', compact('stats', 'orders', 'availableCouriers'));
     }
 
     public function outgoing(Request $request)
@@ -97,7 +148,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-15 10:30:00',
                 'tracking_number' => null,
                 'courier' => null,
-                'estimated_delivery' => null
+                'estimated_delivery' => null,
+                'buyer_courier' => null,
+                'is_courier_locked' => false
             ],
             (object)[
                 'id' => 2,
@@ -111,7 +164,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-15 09:15:00',
                 'tracking_number' => null,
                 'courier' => null,
-                'estimated_delivery' => null
+                'estimated_delivery' => null,
+                'buyer_courier' => 'all',
+                'is_courier_locked' => false
             ],
             (object)[
                 'id' => 3,
@@ -125,7 +180,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-14 14:20:00',
                 'tracking_number' => null,
                 'courier' => null,
-                'estimated_delivery' => null
+                'estimated_delivery' => null,
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
 
             // Status: processing (sedang diproses/dikemas) - 2 data
@@ -141,7 +198,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-13 14:20:00',
                 'tracking_number' => null,
                 'courier' => null,
-                'estimated_delivery' => '2024-01-28'
+                'estimated_delivery' => '2024-01-28',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 5,
@@ -155,7 +214,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-12 08:45:00',
                 'tracking_number' => null,
                 'courier' => null,
-                'estimated_delivery' => '2024-01-29'
+                'estimated_delivery' => '2024-01-29',
+                'buyer_courier' => 'tiki',
+                'is_courier_locked' => true
             ],
 
             // Status: shipped (dikirim) - 2 data
@@ -171,7 +232,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-11 16:30:00',
                 'tracking_number' => 'RESI001234570',
                 'courier' => 'JNE',
-                'estimated_delivery' => '2024-01-28'
+                'estimated_delivery' => '2024-01-28',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 7,
@@ -185,7 +248,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-10 11:20:00',
                 'tracking_number' => 'RESI001234571',
                 'courier' => 'J&T',
-                'estimated_delivery' => '2024-01-30'
+                'estimated_delivery' => '2024-01-30',
+                'buyer_courier' => 'jnt',
+                'is_courier_locked' => true
             ],
 
             // Status: delivered (terkirim) - 2 data
@@ -201,7 +266,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-09 14:15:00',
                 'tracking_number' => 'RESI001234572',
                 'courier' => 'SiCepat',
-                'estimated_delivery' => '2024-01-25'
+                'estimated_delivery' => '2024-01-25',
+                'buyer_courier' => 'sicepat',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 9,
@@ -215,7 +282,9 @@ class OrderController extends Controller
                 'created_at' => '2024-01-08 09:30:00',
                 'tracking_number' => 'RESI001234573',
                 'courier' => 'JNE',
-                'estimated_delivery' => '2024-01-24'
+                'estimated_delivery' => '2024-01-24',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
 
             // Status: completed (selesai) - 3 data
@@ -233,7 +302,9 @@ class OrderController extends Controller
                 'courier' => 'J&T',
                 'estimated_delivery' => '2024-01-20',
                 'rating' => 4.5,
-                'review' => 'Produknya bagus sekali, kualitasnya sesuai dengan harga. Pengirimannya juga cepat. Terima kasih!'
+                'review' => 'Produknya bagus sekali, kualitasnya sesuai dengan harga. Pengirimannya juga cepat. Terima kasih!',
+                'buyer_courier' => 'jnt',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 11,
@@ -249,7 +320,9 @@ class OrderController extends Controller
                 'courier' => 'JNE',
                 'estimated_delivery' => '2024-01-19',
                 'rating' => 5.0,
-                'review' => 'Sangat puas dengan produknya, bahan berkualitas dan nyaman dipakai.'
+                'review' => 'Sangat puas dengan produknya, bahan berkualitas dan nyaman dipakai.',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 12,
@@ -265,7 +338,9 @@ class OrderController extends Controller
                 'courier' => 'SiCepat',
                 'estimated_delivery' => '2024-01-18',
                 'rating' => 4.0,
-                'review' => 'Desainnya elegan, cocok untuk acara formal. Pengiriman tepat waktu.'
+                'review' => 'Desainnya elegan, cocok untuk acara formal. Pengiriman tepat waktu.',
+                'buyer_courier' => 'sicepat',
+                'is_courier_locked' => true
             ],
 
             // Status: cancelled (dibatalkan) - 3 data
@@ -283,7 +358,9 @@ class OrderController extends Controller
                 'courier' => null,
                 'estimated_delivery' => null,
                 'cancel_reason' => 'Pembayaran Gagal',
-                'cancel_notes' => 'Pembayaran tidak dilakukan dalam waktu 24 jam'
+                'cancel_notes' => 'Pembayaran tidak dilakukan dalam waktu 24 jam',
+                'buyer_courier' => null,
+                'is_courier_locked' => false
             ],
             (object)[
                 'id' => 14,
@@ -299,7 +376,9 @@ class OrderController extends Controller
                 'courier' => null,
                 'estimated_delivery' => null,
                 'cancel_reason' => 'Permintaan Pelanggan',
-                'cancel_notes' => 'Pelanggan meminta pembatalan karena perubahan rencana'
+                'cancel_notes' => 'Pelanggan meminta pembatalan karena perubahan rencana',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
             (object)[
                 'id' => 15,
@@ -315,7 +394,9 @@ class OrderController extends Controller
                 'courier' => null,
                 'estimated_delivery' => null,
                 'cancel_reason' => 'Stok Habis',
-                'cancel_notes' => 'Stok produk habis dan tidak dapat dipenuhi'
+                'cancel_notes' => 'Stok produk habis dan tidak dapat dipenuhi',
+                'buyer_courier' => 'tiki',
+                'is_courier_locked' => true
             ]
         ];
 
@@ -342,7 +423,7 @@ class OrderController extends Controller
 
         return view('orders.outgoing', compact('stats', 'orders', 'filter'));
     }
-    
+
     public function show($id)
     {
         // Data pesanan dummy berdasarkan ID
@@ -355,7 +436,9 @@ class OrderController extends Controller
                 'price' => 150000,
                 'status' => 'pending',
                 'created_at' => '2024-01-15 10:30:00',
-                'tracking_number' => null
+                'tracking_number' => null,
+                'buyer_courier' => null,
+                'is_courier_locked' => false
             ],
             2 => (object)[
                 'id' => 2,
@@ -365,7 +448,9 @@ class OrderController extends Controller
                 'price' => 45000,
                 'status' => 'confirmed',
                 'created_at' => '2024-01-15 09:15:00',
-                'tracking_number' => null
+                'tracking_number' => null,
+                'buyer_courier' => 'all',
+                'is_courier_locked' => false
             ],
             3 => (object)[
                 'id' => 3,
@@ -375,7 +460,9 @@ class OrderController extends Controller
                 'price' => 130000,
                 'status' => 'shipped',
                 'created_at' => '2024-01-14 14:20:00',
-                'tracking_number' => 'RESI123456789'
+                'tracking_number' => 'RESI123456789',
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true
             ],
             4 => (object)[
                 'id' => 4,
@@ -385,7 +472,21 @@ class OrderController extends Controller
                 'price' => 150000,
                 'status' => 'pending',
                 'created_at' => '2024-01-15 08:45:00',
-                'tracking_number' => null
+                'tracking_number' => null,
+                'buyer_courier' => null,
+                'is_courier_locked' => false
+            ],
+            5 => (object)[
+                'id' => 5,
+                'product_name' => 'Gaming PC RTX 4070 Ti',
+                'customer_name' => 'Kevin Maulana',
+                'quantity' => 1,
+                'price' => 28500000,
+                'status' => 'confirmed',
+                'created_at' => '2024-01-15 09:15:00',
+                'tracking_number' => null,
+                'buyer_courier' => 'jne',
+                'is_courier_locked' => true // KURIR TERKUNCI
             ]
         ];
 
@@ -417,12 +518,49 @@ class OrderController extends Controller
         ]);
     }
 
-    public function process($id)
+    public function process(Request $request, $id)
     {
-        // Logika untuk memproses pesanan
+        // Logika untuk memproses pesanan dengan validasi kurir
+        $courier = $request->input('courier');
+        $trackingNumber = $request->input('tracking_number');
+
+        // Validasi
+        if (!$courier || !$trackingNumber) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kurir dan nomor resi harus diisi'
+            ], 400);
+        }
+
+        // Simulasi validasi kurir terkunci
+        $orderData = [
+            1 => (object)['buyer_courier' => null, 'is_courier_locked' => false],
+            2 => (object)['buyer_courier' => 'all', 'is_courier_locked' => false],
+            3 => (object)['buyer_courier' => 'jne', 'is_courier_locked' => true],
+            4 => (object)['buyer_courier' => null, 'is_courier_locked' => false],
+            5 => (object)['buyer_courier' => 'jne', 'is_courier_locked' => true] // Gaming PC terkunci JNE
+        ];
+
+        if (isset($orderData[$id])) {
+            $order = $orderData[$id];
+
+            // Jika kurir terkunci, validasi harus menggunakan kurir yang sama
+            if ($order->is_courier_locked && $order->buyer_courier !== $courier) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kurir tidak dapat diubah. Harus menggunakan ' . strtoupper($order->buyer_courier) . ' sesuai pilihan pembeli'
+                ], 400);
+            }
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Pesanan sedang diproses untuk pengiriman'
+            'message' => 'Pesanan sedang diproses untuk pengiriman',
+            'data' => [
+                'courier_used' => $courier,
+                'tracking_number' => $trackingNumber,
+                'is_courier_locked' => isset($order) ? $order->is_courier_locked : false
+            ]
         ]);
     }
 

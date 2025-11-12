@@ -136,6 +136,14 @@
                                 <div>
                                     <h6 class="mb-0">{{ $order->product_name }}</h6>
                                     <small class="text-muted">{{ date('d M Y', strtotime($order->created_at)) }}</small>
+                                    @if($order->buyer_courier && $order->is_courier_locked)
+                                        <div class="mt-1">
+                                            <small class="badge bg-info text-white">
+                                                <i class="fas fa-shipping-fast me-1"></i>
+                                                Kurir: {{ strtoupper($order->buyer_courier) }} ✓
+                                            </small>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </td>
@@ -180,7 +188,15 @@
                                         <i class="fas fa-times"></i>
                                     </button>
                                 @elseif($order->status == 'confirmed')
-                                    <button class="btn btn-sm btn-outline-info px-3" onclick="showProcessModal({{ $order->id }}, '{{ $order->product_name }}')" title="Proses">
+                                    <button class="btn btn-sm btn-outline-info px-3"
+                                        onclick="showProcessModal(
+                                            {{ $order->id }},
+                                            '{{ $order->product_name }}',
+                                            '{{ $order->buyer_courier ?? 'all' }}',
+                                            {{ $order->is_courier_locked ? 'true' : 'false' }},
+                                            {{ json_encode($availableCouriers) }}
+                                        )"
+                                        title="Proses">
                                         <i class="fas fa-cog"></i>
                                     </button>
                                 @elseif($order->status == 'shipped')
@@ -383,18 +399,34 @@
             </div>
             <div class="modal-body">
                 <p>Anda akan memproses pengiriman untuk pesanan <strong id="processProductName"></strong>.</p>
-                <div class="mb-3">
-                    <label for="courier" class="form-label">Kurir Pengiriman:</label>
-                    <select class="form-select" id="courier">
-                        <option value="">Pilih Kurir</option>
-                        <option value="jne">JNE</option>
-                        <option value="tiki">TIKI</option>
-                        <option value="pos">POS Indonesia</option>
-                        <option value="jnt">J&T Express</option>
-                        <option value="sicepat">SiCepat</option>
-                        <option value="anteraja">Anteraja</option>
-                    </select>
+
+                <!-- Informasi Kurir yang Dipilih Pembeli -->
+                <div class="mb-3" id="buyerCourierInfo" style="display: none;">
+                    <div class="alert alert-info">
+                        <small>Kurir yang dipilih pembeli: <strong id="selectedBuyerCourier"></strong></small>
+                    </div>
                 </div>
+
+                <!-- Informasi Kurir Terkunci -->
+                <div class="mb-3" id="lockedCourierInfo" style="display: none;">
+                    <div class="alert alert-warning">
+                        <small><i class="fas fa-lock me-1"></i>Kurir telah dipilih pembeli dan tidak dapat diubah: <strong id="lockedCourierName"></strong></small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="courier" class="form-label">Pilih Kurir Pengiriman:</label>
+                    <select class="form-select" id="courier" name="courier">
+                        <option value="">Pilih Kurir</option>
+                        <!-- Opsi kurir akan di-generate secara dinamis -->
+                    </select>
+                    <small class="form-text text-muted">
+                        <span id="allCourierInfo" style="display: none;">Pembeli memilih semua kurir. Silakan pilih kurir yang akan digunakan.</span>
+                        <span id="specificCourierInfo" style="display: none;">Pembeli telah memilih kurir tertentu. Rekomendasi: gunakan kurir yang sama.</span>
+                        <span id="lockedCourierMessage" style="display: none;" class="text-warning"><i></i>Kurir telah dikunci sesuai pilihan pembeli dan tidak dapat diubah</span>
+                    </small>
+                </div>
+
                 <div class="mb-3">
                     <label for="trackingNumber" class="form-label">Nomor Resi:</label>
                     <input type="text" class="form-control" id="trackingNumber" placeholder="Masukkan nomor resi">
@@ -549,6 +581,17 @@
             price: 2450000,
             status: "pending",
             created_at: "06 Nov 2025"
+        },
+        // Data tambahan untuk Gaming PC dengan status confirmed dan kurir JNE terkunci
+        {
+            product_name: "Gaming PC RTX 4070 Ti",
+            customer_name: "Kevin Maulana",
+            quantity: 1,
+            price: 28500000,
+            status: "confirmed",
+            created_at: "16 Nov 2025",
+            buyer_courier: "jne",
+            is_courier_locked: true
         }
     ];
 
@@ -600,7 +643,7 @@
         // Generate tahun dari 2020 sampai tahun sekarang + 1
         const yearSelect = document.getElementById('reportYear');
         const currentYear = new Date().getFullYear();
-        
+
         yearSelect.innerHTML = '<option value="">Pilih Tahun</option>';
         for (let year = 2020; year <= currentYear + 1; year++) {
             const option = document.createElement('option');
@@ -666,7 +709,7 @@
         const orderStatus = document.getElementById('orderStatus').value;
         const month = document.getElementById('reportMonth').value;
         const year = document.getElementById('reportYear').value;
-        
+
         // Validasi input
         if (!month || !year) {
             showAlert('error', 'Harap pilih bulan dan tahun untuk periode laporan');
@@ -709,7 +752,7 @@
         doc.setFontSize(16);
         doc.setFont(undefined, 'bold');
         doc.text(companyData.name, 105, 20, { align: 'center' });
-        
+
         doc.setFontSize(9);
         doc.setFont(undefined, 'normal');
         doc.text(companyData.address, 105, 27, { align: 'center' });
@@ -800,7 +843,7 @@
     // Fungsi untuk generate Excel report
     function generateExcelReport(month, year, orderStatus) {
         const reportData = getReportData(month, year, orderStatus);
-        
+
         // Data untuk header
         const headerData = [
             ['PT. MAKMUR SEJAHTERA'],
@@ -838,7 +881,7 @@
             // Hitung total
             const totalQty = reportData.reduce((sum, order) => sum + order.quantity, 0);
             const totalValue = reportData.reduce((sum, order) => sum + (order.price * order.quantity), 0);
-            
+
             tableData.push([]);
             tableData.push(['', '', '', 'TOTAL:', totalQty, '', `Rp ${formatNumber(totalValue)}`, '']);
         }
@@ -893,7 +936,7 @@
             if (orderStatus !== 'all' && order.status !== orderStatus) {
                 return false;
             }
-            
+
             // Filter berdasarkan bulan dan tahun
             return isDateInPeriod(order.created_at, month, year);
         });
@@ -908,13 +951,13 @@
                 'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
                 'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
             };
-            
+
             const parts = dateString.split(' ');
             if (parts.length < 3) return false;
-            
+
             const dateMonth = months[parts[1]];
             const dateYear = parseInt(parts[2]);
-            
+
             return dateMonth === parseInt(month) - 1 && dateYear === parseInt(year);
         } catch (error) {
             console.error('Error parsing date:', error);
@@ -944,7 +987,7 @@
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    // Modal functions (tetap sama)
+    // Modal functions
     function showAcceptModal(orderId, productName) {
         currentOrderId = orderId;
         document.getElementById('acceptProductName').textContent = productName;
@@ -960,11 +1003,18 @@
         modal.show();
     }
 
-    function showProcessModal(orderId, productName) {
+    function showProcessModal(orderId, productName, buyerCourier = null, isCourierLocked = false, availableCouriers = null) {
         currentOrderId = orderId;
         document.getElementById('processProductName').textContent = productName;
         document.getElementById('courier').value = '';
         document.getElementById('trackingNumber').value = '';
+
+        // Reset semua elemen informasi kurir
+        resetCourierModalElements();
+
+        // Setup pilihan kurir berdasarkan kondisi
+        setupCourierSelection(buyerCourier, isCourierLocked, availableCouriers);
+
         const modal = new bootstrap.Modal(document.getElementById('processModal'));
         modal.show();
     }
@@ -977,7 +1027,7 @@
         modal.show();
     }
 
-    // Confirm actions (tetap sama)
+    // Confirm actions
     document.getElementById('confirmAccept').addEventListener('click', function() {
         acceptOrder(currentOrderId);
         bootstrap.Modal.getInstance(document.getElementById('acceptModal')).hide();
@@ -1007,7 +1057,7 @@
         bootstrap.Modal.getInstance(document.getElementById('processModal')).hide();
     });
 
-    // AJAX functions (tetap sama)
+    // AJAX functions
     function acceptOrder(orderId) {
         fetch(`/orders/${orderId}/accept`, {
             method: 'POST',
@@ -1124,6 +1174,262 @@
                 alertDiv.parentNode.removeChild(alertDiv);
             }
         }, 3000);
+    }
+
+    // Fungsi untuk reset elemen modal kurir
+    function resetCourierModalElements() {
+        // Sembunyikan semua elemen informasi
+        document.getElementById('buyerCourierInfo').style.display = 'none';
+        document.getElementById('allCourierInfo').style.display = 'none';
+        document.getElementById('specificCourierInfo').style.display = 'none';
+        document.getElementById('lockedCourierInfo').style.display = 'none';
+        document.getElementById('lockedCourierMessage').style.display = 'none';
+
+        // Reset dropdown kurir ke default
+        const courierSelect = document.getElementById('courier');
+        courierSelect.innerHTML = '<option value="">Pilih Kurir</option>';
+        courierSelect.disabled = false;
+
+        // Hapus pesan informasi yang mungkin sudah ada sebelumnya
+        const existingInfoText = courierSelect.parentNode.querySelector('.form-text.text-warning');
+        if (existingInfoText) {
+            existingInfoText.remove();
+        }
+    }
+
+    // Fungsi untuk setup pilihan kurir berdasarkan kondisi pembeli
+    function setupCourierSelection(buyerCourier, isCourierLocked, availableCouriers) {
+        const courierSelect = document.getElementById('courier');
+
+        // Parse available couriers
+        const couriers = parseAvailableCouriers(availableCouriers);
+
+        // Populate dropdown dengan kurir yang tersedia
+        populateCourierDropdown(courierSelect, couriers);
+
+        // Handle kondisi berdasarkan kurir yang dipilih pembeli
+        handleBuyerCourierCondition(buyerCourier, isCourierLocked, courierSelect, couriers);
+    }
+
+    // Fungsi untuk parse available couriers
+    function parseAvailableCouriers(availableCouriers) {
+        if (!availableCouriers) {
+            // Default couriers jika tidak ada data
+            return [
+                { code: 'jne', name: 'JNE' },
+                { code: 'tiki', name: 'TIKI' },
+                { code: 'pos', name: 'POS Indonesia' },
+                { code: 'jnt', name: 'J&T Express' },
+                { code: 'sicepat', name: 'SiCepat' },
+                { code: 'anteraja', name: 'Anteraja' }
+            ];
+        }
+
+        if (Array.isArray(availableCouriers)) {
+            return availableCouriers;
+        }
+
+        try {
+            return JSON.parse(availableCouriers);
+        } catch (error) {
+            console.error('Error parsing available couriers:', error);
+            return [];
+        }
+    }
+
+    // Fungsi untuk populate dropdown kurir
+    function populateCourierDropdown(selectElement, couriers) {
+        selectElement.innerHTML = '<option value="">Pilih Kurir</option>';
+
+        couriers.forEach(courier => {
+            const option = document.createElement('option');
+            option.value = courier.code;
+            option.textContent = courier.name;
+            selectElement.appendChild(option);
+        });
+    }
+
+    // Fungsi untuk handle kondisi kurir pembeli
+    function handleBuyerCourierCondition(buyerCourier, isCourierLocked, courierSelect, couriers) {
+        const buyerCourierInfo = document.getElementById('buyerCourierInfo');
+        const allCourierInfo = document.getElementById('allCourierInfo');
+        const specificCourierInfo = document.getElementById('specificCourierInfo');
+        const lockedCourierInfo = document.getElementById('lockedCourierInfo');
+        const lockedCourierMessage = document.getElementById('lockedCourierMessage');
+
+        // Hapus pesan informasi yang mungkin sudah ada sebelumnya
+        const existingInfoText = courierSelect.parentNode.querySelector('.form-text.text-warning');
+        if (existingInfoText) {
+            existingInfoText.remove();
+        }
+
+        if (!buyerCourier || buyerCourier === 'all' || buyerCourier === '') {
+            // Kondisi 1: Pembeli memilih semua kurir
+            allCourierInfo.style.display = 'inline';
+            document.getElementById('selectedBuyerCourier').textContent = 'Semua Kurir';
+            buyerCourierInfo.style.display = 'block';
+
+            // Reset kondisi lainnya
+            specificCourierInfo.style.display = 'none';
+            lockedCourierInfo.style.display = 'none';
+            lockedCourierMessage.style.display = 'none';
+            courierSelect.disabled = false;
+        } else if (isCourierLocked) {
+            // Kondisi 2: Pembeli memilih kurir tertentu dan terkunci
+            lockedCourierInfo.style.display = 'block';
+            lockedCourierMessage.style.display = 'inline';
+            document.getElementById('lockedCourierName').textContent = getCourierName(buyerCourier);
+
+            // Nonaktifkan dropdown dan set ke kurir yang dipilih pembeli
+            courierSelect.disabled = true;
+            courierSelect.value = buyerCourier;
+
+            // Reset kondisi lainnya
+            allCourierInfo.style.display = 'none';
+            specificCourierInfo.style.display = 'none';
+            buyerCourierInfo.style.display = 'none';
+
+            // Tambahkan pesan informasi (hanya sekali)
+            const infoText = document.createElement('small');
+            infoText.className = 'form-text text-warning mt-1';
+            infoText.innerHTML = '<i class="fas fa-lock me-1"></i>';
+            courierSelect.parentNode.appendChild(infoText);
+        } else {
+            // Kondisi 3: Pembeli memilih kurir tertentu tapi tidak terkunci
+            specificCourierInfo.style.display = 'inline';
+            document.getElementById('selectedBuyerCourier').textContent = getCourierName(buyerCourier);
+            buyerCourierInfo.style.display = 'block';
+
+            // Reset kondisi lainnya
+            allCourierInfo.style.display = 'none';
+            lockedCourierInfo.style.display = 'none';
+            lockedCourierMessage.style.display = 'none';
+            courierSelect.disabled = false;
+
+            // Auto-select kurir yang dipilih pembeli jika tersedia
+            autoSelectBuyerCourier(buyerCourier, courierSelect);
+        }
+    }
+
+    // Fungsi untuk auto-select kurir pembeli
+    function autoSelectBuyerCourier(buyerCourier, courierSelect) {
+        const buyerCourierOption = courierSelect.querySelector(`option[value="${buyerCourier}"]`);
+        if (buyerCourierOption) {
+            courierSelect.value = buyerCourier;
+        }
+    }
+
+    // Fungsi untuk mendapatkan nama kurir dari kode
+    function getCourierName(courierCode) {
+        const courierNames = {
+            'jne': 'JNE',
+            'tiki': 'TIKI',
+            'pos': 'POS Indonesia',
+            'jnt': 'J&T Express',
+            'sicepat': 'SiCepat',
+            'anteraja': 'Anteraja',
+            'all': 'Semua Kurir',
+            'jnt_cargo': 'J&T Cargo',
+            'rpx': 'RPX',
+            'wahana': 'Wahana',
+            'ninja': 'Ninja Xpress',
+            'lion': 'Lion Parcel',
+            'ide': 'IDE'
+        };
+        return courierNames[courierCode] || courierCode;
+    }
+
+    // Update fungsi processOrder untuk handle data kurir
+    function processOrder(orderId, courier, trackingNumber) {
+        // Validasi tambahan
+        if (!courier) {
+            showAlert('error', 'Pilih kurir pengiriman terlebih dahulu');
+            return;
+        }
+
+        if (!trackingNumber) {
+            showAlert('error', 'Masukkan nomor resi terlebih dahulu');
+            return;
+        }
+
+        // Tampilkan loading
+        showAlert('info', 'Memproses pengiriman...');
+
+        fetch(`/orders/${orderId}/process`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                courier: courier,
+                tracking_number: trackingNumber,
+                processed_at: new Date().toISOString()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert('success', data.message);
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showAlert('error', data.message || 'Terjadi kesalahan saat memproses pesanan');
+            }
+        })
+        .catch(error => {
+            console.error('Error processing order:', error);
+            showAlert('error', 'Terjadi kesalahan saat memproses pesanan');
+        });
+    }
+
+    // Tambahkan event listener untuk modal process
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pastikan event listener untuk confirmProcess sudah ada
+        const confirmProcessBtn = document.getElementById('confirmProcess');
+        if (confirmProcessBtn) {
+            // Hapus event listener lama jika ada
+            confirmProcessBtn.replaceWith(confirmProcessBtn.cloneNode(true));
+
+            // Tambahkan event listener baru
+            document.getElementById('confirmProcess').addEventListener('click', function() {
+                const courier = document.getElementById('courier').value;
+                const trackingNumber = document.getElementById('trackingNumber').value;
+
+                if (!courier) {
+                    showAlert('error', 'Pilih kurir pengiriman terlebih dahulu');
+                    return;
+                }
+
+                if (!trackingNumber) {
+                    showAlert('error', 'Masukkan nomor resi terlebih dahulu');
+                    return;
+                }
+
+                processOrder(currentOrderId, courier, trackingNumber);
+                bootstrap.Modal.getInstance(document.getElementById('processModal')).hide();
+            });
+        }
+
+        // Inisialisasi tooltip untuk informasi kurir (jika menggunakan Bootstrap tooltip)
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+    // Helper function untuk format kurir (optional)
+    function formatCourierForDisplay(courierData) {
+        if (!courierData) return 'Belum dipilih';
+
+        if (typeof courierData === 'string') {
+            return getCourierName(courierData);
+        }
+
+        if (Array.isArray(courierData)) {
+            return courierData.map(courier => getCourierName(courier.code || courier)).join(', ');
+        }
+
+        return 'Format tidak valid';
     }
 </script>
 @endsection

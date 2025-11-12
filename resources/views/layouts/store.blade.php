@@ -251,6 +251,35 @@
                 }
             });
         });
+
+        // Tambahkan di bagian script yang sudah ada
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.querySelector('.search-form');
+            const searchBtn = document.querySelector('.store-search-btn');
+
+            if (searchForm && searchBtn) {
+                searchForm.addEventListener('submit', function(e) {
+                    // Trigger loading state
+                    searchBtn.classList.add('loading');
+
+                    // Optional: Simulate search delay (bisa dihapus jika menggunakan AJAX real)
+                    setTimeout(() => {
+                        searchBtn.classList.remove('loading');
+                    }, 2000); // Hapus loading setelah 2 detik (simulasi)
+                });
+            }
+
+            // Pastikan teks tetap putih saat hover
+            const searchButtons = document.querySelectorAll('.store-search-btn');
+            searchButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.color = 'white';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.color = 'white';
+                });
+            });
+        });
     </script>
 
     @yield('scripts')

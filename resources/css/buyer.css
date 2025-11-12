@@ -78,14 +78,19 @@ body .store-navbar .store-search {
 body .store-navbar .search-form .input-group {
     border-radius: 50px !important;
     overflow: hidden !important;
-    box-shadow: 0 2px 15px rgba(44, 90, 160, 0.15) !important;
+    /* HAPUS box-shadow dan ganti dengan: */
     border: 2px solid transparent !important;
+    background: linear-gradient(white, white) padding-box,
+        var(--gradient) border-box !important;
     transition: var(--nav-transition) !important;
 }
 
 body .store-navbar .search-form .input-group:focus-within {
-    border-color: var(--nav-primary) !important;
-    box-shadow: 0 4px 20px rgba(44, 90, 160, 0.25) !important;
+    /* HAPUS box-shadow dan ganti dengan: */
+    border: 2px solid transparent !important;
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(135deg, #4361ee 0%, #3f37c9 100%) border-box !important;
+    transform: scale(1.02) !important;
 }
 
 body .store-navbar .search-input.form-control {
@@ -134,7 +139,7 @@ body .store-navbar .search-btn.btn:hover::before {
 
 body .store-navbar .search-btn.btn:hover {
     background: var(--nav-secondary) !important;
-    transform: translateX(2px) !important;
+    transform: none !important;
 }
 
 /* Navigation Icons Container - Enhanced */
@@ -519,17 +524,20 @@ body .store-navbar .search-form.loading .search-btn i {
 
 .store-search .input-group {
     border-radius: 50px;
-    box-shadow: 0 2px 20px rgba(67, 97, 238, 0.15);
-    border: 2px solid #e9ecef;
+    /* HAPUS box-shadow dan ganti dengan: */
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+        var(--gradient) border-box;
     transition: all 0.3s ease;
     overflow: hidden;
     background: white;
 }
 
 .store-search .input-group:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 4px 25px rgba(67, 97, 238, 0.25);
-    transform: translateY(-1px);
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(135deg, #4361ee 0%, #3f37c9 100%) border-box;
+    transform: none;
 }
 
 .store-search-input {
@@ -552,7 +560,7 @@ body .store-navbar .search-form.loading .search-btn i {
     font-weight: 400;
 }
 
-/* Search button dengan gradient yang lebih jelas */
+/* Search button dengan gradient yang lebih jelas - SIMPLIFIED */
 .store-search-btn {
     background: var(--gradient);
     border: none;
@@ -563,35 +571,56 @@ body .store-navbar .search-form.loading .search-btn i {
     font-weight: 600;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
-.store-search-btn::before {
+/* Hover state yang sederhana - tanpa efek naik */
+.store-search-btn:hover {
+    opacity: 0.9; /* Sedikit redup saja saat hover */
+    color: white !important; /* Pastikan teks tetap putih */
+    background: var(--gradient); /* Pastikan background tetap sama */
+    transform: none; /* Tidak ada efek naik/turun */
+    box-shadow: none; /* Tidak ada shadow */
+}
+
+/* Pastikan icon tidak berubah saat hover */
+.store-search-btn:hover i {
+    transform: none; /* Tidak ada scale effect pada icon */
+}
+
+/* Loading state untuk button search */
+.store-search-btn.loading {
+    pointer-events: none; /* Nonaktifkan klik saat loading */
+    color: transparent !important; /* Sembunyikan teks */
+}
+
+.store-search-btn.loading::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: buttonSpin 0.8s linear infinite;
 }
 
-.store-search-btn:hover::before {
-    left: 100%;
+/* Animasi loading spinner */
+@keyframes buttonSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.store-search-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
-}
-
-/* Search icon animation */
-.store-search-btn i {
-    transition: transform 0.3s ease;
-}
-
-.store-search-btn:hover i {
-    transform: scale(1.1);
+/* Active state - sedikit efek tekan saat diklik */
+.store-search-btn:active {
+    opacity: 0.8; /* Lebih redup saat ditekan */
 }
 
 /* Clear search button (optional) */
