@@ -110,11 +110,12 @@ class StoreController extends Controller
             ]
         ];
 
+        // PERBAIKAN: Hanya 4 kategori sesuai urutan yang diminta
         $categories = [
-            ['name' => 'Fashion', 'icon' => 'fas fa-tshirt'],
-            ['name' => 'Makanan', 'icon' => 'fas fa-utensils'],
-            ['name' => 'Dekorasi', 'icon' => 'fas fa-home'],
-            ['name' => 'Kecantikan', 'icon' => 'fas fa-hand-sparkles']
+            ['id' => 1, 'name' => 'Fashion', 'icon' => 'fas fa-tshirt'],
+            ['id' => 2, 'name' => 'Makanan', 'icon' => 'fas fa-utensils'],
+            ['id' => 3, 'name' => 'Dekorasi', 'icon' => 'fas fa-home'],
+            ['id' => 4, 'name' => 'Kecantikan', 'icon' => 'fas fa-spa']
         ];
 
         return view('stores.index', compact('trendingProducts', 'discountProducts', 'categories'));
@@ -420,5 +421,142 @@ class StoreController extends Controller
         ];
 
         return view('stores.checkout', compact('cartItems', 'addresses', 'shippingMethods', 'paymentMethods', 'summary'));
+    }
+
+    public function categories()
+    {
+        // PERBAIKAN: Hanya 4 kategori sesuai urutan yang diminta
+        $categories = [
+            [
+                'id' => 1,
+                'name' => 'Fashion',
+                'icon' => 'fas fa-tshirt',
+                'description' => 'Pakaian dan aksesoris fashion lokal terbaik',
+                'product_count' => 32
+            ],
+            [
+                'id' => 2,
+                'name' => 'Makanan',
+                'icon' => 'fas fa-utensils',
+                'description' => 'Berbagai makanan dan minuman khas UMKM',
+                'product_count' => 45
+            ],
+            [
+                'id' => 3,
+                'name' => 'Dekorasi',
+                'icon' => 'fas fa-home',
+                'description' => 'Peralatan dan dekorasi rumah tangga',
+                'product_count' => 23
+            ],
+            [
+                'id' => 4,
+                'name' => 'Kecantikan',
+                'icon' => 'fas fa-spa',
+                'description' => 'Produk kecantikan dan perawatan tubuh',
+                'product_count' => 19
+            ]
+        ];
+
+        return view('stores.categories', compact('categories'));
+    }
+
+    public function categoryProducts($categoryId)
+    {
+        // PERBAIKAN: Mapping untuk 4 kategori saja
+        $categories = [
+            1 => ['name' => 'Fashion', 'icon' => 'fas fa-tshirt'],
+            2 => ['name' => 'Makanan', 'icon' => 'fas fa-utensils'],
+            3 => ['name' => 'Dekorasi', 'icon' => 'fas fa-home'],
+            4 => ['name' => 'Kecantikan', 'icon' => 'fas fa-spa']
+        ];
+
+        $category = $categories[$categoryId] ?? ['name' => 'Kategori', 'icon' => 'fas fa-box'];
+
+        // Data dummy produk berdasarkan kategori
+        $products = $this->generateCategoryProducts($categoryId, $category['name']);
+
+        return view('stores.category-products', compact('category', 'products', 'categoryId'));
+    }
+
+    private function generateCategoryProducts($categoryId, $categoryName)
+    {
+        $products = [];
+
+        // PERBAIKAN: Product names untuk 4 kategori saja
+        $productNames = [
+            1 => [ // Fashion
+                'Kaos Batik Modern',
+                'Kemeja Linen',
+                'Celana Chino',
+                'Dress Santai',
+                'Jaket Denim',
+                'Tas Kulit Sintetis',
+                'Sepatu Sneakers',
+                'Aksesoris Rajut'
+            ],
+            2 => [ // Makanan
+                'Keripik Singkong Pedas',
+                'Dodol Original',
+                'Kopi Arabika',
+                'Teh Herbal',
+                'Kue Kering Tradisional',
+                'Sambal Terasi',
+                'Madu Murni',
+                'Dendeng Sapi'
+            ],
+            3 => [ // Dekorasi
+                'Vas Keramik Handmade',
+                'Lampu Hias Bambu',
+                'Bingkai Foto Kayu',
+                'Karpet Rajut',
+                'Pot Tanaman Keramik',
+                'Lilin Aromaterapi',
+                'Tatakan Gelas Rotan',
+                'Hiasan Dinding'
+            ],
+            4 => [ // Kecantikan
+                'Sabun Herbal Alami',
+                'Lulur Mandi Tradisional',
+                'Minyak Zaitun',
+                'Lip Balm Organik',
+                'Masker Wajah Alami',
+                'Body Scrub Kopi',
+                'Parfum Natural',
+                'Hand Cream'
+            ]
+        ];
+
+        $descriptions = [
+            'Produk berkualitas tinggi dengan bahan terbaik',
+            'Hasil karya tangan dengan sentuhan tradisional',
+            'Inovasi terbaru dengan desain modern',
+            'Produk ramah lingkungan dan sustainable',
+            'Kualitas premium dengan harga terjangkau'
+        ];
+
+        for ($i = 1; $i <= 8; $i++) {
+            $nameIndex = ($i - 1) % count($productNames[$categoryId]);
+            $descIndex = ($i - 1) % count($descriptions);
+
+            $originalPrice = rand(50000, 300000);
+            $discount = rand(10, 30);
+            $currentPrice = $originalPrice - ($originalPrice * $discount / 100);
+
+            $products[] = [
+                'id' => $categoryId * 10 + $i,
+                'name' => $productNames[$categoryId][$nameIndex],
+                'description' => $descriptions[$descIndex],
+                'price' => $currentPrice,
+                'original_price' => $originalPrice,
+                'discount_percent' => $discount,
+                'image' => 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop&' . rand(1000, 9999),
+                'rating' => rand(35, 50) / 10,
+                'review_count' => rand(10, 150),
+                'badge' => 'Trending',
+                'category' => $categoryName
+            ];
+        }
+
+        return $products;
     }
 }

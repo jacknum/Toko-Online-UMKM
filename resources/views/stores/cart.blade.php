@@ -221,47 +221,106 @@
                         <div class="col-lg-8">
                             <div class="card shadow-sm border-0">
                                 <div class="card-header bg-white py-3">
-                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-truck me-2"></i>Informasi Pengiriman
-                                    </h4>
+                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-truck me-2"></i>Informasi Pengiriman</h4>
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="row g-4">
                                         <div class="col-md-6">
                                             <h6 class="fw-semibold mb-3">Alamat Pengiriman</h6>
                                             <div class="address-card p-3 border rounded">
-                                                <p class="fw-semibold mb-1">John Doe</p>
-                                                <p class="text-muted small mb-1">+62 812-3456-7890</p>
-                                                <p class="text-muted small mb-0">
-                                                    Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh<br>
-                                                    Kota Contoh, Provinsi Contoh - 12345
-                                                </p>
+                                                <div class="address-content">
+                                                    <p class="fw-semibold mb-1 small">John Doe</p>
+                                                    <p class="text-muted smaller mb-1">+62 812-3456-7890</p>
+                                                    <p class="address-text text-muted smaller mb-0 text-truncate-2">
+                                                        Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh<br>
+                                                        Kota Contoh, Provinsi Contoh - 12345
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <h6 class="fw-semibold mb-3">Kurir Pengiriman</h6>
+
+                                            <!-- JNE -->
                                             <div class="shipping-option p-3 border rounded mb-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="shipping"
-                                                        id="jne">
-                                                    <label class="form-check-label w-100" for="jne">
-                                                        <div class="d-flex justify-content-between">
-                                                            <span>JNE Reguler</span>
-                                                            <span class="fw-semibold">Rp 15.000</span>
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="jne" value="jne">
+                                                    <label class="form-check-label w-100 mb-0" for="jne">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">JNE Reguler</span>
+                                                            <span class="fw-bold text-primary">Rp 15.000</span>
                                                         </div>
-                                                        <small class="text-muted">Estimasi: 2-3 hari</small>
+                                                        <small class="text-muted d-block">Estimasi: 2-3 hari kerja</small>
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="shipping-option p-3 border rounded">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="shipping"
-                                                        id="tiki">
-                                                    <label class="form-check-label w-100" for="tiki">
-                                                        <div class="d-flex justify-content-between">
-                                                            <span>TIKI Reguler</span>
-                                                            <span class="fw-semibold">Rp 18.000</span>
+
+                                            <!-- TIKI -->
+                                            <div class="shipping-option p-3 border rounded mb-3">
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="tiki" value="tiki">
+                                                    <label class="form-check-label w-100 mb-0" for="tiki">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">TIKI Reguler</span>
+                                                            <span class="fw-bold text-primary">Rp 18.000</span>
                                                         </div>
-                                                        <small class="text-muted">Estimasi: 1-2 hari</small>
+                                                        <small class="text-muted d-block">Estimasi: 1-2 hari kerja</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- POS Indonesia -->
+                                            <div class="shipping-option p-3 border rounded mb-3">
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="pos" value="pos">
+                                                    <label class="form-check-label w-100 mb-0" for="pos">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">POS Indonesia</span>
+                                                            <span class="fw-bold text-primary">Rp 12.000</span>
+                                                        </div>
+                                                        <small class="text-muted d-block">Estimasi: 3-5 hari kerja</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- J&T Express -->
+                                            <div class="shipping-option p-3 border rounded mb-3">
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="jnt" value="jnt">
+                                                    <label class="form-check-label w-100 mb-0" for="jnt">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">J&T Express</span>
+                                                            <span class="fw-bold text-primary">Rp 14.000</span>
+                                                        </div>
+                                                        <small class="text-muted d-block">Estimasi: 2-3 hari kerja</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- SiCepat -->
+                                            <div class="shipping-option p-3 border rounded mb-3">
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="sicepat" value="sicepat">
+                                                    <label class="form-check-label w-100 mb-0" for="sicepat">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">SiCepat REG</span>
+                                                            <span class="fw-bold text-primary">Rp 13.000</span>
+                                                        </div>
+                                                        <small class="text-muted d-block">Estimasi: 2-4 hari kerja</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Anteraja -->
+                                            <div class="shipping-option p-3 border rounded">
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="radio" name="shipping" id="anteraja" value="anteraja">
+                                                    <label class="form-check-label w-100 mb-0" for="anteraja">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small fw-semibold">Anteraja Reguler</span>
+                                                            <span class="fw-bold text-primary">Rp 16.000</span>
+                                                        </div>
+                                                        <small class="text-muted d-block">Estimasi: 1-3 hari kerja</small>
                                                     </label>
                                                 </div>
                                             </div>

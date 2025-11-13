@@ -40,6 +40,9 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
     Route::get('/wishlist', [StoreController::class, 'wishlist'])->name('wishlist');
     Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
+    // Halaman kategori
+    Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
+    Route::get('/category/{category}', [StoreController::class, 'categoryProducts'])->name('category.products');
 
     // Route langsung untuk profile dan addresses (tanpa /account)
     Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile')->middleware(['auth']);
