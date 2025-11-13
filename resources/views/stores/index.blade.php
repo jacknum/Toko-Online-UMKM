@@ -443,7 +443,7 @@ class ProductManager {
             });
         });
     }
-}
+}php
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => new ProductManager());

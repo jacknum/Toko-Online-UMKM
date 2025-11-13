@@ -11,6 +11,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreAccountController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -38,9 +39,8 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/search', [StoreController::class, 'search'])->name('search');
     Route::get('/product/{id}', [StoreController::class, 'productDetail'])->name('product.detail');
     Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
-    Route::get('/wishlist', [StoreController::class, 'wishlist'])->name('wishlist');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
-    // Halaman kategori
     Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
     Route::get('/category/{category}', [StoreController::class, 'categoryProducts'])->name('category.products');
 
