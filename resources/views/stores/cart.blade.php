@@ -76,11 +76,13 @@
                                             <table class="table table-hover align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th scope="col" class="ps-4">Produk</th>
-                                                        <th scope="col">Harga</th>
-                                                        <th scope="col" class="text-center">Jumlah</th>
-                                                        <th scope="col" class="text-end pe-4">Subtotal</th>
-                                                        <th scope="col"></th>
+                                                        <th scope="col" class="ps-4" style="width: 45%;">Produk</th>
+                                                        <th scope="col" style="width: 15%;">Harga</th>
+                                                        <th scope="col" class="text-center" style="width: 20%;">Jumlah
+                                                        </th>
+                                                        <th scope="col" class="text-end pe-4" style="width: 15%;">
+                                                            Subtotal</th>
+                                                        <th scope="col" style="width: 5%;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="cart-items">
@@ -148,7 +150,8 @@
                                     <div class="card-body p-3">
                                         <h6 class="card-title small">Smartphone Samsung Galaxy</h6>
                                         <p class="text-primary fw-bold mb-2 small">Rp 2.499.000</p>
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="addToCart(1, 'Smartphone Samsung Galaxy', 2499000, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop')">
+                                        <button type="button" class="btn btn-primary btn-sm w-100"
+                                            onclick="addToCart(1, 'Smartphone Samsung Galaxy', 2499000, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop')">
                                             <i class="fas fa-cart-plus me-1"></i>Tambah
                                         </button>
                                     </div>
@@ -162,7 +165,8 @@
                                     <div class="card-body p-3">
                                         <h6 class="card-title small">Kemeja Flanel Pria</h6>
                                         <p class="text-primary fw-bold mb-2 small">Rp 189.000</p>
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="addToCart(2, 'Kemeja Flanel Pria', 189000, 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=300&fit=crop')">
+                                        <button type="button" class="btn btn-primary btn-sm w-100"
+                                            onclick="addToCart(2, 'Kemeja Flanel Pria', 189000, 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=300&fit=crop')">
                                             <i class="fas fa-cart-plus me-1"></i>Tambah
                                         </button>
                                     </div>
@@ -176,7 +180,8 @@
                                     <div class="card-body p-3">
                                         <h6 class="card-title small">Kopi Arabika Gayo</h6>
                                         <p class="text-primary fw-bold mb-2 small">Rp 75.000</p>
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="addToCart(3, 'Kopi Arabika Gayo', 75000, 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400&h=300&fit=crop')">
+                                        <button type="button" class="btn btn-primary btn-sm w-100"
+                                            onclick="addToCart(3, 'Kopi Arabika Gayo', 75000, 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400&h=300&fit=crop')">
                                             <i class="fas fa-cart-plus me-1"></i>Tambah
                                         </button>
                                     </div>
@@ -190,7 +195,8 @@
                                     <div class="card-body p-3">
                                         <h6 class="card-title small">Headphone Wireless</h6>
                                         <p class="text-primary fw-bold mb-2 small">Rp 450.000</p>
-                                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="addToCart(4, 'Headphone Wireless', 450000, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop')">
+                                        <button type="button" class="btn btn-primary btn-sm w-100"
+                                            onclick="addToCart(4, 'Headphone Wireless', 450000, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop')">
                                             <i class="fas fa-cart-plus me-1"></i>Tambah
                                         </button>
                                     </div>
@@ -206,7 +212,8 @@
                         <div class="col-lg-10">
                             <div class="card shadow-sm border-0">
                                 <div class="card-header bg-white py-3">
-                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-credit-card me-2"></i>Metode Pembayaran</h4>
+                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-credit-card me-2"></i>Metode Pembayaran
+                                    </h4>
                                 </div>
                                 <div class="card-body p-4">
                                     <!-- Transfer Bank -->
@@ -215,7 +222,8 @@
                                         <div class="row g-4">
                                             @foreach ($banks as $bank)
                                                 <div class="col-md-4">
-                                                    <div class="payment-option text-center p-4 border rounded-3" onclick="selectPayment('{{ $bank['name'] }}', '{{ $bank['account'] }}', 'bank')">
+                                                    <div class="payment-option text-center p-4 border rounded-3"
+                                                        onclick="selectPayment('{{ $bank['name'] }}', '{{ $bank['account'] }}', 'bank')">
                                                         <img src="{{ $bank['image'] }}" alt="{{ $bank['name'] }}"
                                                             style="height: 45px; object-fit: contain;" class="mb-3">
                                                         <p class="fw-semibold mb-2">{{ $bank['name'] }}</p>
@@ -232,7 +240,8 @@
                                         <div class="row g-4">
                                             @foreach ($ewallets as $wallet)
                                                 <div class="col-md-3">
-                                                    <div class="payment-option text-center p-3 border rounded-3" onclick="selectPayment('{{ $wallet['name'] }}', '{{ $wallet['account'] ?? '' }}', 'ewallet')">
+                                                    <div class="payment-option text-center p-3 border rounded-3"
+                                                        onclick="selectPayment('{{ $wallet['name'] }}', '{{ $wallet['account'] ?? '' }}', 'ewallet')">
                                                         <img src="{{ $wallet['image'] }}" alt="{{ $wallet['name'] }}"
                                                             style="height: 40px; object-fit: contain;" class="mb-2">
                                                         <p class="fw-semibold small mb-0">{{ $wallet['name'] }}</p>
@@ -249,42 +258,67 @@
                                             <div class="card-body p-4">
                                                 <div class="text-center mb-4">
                                                     <div class="payment-details mb-4">
-                                                        <h4 class="fw-bold text-primary mb-2" id="payment-total-display">Rp 0</h4>
+                                                        <h4 class="fw-bold text-primary mb-2" id="payment-total-display">
+                                                            Rp 0</h4>
                                                         <p class="text-muted mb-3">Total yang harus dibayar</p>
                                                         <div class="payment-instruction bg-white p-3 rounded border">
                                                             <h6 class="fw-semibold mb-3">Instruksi Pembayaran</h6>
                                                             <div id="bank-instructions" class="text-start">
-                                                                <p class="mb-2"><i class="fas fa-mobile-alt me-2"></i>Buka aplikasi mobile banking atau internet banking Anda</p>
-                                                                <p class="mb-2"><i class="fas fa-exchange-alt me-2"></i>Pilih menu transfer</p>
-                                                                <p class="mb-2"><i class="fas fa-credit-card me-2"></i>Masukkan nomor rekening: <span id="payment-account-display" class="fw-semibold"></span></p>
-                                                                <p class="mb-2"><i class="fas fa-money-bill-wave me-2"></i>Masukkan jumlah: <span id="payment-amount-display" class="fw-semibold"></span></p>
-                                                                <p class="mb-0"><i class="fas fa-check-circle me-2"></i>Konfirmasi dan selesaikan transaksi</p>
+                                                                <p class="mb-2"><i
+                                                                        class="fas fa-mobile-alt me-2"></i>Buka aplikasi
+                                                                    mobile banking atau internet banking Anda</p>
+                                                                <p class="mb-2"><i
+                                                                        class="fas fa-exchange-alt me-2"></i>Pilih menu
+                                                                    transfer</p>
+                                                                <p class="mb-2"><i
+                                                                        class="fas fa-credit-card me-2"></i>Masukkan nomor
+                                                                    rekening: <span id="payment-account-display"
+                                                                        class="fw-semibold"></span></p>
+                                                                <p class="mb-2"><i
+                                                                        class="fas fa-money-bill-wave me-2"></i>Masukkan
+                                                                    jumlah: <span id="payment-amount-display"
+                                                                        class="fw-semibold"></span></p>
+                                                                <p class="mb-0"><i
+                                                                        class="fas fa-check-circle me-2"></i>Konfirmasi dan
+                                                                    selesaikan transaksi</p>
                                                             </div>
                                                             <div id="ewallet-instructions" class="text-start d-none">
-                                                                <p class="mb-2"><i class="fas fa-mobile-alt me-2"></i>Buka aplikasi e-wallet Anda</p>
-                                                                <p class="mb-2"><i class="fas fa-qrcode me-2"></i>Pilih menu pembayaran atau scan QR</p>
-                                                                <p class="mb-2"><i class="fas fa-camera me-2"></i>Scan kode QR di bawah ini</p>
+                                                                <p class="mb-2"><i
+                                                                        class="fas fa-mobile-alt me-2"></i>Buka aplikasi
+                                                                    e-wallet Anda</p>
+                                                                <p class="mb-2"><i class="fas fa-qrcode me-2"></i>Pilih
+                                                                    menu pembayaran atau scan QR</p>
+                                                                <p class="mb-2"><i class="fas fa-camera me-2"></i>Scan
+                                                                    kode QR di bawah ini</p>
                                                                 <div class="text-center my-3">
-                                                                    <div class="bg-white p-3 d-inline-block border rounded">
-                                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TokoUMKM-{{ time() }}" alt="QR Code" class="img-fluid">
+                                                                    <div
+                                                                        class="bg-white p-3 d-inline-block border rounded">
+                                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TokoUMKM-{{ time() }}"
+                                                                            alt="QR Code" class="img-fluid">
                                                                     </div>
                                                                 </div>
-                                                                <p class="mb-0"><i class="fas fa-check-circle me-2"></i>Konfirmasi dan selesaikan transaksi</p>
+                                                                <p class="mb-0"><i
+                                                                        class="fas fa-check-circle me-2"></i>Konfirmasi dan
+                                                                    selesaikan transaksi</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="upload-section">
                                                     <div class="mb-3">
-                                                        <label for="payment-proof" class="form-label fw-semibold">Upload Bukti Pembayaran</label>
-                                                        <input type="file" class="form-control" id="payment-proof" accept="image/*,.pdf">
+                                                        <label for="payment-proof" class="form-label fw-semibold">Upload
+                                                            Bukti Pembayaran</label>
+                                                        <input type="file" class="form-control" id="payment-proof"
+                                                            accept="image/*,.pdf">
                                                         <div class="form-text">Format: JPG, PNG, PDF (Maks. 2MB)</div>
                                                     </div>
-                                                    <div class="preview-area text-center p-4 border rounded bg-white d-none" id="proof-preview">
+                                                    <div class="preview-area text-center p-4 border rounded bg-white d-none"
+                                                        id="proof-preview">
                                                         <i class="fas fa-file-image text-muted fa-3x mb-3"></i>
                                                         <p class="mb-2 fw-semibold" id="proof-filename"></p>
-                                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeProof()">
+                                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                            onclick="removeProof()">
                                                             <i class="fas fa-trash me-1"></i>Hapus
                                                         </button>
                                                     </div>
@@ -307,7 +341,8 @@
                                 </button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-primary btn-lg" id="btn-to-shipping" disabled onclick="verifyPayment()">
+                                <button class="btn btn-primary btn-lg" id="btn-to-shipping" disabled
+                                    onclick="verifyPayment()">
                                     <i class="fas fa-check-circle me-2"></i>
                                     Verifikasi Pembayaran
                                     <i class="fas fa-arrow-right ms-2"></i>
@@ -323,7 +358,8 @@
                         <div class="col-lg-10">
                             <div class="card shadow-sm border-0">
                                 <div class="card-header bg-white py-3">
-                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-truck me-2"></i>Pilih Kurir Pengiriman</h4>
+                                    <h4 class="mb-0 fw-semibold"><i class="fas fa-truck me-2"></i>Pilih Kurir Pengiriman
+                                    </h4>
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="row g-4">
@@ -342,106 +378,199 @@
                                         </div>
                                         <div class="col-md-6">
                                             <h6 class="fw-semibold mb-3">Pilih Kurir</h6>
-                                            
+
+                                            <!-- Filter Kurir -->
+                                            <div class="mb-4">
+                                                <div class="btn-group w-100" role="group">
+                                                    <input type="radio" class="btn-check" name="kurir-filter"
+                                                        id="all-kurir" checked>
+                                                    <label class="btn btn-outline-primary" for="all-kurir">
+                                                        <i class="fas fa-list me-2"></i>Semua Kurir
+                                                    </label>
+
+                                                    <input type="radio" class="btn-check" name="kurir-filter"
+                                                        id="recommended-kurir">
+                                                    <label class="btn btn-outline-primary" for="recommended-kurir">
+                                                        <i class="fas fa-star me-2"></i>Rekomendasi
+                                                    </label>
+                                                </div>
+                                            </div>
+
                                             <div class="kurir-options">
-                                                <!-- JNE -->
-                                                <div class="kurir-option p-3 border rounded mb-3">
+                                                <!-- Pilihan Penjual - Recommended -->
+                                                <div class="kurir-option p-3 border rounded mb-3 recommended-kurir"
+                                                    data-kurir="pilihan-penjual">
                                                     <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="jne" value="jne" data-price="15000">
-                                                        <label class="form-check-label w-100" for="jne">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="pilihan-penjual" value="pilihan-penjual" data-price="0"
+                                                            checked>
+                                                        <label class="form-check-label w-100" for="pilihan-penjual">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/JNE_logo_2019.svg/1200px-JNE_logo_2019.svg.png" alt="JNE" style="height: 30px; object-fit: contain;" class="me-3">
+                                                                    <div class="kurir-logo me-3"
+                                                                        style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                                                        <i class="fas fa-store fa-lg"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span class="fw-semibold">Pilihan Penjual</span>
+                                                                        <span class="badge bg-success ms-2">
+                                                                            <i class="fas fa-crown me-1"></i>Rekomendasi
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <span class="fw-bold text-success">GRATIS</span>
+                                                            </div>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-info-circle me-1"></i>Penjual akan
+                                                                memilih kurir terbaik untuk produk Anda</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 1-3 hari
+                                                                kerja</small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- JNE -->
+                                                <div class="kurir-option p-3 border rounded mb-3" data-kurir="jne">
+                                                    <div class="form-check mb-0">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="jne" value="jne" data-price="15000">
+                                                        <label class="form-check-label w-100" for="jne">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://banner2.cleanpng.com/20180622/qhb/aazg7smfj.webp"
+                                                                        alt="JNE"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
                                                                     <span class="fw-semibold">JNE Reguler</span>
                                                                 </div>
                                                                 <span class="fw-bold text-primary">Rp 15.000</span>
                                                             </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 2-3 hari kerja</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 2-3 hari
+                                                                kerja</small>
                                                         </label>
                                                     </div>
                                                 </div>
 
                                                 <!-- TIKI -->
-                                                <div class="kurir-option p-3 border rounded mb-3">
+                                                <div class="kurir-option p-3 border rounded mb-3" data-kurir="tiki">
                                                     <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="tiki" value="tiki" data-price="18000">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="tiki" value="tiki" data-price="18000">
                                                         <label class="form-check-label w-100" for="tiki">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Tiki_logo.svg/1200px-Tiki_logo.svg.png" alt="TIKI" style="height: 30px; object-fit: contain;" class="me-3">
+                                                                    <img src="https://www.pikpng.com/pngl/b/129-1294161_tiki-logo-png-logo-pt-tiki-clipart.png"
+                                                                        alt="TIKI"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
                                                                     <span class="fw-semibold">TIKI Reguler</span>
                                                                 </div>
                                                                 <span class="fw-bold text-primary">Rp 18.000</span>
                                                             </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 1-2 hari kerja</small>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <!-- POS Indonesia -->
-                                                <div class="kurir-option p-3 border rounded mb-3">
-                                                    <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="pos" value="pos" data-price="12000">
-                                                        <label class="form-check-label w-100" for="pos">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Logo_Pos_Indonesia_2020.svg/1200px-Logo_Pos_Indonesia_2020.svg.png" alt="POS Indonesia" style="height: 30px; object-fit: contain;" class="me-3">
-                                                                    <span class="fw-semibold">POS Indonesia</span>
-                                                                </div>
-                                                                <span class="fw-bold text-primary">Rp 12.000</span>
-                                                            </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 3-5 hari kerja</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 1-2 hari
+                                                                kerja</small>
                                                         </label>
                                                     </div>
                                                 </div>
 
                                                 <!-- J&T Express -->
-                                                <div class="kurir-option p-3 border rounded mb-3">
+                                                <div class="kurir-option p-3 border rounded mb-3" data-kurir="jnt">
                                                     <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="jnt" value="jnt" data-price="14000">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="jnt" value="jnt" data-price="14000">
                                                         <label class="form-check-label w-100" for="jnt">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/J%26T_Express_logo.svg/1200px-J%26T_Express_logo.svg.png" alt="J&T" style="height: 30px; object-fit: contain;" class="me-3">
+                                                                    <img src="https://1000logos.net/wp-content/uploads/2022/08/JT-Express-Logo.png"
+                                                                        alt="J&T"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
                                                                     <span class="fw-semibold">J&T Express</span>
                                                                 </div>
                                                                 <span class="fw-bold text-primary">Rp 14.000</span>
                                                             </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 2-3 hari kerja</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 2-3 hari
+                                                                kerja</small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- POS Indonesia -->
+                                                <div class="kurir-option p-3 border rounded mb-3" data-kurir="pos">
+                                                    <div class="form-check mb-0">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="pos" value="pos" data-price="12000">
+                                                        <label class="form-check-label w-100" for="pos">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="https://toppng.com/uploads/preview/pos-indonesia-vector-logo-free-11574058314mhkyvtrdtv.png"
+                                                                        alt="POS Indonesia"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
+                                                                    <span class="fw-semibold">POS Indonesia</span>
+                                                                </div>
+                                                                <span class="fw-bold text-primary">Rp 12.000</span>
+                                                            </div>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 3-5 hari
+                                                                kerja</small>
                                                         </label>
                                                     </div>
                                                 </div>
 
                                                 <!-- SiCepat -->
-                                                <div class="kurir-option p-3 border rounded mb-3">
+                                                <div class="kurir-option p-3 border rounded mb-3" data-kurir="sicepat">
                                                     <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="sicepat" value="sicepat" data-price="13000">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="sicepat" value="sicepat" data-price="13000">
                                                         <label class="form-check-label w-100" for="sicepat">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/SiCepat_logo.svg/1200px-SiCepat_logo.svg.png" alt="SiCepat" style="height: 30px; object-fit: contain;" class="me-3">
+                                                                    <img src="https://www.barantum.com/assets/img/successstory/casestudy/sicepat/sicepat.png"
+                                                                        alt="SiCepat"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
                                                                     <span class="fw-semibold">SiCepat REG</span>
                                                                 </div>
                                                                 <span class="fw-bold text-primary">Rp 13.000</span>
                                                             </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 2-4 hari kerja</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 2-4 hari
+                                                                kerja</small>
                                                         </label>
                                                     </div>
                                                 </div>
 
                                                 <!-- Anteraja -->
-                                                <div class="kurir-option p-3 border rounded">
+                                                <div class="kurir-option p-3 border rounded" data-kurir="anteraja">
                                                     <div class="form-check mb-0">
-                                                        <input class="form-check-input" type="radio" name="kurir" id="anteraja" value="anteraja" data-price="16000">
+                                                        <input class="form-check-input" type="radio" name="kurir"
+                                                            id="anteraja" value="anteraja" data-price="16000">
                                                         <label class="form-check-label w-100" for="anteraja">
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="https://anteraja.id/assets/images/logo.png" alt="Anteraja" style="height: 30px; object-fit: contain;" class="me-3">
+                                                                    <img src="https://webstoriess.enkosa.com/wp-content/uploads/2024/01/Download-Logo-Anteraja-PNG.png"
+                                                                        alt="Anteraja"
+                                                                        style="width: 40px; height: 40px; object-fit: contain;"
+                                                                        class="me-3">
                                                                     <span class="fw-semibold">Anteraja Reguler</span>
                                                                 </div>
                                                                 <span class="fw-bold text-primary">Rp 16.000</span>
                                                             </div>
-                                                            <small class="text-muted d-block"><i class="fas fa-clock me-1"></i>Estimasi: 1-3 hari kerja</small>
+                                                            <small class="text-muted d-block"><i
+                                                                    class="fas fa-clock me-1"></i>Estimasi: 1-3 hari
+                                                                kerja</small>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -463,7 +592,8 @@
                                 </button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-primary btn-lg" id="btn-to-complete" disabled onclick="navigateToStep(4)">
+                                <button class="btn btn-primary btn-lg" id="btn-to-complete" disabled
+                                    onclick="navigateToStep(4)">
                                     <i class="fas fa-check-circle me-2"></i>
                                     Selesaikan Pesanan
                                     <i class="fas fa-arrow-right ms-2"></i>
@@ -480,8 +610,9 @@
                             <i class="fas fa-check-circle fa-5x text-success"></i>
                         </div>
                         <h3 class="fw-semibold mb-3 text-success">Pesanan Berhasil!</h3>
-                        <p class="text-muted mb-4">Terima kasih telah berbelanja di Toko UMKM. Pesanan Anda sedang diproses.</p>
-                        
+                        <p class="text-muted mb-4">Terima kasih telah berbelanja di Toko UMKM. Pesanan Anda sedang
+                            diproses.</p>
+
                         <div class="card shadow-sm border-0 mx-auto mb-4" style="max-width: 500px;">
                             <div class="card-body p-4">
                                 <h5 class="fw-semibold mb-3">Detail Pesanan</h5>
@@ -509,7 +640,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-center gap-3 flex-wrap">
                             <a href="/orders" class="btn btn-primary btn-lg">
                                 <i class="fas fa-clipboard-list me-2"></i>Cek Pesanan Saya
@@ -539,7 +670,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Load cart from localStorage
             loadCart();
-            
+
             // Initialize order number
             document.getElementById('order-number').textContent = '#' + orderNumber;
 
@@ -552,14 +683,14 @@
                         this.value = '';
                         return;
                     }
-                    
+
                     const preview = document.getElementById('proof-preview');
                     const filename = document.getElementById('proof-filename');
-                    
+
                     filename.textContent = file.name;
                     preview.classList.remove('d-none');
                     paymentProofUploaded = true;
-                    
+
                     // Enable verify button if payment method is selected
                     if (selectedPayment) {
                         document.getElementById('btn-to-shipping').disabled = false;
@@ -578,6 +709,43 @@
                     }
                 });
             });
+
+            // Filter kurir handler
+            document.querySelectorAll('input[name="kurir-filter"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const filterType = this.id;
+                    const allKurirOptions = document.querySelectorAll('.kurir-option');
+
+                    if (filterType === 'all-kurir') {
+                        // Tampilkan semua kurir
+                        allKurirOptions.forEach(option => {
+                            option.style.display = 'block';
+                        });
+                    } else if (filterType === 'recommended-kurir') {
+                        // Hanya tampilkan pilihan penjual (rekomendasi)
+                        allKurirOptions.forEach(option => {
+                            if (option.classList.contains('recommended-kurir')) {
+                                option.style.display = 'block';
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Set pilihan penjual sebagai default
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set pilihan penjual sebagai default yang terpilih
+                const pilihanPenjual = document.getElementById('pilihan-penjual');
+                if (pilihanPenjual) {
+                    pilihanPenjual.checked = true;
+                    selectedKurir = 'pilihan-penjual';
+                    shippingCost = 0;
+                    document.getElementById('btn-to-complete').disabled = false;
+                    updateCartSummary();
+                }
+            });
         });
 
         function navigateToStep(stepNumber) {
@@ -595,7 +763,7 @@
                     const newPanel = document.querySelector(`.step-panel[data-step="${stepNumber}"]`);
                     if (newPanel) {
                         newPanel.classList.add('active');
-                        
+
                         // Update order details in step 4
                         if (stepNumber == 4) {
                             updateOrderDetails();
@@ -634,7 +802,7 @@
 
         function addToCart(id, name, price, image) {
             const existingItem = cart.find(item => item.id === id);
-            
+
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
@@ -646,7 +814,7 @@
                     quantity: 1
                 });
             }
-            
+
             saveCart();
             showToast('Produk berhasil ditambahkan ke keranjang!');
         }
@@ -656,58 +824,67 @@
             const cartItems = document.getElementById('cart-items');
             const emptyCart = document.getElementById('empty-cart');
             const cartWithItems = document.getElementById('cart-with-items');
-            
+
             // Update cart count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems + ' Item';
-            
+
             if (cart.length === 0) {
                 emptyCart.classList.remove('d-none');
                 cartWithItems.classList.add('d-none');
             } else {
                 emptyCart.classList.add('d-none');
                 cartWithItems.classList.remove('d-none');
-                
+
                 // Render cart items
                 cartItems.innerHTML = '';
                 cart.forEach(item => {
                     const subtotal = item.price * item.quantity;
                     cartItems.innerHTML += `
-                        <tr>
-                            <td class="ps-4">
-                                <div class="d-flex align-items-center">
-                                    <img src="${item.image}" alt="${item.name}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
-                                    <div>
-                                        <h6 class="mb-0 small fw-semibold">${item.name}</h6>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="fw-medium">Rp ${formatNumber(item.price)}</span>
-                            </td>
-                            <td class="text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, -1)">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <span class="mx-3 fw-medium">${item.quantity}</span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="text-end pe-4">
-                                <span class="fw-bold text-primary">Rp ${formatNumber(subtotal)}</span>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item.id})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                <tr>
+                    <td class="ps-4">
+                        <div class="d-flex align-items-center">
+                            <img src="${item.image}" alt="${item.name}" 
+                                 class="rounded me-3 flex-shrink-0" 
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+                            <div class="product-info flex-grow-1">
+                                <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem; line-height: 1.2;">${item.name}</h6>
+                                <small class="text-muted">Stok: Tersedia</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="fw-medium text-nowrap" style="font-size: 0.9rem;">Rp ${formatNumber(item.price)}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <button class="btn btn-sm btn-outline-secondary px-2 py-1" 
+                                    onclick="updateQuantity(${item.id}, -1)"
+                                    style="min-width: 32px; height: 32px;">
+                                <i class="fas fa-minus" style="font-size: 0.7rem;"></i>
+                            </button>
+                            <span class="mx-2 fw-medium" style="min-width: 40px; text-align: center; font-size: 0.9rem;">${item.quantity}</span>
+                            <button class="btn btn-sm btn-outline-secondary px-2 py-1" 
+                                    onclick="updateQuantity(${item.id}, 1)"
+                                    style="min-width: 32px; height: 32px;">
+                                <i class="fas fa-plus" style="font-size: 0.7rem;"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="text-end pe-4">
+                        <span class="fw-bold text-primary text-nowrap" style="font-size: 0.9rem;">Rp ${formatNumber(subtotal)}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-danger p-1" 
+                                onclick="removeFromCart(${item.id})"
+                                style="width: 32px; height: 32px;">
+                            <i class="fas fa-trash" style="font-size: 0.7rem;"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
                 });
-                
+
                 updateCartSummary();
             }
         }
@@ -716,7 +893,7 @@
             const item = cart.find(item => item.id === id);
             if (item) {
                 item.quantity += change;
-                
+
                 if (item.quantity <= 0) {
                     removeFromCart(id);
                 } else {
@@ -733,7 +910,7 @@
         function updateCartSummary() {
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost;
-            
+
             document.getElementById('cart-subtotal').textContent = 'Rp ' + formatNumber(subtotal);
             document.getElementById('cart-shipping').textContent = 'Rp ' + formatNumber(shippingCost);
             document.getElementById('cart-total').textContent = 'Rp ' + formatNumber(total);
@@ -745,19 +922,23 @@
 
         // Payment functionality
         function selectPayment(name, account, type) {
-            selectedPayment = { name, account, type };
-            
+            selectedPayment = {
+                name,
+                account,
+                type
+            };
+
             // Show payment proof section
             document.getElementById('payment-proof-section').style.display = 'block';
-            
+
             // Update payment details
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost;
-            
+
             document.getElementById('payment-total-display').textContent = 'Rp ' + formatNumber(total);
             document.getElementById('payment-amount-display').textContent = 'Rp ' + formatNumber(total);
             document.getElementById('payment-account-display').textContent = account;
-            
+
             // Show appropriate instructions
             if (type === 'bank') {
                 document.getElementById('bank-instructions').classList.remove('d-none');
@@ -766,12 +947,12 @@
                 document.getElementById('bank-instructions').classList.add('d-none');
                 document.getElementById('ewallet-instructions').classList.remove('d-none');
             }
-            
+
             // Enable verify button if proof is already uploaded
             if (paymentProofUploaded) {
                 document.getElementById('btn-to-shipping').disabled = false;
             }
-            
+
             // Show selection feedback
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
@@ -791,14 +972,14 @@
                 showToast('Pilih metode pembayaran terlebih dahulu', 'error');
                 return;
             }
-            
+
             if (!paymentProofUploaded) {
                 showToast('Upload bukti pembayaran terlebih dahulu', 'error');
                 return;
             }
-            
+
             showToast('Bukti pembayaran berhasil diupload! Menunggu verifikasi...', 'success');
-            
+
             // Simulate verification process
             setTimeout(() => {
                 navigateToStep(3);
@@ -809,42 +990,48 @@
         function updateOrderDetails() {
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost;
-            
+
             document.getElementById('order-total').textContent = 'Rp ' + formatNumber(total);
             document.getElementById('order-payment').textContent = selectedPayment ? selectedPayment.name : '-';
-            
+
             // Set shipping details
             if (selectedKurir) {
-                const kurirOption = document.querySelector(`input[name="kurir"][value="${selectedKurir}"]`);
-                const kurirLabel = kurirOption ? kurirOption.closest('.kurir-option').querySelector('.fw-semibold').textContent : '-';
-                document.getElementById('order-shipping').textContent = kurirLabel;
-                
-                // Set estimate based on kurir method
-                let estimate = '';
-                switch(selectedKurir) {
-                    case 'jne': estimate = '2-3 hari kerja'; break;
-                    case 'tiki': estimate = '1-2 hari kerja'; break;
-                    case 'pos': estimate = '3-5 hari kerja'; break;
-                    case 'jnt': estimate = '2-3 hari kerja'; break;
-                    case 'sicepat': estimate = '2-4 hari kerja'; break;
-                    case 'anteraja': estimate = '1-3 hari kerja'; break;
-                    default: estimate = '-';
-                }
-                document.getElementById('order-estimate').textContent = estimate;
+                const kurirNames = {
+                    'pilihan-penjual': 'Pilihan Penjual',
+                    'jne': 'JNE Reguler',
+                    'tiki': 'TIKI Reguler',
+                    'pos': 'POS Indonesia',
+                    'jnt': 'J&T Express',
+                    'sicepat': 'SiCepat REG',
+                    'anteraja': 'Anteraja Reguler'
+                };
+
+                const kurirEstimates = {
+                    'pilihan-penjual': '1-3 hari kerja',
+                    'jne': '2-3 hari kerja',
+                    'tiki': '1-2 hari kerja',
+                    'pos': '3-5 hari kerja',
+                    'jnt': '2-3 hari kerja',
+                    'sicepat': '2-4 hari kerja',
+                    'anteraja': '1-3 hari kerja'
+                };
+
+                document.getElementById('order-shipping').textContent = kurirNames[selectedKurir] || '-';
+                document.getElementById('order-estimate').textContent = kurirEstimates[selectedKurir] || '-';
             }
         }
 
         function showToast(message, type = 'success') {
             const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
             const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-            
+
             // Create toast element
             const toast = document.createElement('div');
             toast.className = `toast align-items-center text-white ${bgColor} border-0 position-fixed`;
             toast.style.top = '20px';
             toast.style.right = '20px';
             toast.style.zIndex = '1055';
-            
+
             toast.innerHTML = `
                 <div class="d-flex">
                     <div class="toast-body">
@@ -853,13 +1040,13 @@
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
             `;
-            
+
             document.body.appendChild(toast);
-            
+
             // Initialize and show toast
             const bsToast = new bootstrap.Toast(toast);
             bsToast.show();
-            
+
             // Remove toast after it's hidden
             toast.addEventListener('hidden.bs.toast', function() {
                 document.body.removeChild(toast);
@@ -872,108 +1059,408 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .step:hover {
             transform: translateY(-2px);
         }
-        
+
         .step.completed .step-icon {
             background-color: #198754;
             color: white;
         }
-        
+
         .step.active .step-icon {
             background-color: #0d6efd;
             color: white;
         }
-        
+
         .step-panel {
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .step-panel.active {
             display: block;
             opacity: 1;
         }
-        
+
         .step-panel.fade-out {
             opacity: 0;
         }
-        
-        .payment-option, .kurir-option {
+
+        .payment-option,
+        .kurir-option {
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
-        .payment-option:hover, .kurir-option:hover {
+
+        .payment-option:hover,
+        .kurir-option:hover {
             border-color: #0d6efd !important;
             transform: translateY(-2px);
         }
-        
-        .payment-option.selected, .kurir-option:hover {
+
+        .payment-option.selected,
+        .kurir-option:hover {
             border-color: #0d6efd !important;
             background-color: rgba(13, 110, 253, 0.05);
         }
-        
-        .kurir-option .form-check-input:checked + label {
+
+        .kurir-option .form-check-input:checked+label {
             background-color: rgba(13, 110, 253, 0.05);
         }
-        
+
         .toast {
             min-width: 300px;
         }
-        
+
         .navigation-buttons {
             margin-top: 2rem;
         }
-        
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             min-width: 160px;
         }
-        
+
         .btn-lg {
             padding: 12px 24px;
             font-size: 1.1rem;
         }
-        
+
         .payment-instruction {
             text-align: left;
         }
-        
+
         .payment-instruction p {
             margin-bottom: 0.5rem;
             display: flex;
             align-items: flex-start;
         }
-        
+
         .payment-instruction i {
             width: 20px;
             margin-top: 2px;
         }
-        
+
         .kurir-option img {
             filter: grayscale(100%);
             transition: filter 0.3s ease;
         }
-        
+
         .kurir-option:hover img,
-        .kurir-option .form-check-input:checked + label img {
+        .kurir-option .form-check-input:checked+label img {
             filter: grayscale(0%);
         }
-        
+
         .upload-section {
             border-top: 1px solid #dee2e6;
             padding-top: 1.5rem;
             margin-top: 1.5rem;
         }
-        
+
         .preview-area {
             border: 2px dashed #dee2e6;
+        }
+
+        /* Tambahan untuk memperbaiki layout keranjang */
+        .table th {
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .product-info {
+            min-width: 0;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .text-nowrap {
+            white-space: nowrap;
+        }
+
+        /* Perbaikan layout keranjang */
+        .table th {
+            white-space: nowrap;
+            font-size: 0.85rem;
+            padding: 12px 8px;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 12px 8px;
+        }
+
+        .product-info {
+            min-width: 0;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .text-nowrap {
+            white-space: nowrap;
+        }
+
+        /* Perbaikan tombol quantity */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #f8f9fa;
+            border-color: #6c757d;
+        }
+
+        .quantity-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Perbaikan untuk mobile */
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 8px 4px;
+            }
+
+            .product-info h6 {
+                font-size: 0.8rem !important;
+            }
+
+            .quantity-btn {
+                width: 28px;
+                height: 28px;
+            }
+
+            .quantity-display {
+                min-width: 30px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Styling untuk filter kurir */
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .btn-check:checked+.btn {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+
+        /* Styling untuk logo kurir */
+        .kurir-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Badge rekomendasi */
+        .badge.bg-warning {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        /* Hover effect untuk kurir option */
+        .kurir-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .kurir-option:hover {
+            border-color: #0d6efd !important;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .form-check-input:checked+.form-check-label {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .kurir-logo {
+                width: 35px;
+                height: 35px;
+                font-size: 9px;
+            }
+
+            .btn-group .btn {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+        }
+
+        /* Styling untuk filter kurir */
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .btn-check:checked+.btn {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+
+        /* Badge rekomendasi */
+        .badge.bg-warning {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        /* Hover effect untuk kurir option */
+        .kurir-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .kurir-option:hover {
+            border-color: #0d6efd !important;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .form-check-input:checked+.form-check-label {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        /* Styling untuk logo kurir */
+        .kurir-option img {
+            filter: grayscale(0%);
+            transition: filter 0.3s ease;
+        }
+
+        .kurir-option:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .btn-group .btn {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+
+            .kurir-option img {
+                width: 35px !important;
+                height: 35px !important;
+            }
+        }
+
+        /* Styling khusus untuk pilihan penjual */
+        .kurir-option[data-kurir="pilihan-penjual"] {
+            border: 2px solid #28a745 !important;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(40, 167, 69, 0.02) 100%);
+        }
+
+        .kurir-option[data-kurir="pilihan-penjual"]:hover {
+            border-color: #28a745 !important;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.08) 0%, rgba(40, 167, 69, 0.04) 100%);
+        }
+
+        .kurir-option[data-kurir="pilihan-penjual"] .form-check-input:checked+.form-check-label {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+        }
+
+        /* Icon khusus untuk pilihan penjual */
+        .kurir-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        /* Badge rekomendasi khusus */
+        .badge.bg-success {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        /* Harga gratis dengan styling khusus */
+        .text-success {
+            color: #28a745 !important;
+            font-weight: 700;
+        }
+
+        /* Animasi untuk pilihan penjual */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        .kurir-option[data-kurir="pilihan-penjual"] {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .kurir-option[data-kurir="pilihan-penjual"] {
+                border-width: 1px !important;
+            }
+
+            .kurir-logo {
+                width: 35px;
+                height: 35px;
+            }
+
+            .kurir-logo i {
+                font-size: 1rem !important;
+            }
         }
     </style>
 @endsection

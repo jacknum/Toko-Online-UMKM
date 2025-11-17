@@ -3,6 +3,8 @@
 @section('title', 'Home - Toko UMKM')
 
 @section('content')
+
+@extends('stores.partials.modals')
 <!-- Modals -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
