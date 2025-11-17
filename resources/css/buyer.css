@@ -66,6 +66,10 @@ body .store-navbar .store-brand.navbar-brand i {
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 /* Search Bar - Enhanced */
@@ -514,8 +518,11 @@ body .store-navbar .search-form.loading .search-btn i {
 .store-search {
     flex-grow: 1;
     max-width: 500px;
-    margin: 0 auto;
     position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 80px;
+    margin-top: 10px;
 }
 
 .store-search .search-form {
@@ -572,6 +579,12 @@ body .store-navbar .search-form.loading .search-btn i {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    gap: 8px;
+}
+
+.store-search-btn span {
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* Hover state yang sederhana - tanpa efek naik */
@@ -965,7 +978,21 @@ body .store-navbar .search-form.loading .search-btn i {
     justify-content: center;
     margin: 0 auto 15px;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    /* sedikit lebih besar */
+    line-height: 1;
+    /* ← TAMBAHKAN INI */
+}
+
+.store-category-icon i {
+    display: flex;
+    /* ← TAMBAHKAN */
+    align-items: center;
+    /* ← TAMBAHKAN */
+    justify-content: center;
+    /* ← TAMBAHKAN */
+    width: 100%;
+    /* ← TAMBAHKAN */
 }
 
 .store-category-card h5 {
@@ -4455,6 +4482,7 @@ img {
     justify-content: center;
     margin-bottom: 20px;
     transition: all 0.3s ease;
+    line-height: 1;
 }
 
 .store-category-page-card:hover .store-category-page-icon {
@@ -4464,6 +4492,12 @@ img {
 .store-category-page-icon i {
     font-size: 2rem;
     color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    line-height: 1;
+    padding: 2px;
 }
 
 .store-category-page-content h5 {
@@ -4524,11 +4558,16 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
 
 .store-category-icon-large i {
     font-size: 2.5rem;
     color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .store-category-stats {
@@ -4694,4 +4733,3 @@ img {
         text-align: left !important;
     }
 }
-

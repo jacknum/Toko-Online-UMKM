@@ -15,8 +15,8 @@
                     </ol>
                 </nav>
 
-                <h1 class="store-page-title text-black">Kategori Produk</h1>
-                <p class="store-page-subtitle text-black">Temukan produk UMKM berdasarkan kategori favorit Anda</p>
+                <h1 class="store-page-title text-white">Kategori Produk</h1>
+                <p class="store-page-subtitle text-white mb-4">Temukan produk UMKM berdasarkan kategori favorit Anda</p>
             </div>
         </div>
 

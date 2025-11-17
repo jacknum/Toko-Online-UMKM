@@ -146,10 +146,56 @@
                                         <th>Stok</th>
                                         <th>Status</th>
                                         <th>Tanggal Ditambah</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="productsTableBody">
-                                    <!-- Data akan diisi oleh JavaScript -->
+                                    @forelse ($products as $product)
+                                        <tr class="product-row">
+                                            <td class="ps-4">{{ $loop->iteration }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                                        alt="{{ $product->name }}"
+                                                        class="rounded me-3"
+                                                        style="width: 40px; height: 40px; object-fit: cover;">
+
+                                                    <div>
+                                                        <strong>{{ $product->name }}</strong><br>
+                                                        <small class="text-muted">{{ $product->sku ?? '-' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ $product->category }}</td>
+                                            <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                            <td>{{ $product->stock }}</td>
+                                            <td>
+                                                @if ($product->stock == 0)
+                                                    <span class="badge bg-danger">Stok Habis</span>
+                                                @elseif ($product->stock < 5)
+                                                    <span class="badge bg-warning">Stok Menipis</span>
+                                                @else
+                                                    <span class="badge bg-success">Aktif</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $product->created_at->format('d M Y') }}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="openEditModal({{ $product->id }})" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct({{ $product->id }})" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center py-5">
+                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                <h5 class="text-muted">Tidak ada produk yang ditemukan</h5>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -183,47 +229,48 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addProductForm">
+                    <form id="addProductForm" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nama Produk</label>
-                                <input type="text" class="form-control" placeholder="Masukkan nama produk" required>
+                                <input type="text" name="name" class="form-control" placeholder="Masukkan nama produk" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kategori</label>
-                                <select class="form-select" required>
+                                <select class="form-select" name="category" required>
                                     <option value="">Pilih Kategori</option>
-                                    <option>Sepatu & Sandal</option>
-                                    <option>Pakaian</option>
-                                    <option>Elektronik</option>
-                                    <option>Aksesoris</option>
+                                    <option value="Fashion">Sepatu & Sandal</option>
+                                    <option value="Elektronik">Aksesoris</option>
+                                    <option value="Makanan">Elektronik</option>
+                                    <option value="Kesehatan">Pakaian</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Harga</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" placeholder="0" required>
+                                    <input type="number" name="price" class="form-control" placeholder="0" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Stok</label>
-                                <input type="number" class="form-control" placeholder="0" required>
+                                <input type="number" name="stock" class="form-control" placeholder="0" required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Deskripsi</label>
-                                <textarea class="form-control" rows="3" placeholder="Deskripsi produk"></textarea>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Deskripsi produk"></textarea>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Gambar Produk</label>
-                                <input type="file" class="form-control" accept="image/*">
+                                <input type="file" name="image" class="form-control" accept="image/*">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary">Simpan Produk</button>
+                    <button type="submit" form="addProductForm" class="btn btn-primary">Simpan Produk</button>
                 </div>
             </div>
         </div>
@@ -473,99 +520,6 @@
 
 @section('scripts')
     <script>
-        // Sample data produk
-        const allProducts = [{
-                id: 1,
-                name: "Sepatu Running Premium",
-                sku: "SPR-001",
-                category: "sepatu",
-                price: "450000",
-                stock: 24,
-                status: "active",
-                description: "Sepatu running premium dengan teknologi terbaru untuk kenyamanan maksimal saat berlari. Dilengkapi dengan sole yang fleksibel dan bahan breathable.",
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center",
-                date_added: "15 Jan 2024",
-                weight: "0.8 kg",
-                dimensions: "30 x 20 x 10 cm",
-                tags: ["Running", "Sport", "Premium"]
-            },
-            {
-                id: 2,
-                name: "Tas Laptop Minimalis",
-                sku: "TLM-002",
-                category: "aksesoris",
-                price: "320000",
-                stock: 15,
-                status: "active",
-                description: "Tas laptop dengan desain minimalis dan elegan. Cocok untuk pekerja profesional dengan kompartemen yang terorganisir.",
-                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&crop=center",
-                date_added: "12 Jan 2024",
-                weight: "0.5 kg",
-                dimensions: "40 x 30 x 15 cm",
-                tags: ["Laptop", "Minimalis", "Professional"]
-            },
-            {
-                id: 3,
-                name: "Smartwatch Series 5",
-                sku: "SWS-003",
-                category: "elektronik",
-                price: "1200000",
-                stock: 3,
-                status: "low_stock",
-                description: "Smartwatch dengan fitur kesehatan dan konektivitas lengkap. Dilengkapi dengan heart rate monitor dan GPS.",
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center",
-                date_added: "10 Jan 2024",
-                weight: "0.3 kg",
-                dimensions: "4 x 4 x 1 cm",
-                tags: ["Smartwatch", "Elektronik", "Fitness"]
-            },
-            {
-                id: 4,
-                name: "Kaos Polo Cotton",
-                sku: "KPC-004",
-                category: "pakaian",
-                price: "125000",
-                stock: 0,
-                status: "out_of_stock",
-                description: "Kaos polo berbahan cotton premium dengan jahitan rapi. Nyaman dipakai untuk aktivitas sehari-hari.",
-                image: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=400&fit=crop&crop=center",
-                date_added: "08 Jan 2024",
-                weight: "0.2 kg",
-                dimensions: "70 x 50 x 2 cm",
-                tags: ["Polo", "Cotton", "Casual"]
-            },
-            {
-                id: 5,
-                name: "Headphone Wireless",
-                sku: "HWL-005",
-                category: "elektronik",
-                price: "750000",
-                stock: 8,
-                status: "active",
-                description: "Headphone wireless dengan noise cancellation dan kualitas suara tinggi.",
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&crop=center",
-                date_added: "05 Jan 2024",
-                weight: "0.4 kg",
-                dimensions: "20 x 18 x 8 cm",
-                tags: ["Headphone", "Wireless", "Audio"]
-            },
-            {
-                id: 6,
-                name: "Sepatu Formal Leather",
-                sku: "SFL-006",
-                category: "sepatu",
-                price: "650000",
-                stock: 12,
-                status: "active",
-                description: "Sepatu formal berbahan leather asli dengan desain elegan untuk acara resmi.",
-                image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&h=400&fit=crop&crop=center",
-                date_added: "03 Jan 2024",
-                weight: "1.2 kg",
-                dimensions: "32 x 22 x 12 cm",
-                tags: ["Formal", "Leather", "Elegant"]
-            }
-        ];
-
         let currentPage = 1;
         const productsPerPage = 4;
 
@@ -684,6 +638,14 @@
                     </td>
                     <td>${statusBadge}</td>
                     <td>${product.date_added}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(${product.id})" title="Hapus">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
                 `;
 
                 productsTableBody.appendChild(row);
