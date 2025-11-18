@@ -559,4 +559,278 @@ class StoreController extends Controller
 
         return $products;
     }
+
+    /**
+     * Menampilkan halaman pesanan saya
+     */
+    public function orders()
+    {
+        // Data dummy pesanan - hanya yang sudah dibayar/dikirim
+        $orders = [
+            [
+                'id' => 'ORD-789003',
+                'order_number' => 'ORD-789003',
+                'date' => '2024-01-12 11:20:00',
+                'status' => 'shipped',
+                'status_text' => 'Dikirim',
+                'total' => 450000,
+                'items' => [
+                    [
+                        'name' => 'Headphone Wireless',
+                        'price' => 450000,
+                        'quantity' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop',
+                        'category' => 'Elektronik',
+                        'product_id' => 1
+                    ]
+                ],
+                'payment_method' => 'Bank Transfer BCA',
+                'shipping_method' => 'JNE Reguler',
+                'tracking_number' => 'JNE1234567890',
+                'estimated_delivery' => '2024-01-16',
+                'shipping_address' => [
+                    'name' => 'John Doe',
+                    'phone' => '+62 812-3456-7890',
+                    'address' => 'Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh',
+                    'city' => 'Kota Contoh, Provinsi Contoh - 12345'
+                ],
+                'tracking_history' => [
+                    [
+                        'status' => 'Pesanan Diterima',
+                        'description' => 'Pesanan telah diterima oleh sistem',
+                        'date' => '2024-01-12 11:20:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Diproses',
+                        'description' => 'Pesanan sedang diproses oleh penjual',
+                        'date' => '2024-01-12 14:30:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Dikirim',
+                        'description' => 'Pesanan telah dikirim melalui kurir',
+                        'date' => '2024-01-13 09:15:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Dalam Perjalanan',
+                        'description' => 'Pesanan sedang dalam perjalanan ke alamat tujuan',
+                        'date' => '2024-01-14 08:00:00',
+                        'completed' => false,
+                        'current' => true
+                    ],
+                    [
+                        'status' => 'Tiba di Tujuan',
+                        'description' => 'Pesanan telah tiba di alamat tujuan',
+                        'date' => null,
+                        'completed' => false
+                    ]
+                ]
+            ],
+            [
+                'id' => 'ORD-789007',
+                'order_number' => 'ORD-789007',
+                'date' => '2024-01-11 09:30:00',
+                'status' => 'delivered',
+                'status_text' => 'Terkirim',
+                'total' => 275000,
+                'items' => [
+                    [
+                        'name' => 'Smart Watch Fitness',
+                        'price' => 275000,
+                        'quantity' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop',
+                        'category' => 'Elektronik',
+                        'product_id' => 2
+                    ]
+                ],
+                'payment_method' => 'GoPay',
+                'shipping_method' => 'JNE Express',
+                'tracking_number' => 'JNE4455667788',
+                'estimated_delivery' => '2024-01-13',
+                'delivered_date' => '2024-01-13 15:20:00',
+                'shipping_proof' => 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=400&h=300&fit=crop',
+                'delivery_proof' => 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+                'shipping_address' => [
+                    'name' => 'John Doe',
+                    'phone' => '+62 812-3456-7890',
+                    'address' => 'Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh',
+                    'city' => 'Kota Contoh, Provinsi Contoh - 12345'
+                ],
+                'tracking_history' => [
+                    [
+                        'status' => 'Pesanan Diterima',
+                        'description' => 'Pesanan telah diterima oleh sistem',
+                        'date' => '2024-01-11 09:30:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Diproses',
+                        'description' => 'Pesanan sedang diproses oleh penjual',
+                        'date' => '2024-01-11 14:15:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Dikirim',
+                        'description' => 'Pesanan telah dikirim melalui kurir',
+                        'date' => '2024-01-12 10:00:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Dalam Perjalanan',
+                        'description' => 'Pesanan sedang dalam perjalanan ke alamat tujuan',
+                        'date' => '2024-01-13 08:30:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Tiba di Tujuan',
+                        'description' => 'Pesanan telah tiba di alamat tujuan',
+                        'date' => '2024-01-13 15:20:00',
+                        'completed' => true
+                    ]
+                ]
+            ],
+            [
+                'id' => 'ORD-789004',
+                'order_number' => 'ORD-789004',
+                'date' => '2024-01-10 16:45:00',
+                'status' => 'completed',
+                'status_text' => 'Selesai',
+                'total' => 189000,
+                'items' => [
+                    [
+                        'name' => 'Kemeja Flanel Pria',
+                        'price' => 189000,
+                        'quantity' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=100&h=100&fit=crop',
+                        'category' => 'Fashion',
+                        'product_id' => 3
+                    ]
+                ],
+                'payment_method' => 'Credit Card',
+                'shipping_method' => 'JNE Reguler',
+                'tracking_number' => 'JNE0987654321',
+                'estimated_delivery' => '2024-01-12',
+                'delivered_date' => '2024-01-12 14:20:00',
+                'shipping_proof' => 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=400&h=300&fit=crop',
+                'delivery_proof' => 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+                'shipping_address' => [
+                    'name' => 'John Doe',
+                    'phone' => '+62 812-3456-7890',
+                    'address' => 'Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh',
+                    'city' => 'Kota Contoh, Provinsi Contoh - 12345'
+                ],
+                'tracking_history' => [
+                    [
+                        'status' => 'Pesanan Diterima',
+                        'description' => 'Pesanan telah diterima oleh sistem',
+                        'date' => '2024-01-10 16:45:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Diproses',
+                        'description' => 'Pesanan sedang diproses oleh penjual',
+                        'date' => '2024-01-11 09:30:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Pesanan Dikirim',
+                        'description' => 'Pesanan telah dikirim melalui kurir',
+                        'date' => '2024-01-11 14:15:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Dalam Perjalanan',
+                        'description' => 'Pesanan sedang dalam perjalanan ke alamat tujuan',
+                        'date' => '2024-01-12 10:00:00',
+                        'completed' => true
+                    ],
+                    [
+                        'status' => 'Tiba di Tujuan',
+                        'description' => 'Pesanan telah tiba di alamat tujuan',
+                        'date' => '2024-01-12 14:20:00',
+                        'completed' => true
+                    ]
+                ],
+                'review' => [
+                    'rating' => 5,
+                    'comment' => 'Kemeja sangat bagus, bahan nyaman dan sesuai dengan gambar. Pengiriman cepat!',
+                    'created_at' => '2024-01-13 10:30:00'
+                ]
+            ],
+            [
+                'id' => 'ORD-789006',
+                'order_number' => 'ORD-789006',
+                'date' => '2024-01-08 14:20:00',
+                'status' => 'completed',
+                'status_text' => 'Selesai',
+                'total' => 325000,
+                'items' => [
+                    [
+                        'name' => 'Tas Ransel Outdoor',
+                        'price' => 299000,
+                        'quantity' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop',
+                        'category' => 'Fashion',
+                        'product_id' => 4
+                    ]
+                ],
+                'payment_method' => 'GoPay',
+                'shipping_method' => 'JNE Express',
+                'tracking_number' => 'JNE1122334455',
+                'estimated_delivery' => '2024-01-10',
+                'delivered_date' => '2024-01-09 16:45:00',
+                'shipping_proof' => 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=400&h=300&fit=crop',
+                'delivery_proof' => 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+                'shipping_address' => [
+                    'name' => 'John Doe',
+                    'phone' => '+62 812-3456-7890',
+                    'address' => 'Jl. Contoh Alamat No. 123, Kel. Contoh, Kec. Contoh',
+                    'city' => 'Kota Contoh, Provinsi Contoh - 12345'
+                ],
+                'review' => [
+                    'rating' => 4,
+                    'comment' => 'Tasnya kokoh dan berkualitas, tapi pengiriman agak lama. Overall puas!',
+                    'created_at' => '2024-01-10 09:15:00'
+                ]
+            ]
+        ];
+
+        // Pisahkan pesanan aktif (dikirim) dan riwayat (terkirim & selesai)
+        $activeOrders = array_filter($orders, function ($order) {
+            return $order['status'] === 'shipped';
+        });
+
+        $orderHistory = array_filter($orders, function ($order) {
+            return in_array($order['status'], ['delivered', 'completed']);
+        });
+
+        return view('stores.orders', compact('activeOrders', 'orderHistory'));
+    }
+
+    // Fungsi untuk menyimpan ulasan
+    public function submitReview(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|string',
+            'product_id' => 'required|integer',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|min:10|max:500'
+        ]);
+
+        // Simpan ulasan ke database
+        // $review = Review::create($validated);
+
+        // Untuk demo, kita return success
+        return response()->json([
+            'success' => true,
+            'message' => 'Ulasan berhasil dikirim!',
+            'review' => [
+                'rating' => $validated['rating'],
+                'comment' => $validated['comment'],
+                'created_at' => now()->toDateTimeString()
+            ]
+        ]);
+    }
 }

@@ -43,6 +43,8 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
     Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
     Route::get('/category/{category}', [StoreController::class, 'categoryProducts'])->name('category.products');
+    // Tambahkan route ini di dalam group prefix('store')
+    Route::get('/orders', [StoreController::class, 'orders'])->name('orders');
 
     // Route langsung untuk profile dan addresses (tanpa /account)
     Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile')->middleware(['auth']);

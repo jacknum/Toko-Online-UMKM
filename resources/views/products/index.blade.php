@@ -194,7 +194,7 @@
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-danger ms-1"
-                                                    onclick="deleteProduct({{ $product->id }})" title="Hapus">
+                                                    onclick="confirmDelete({{ $product->id }}, '{{ $product->name }}')" title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -357,125 +357,27 @@
         </div>
     </div>
 
-    <!-- Product Detail Modal -->
-    <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- Simple Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="productDetailModalLabel">Detail Produk</h5>
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img id="detailProductImage" src="" alt="Product Image" class="img-fluid rounded"
-                                style="max-height: 400px; object-fit: cover;">
-                        </div>
-                        <div class="col-md-6">
-                            <h4 id="detailProductName" class="mb-2"></h4>
-                            <p class="text-muted mb-3" id="detailProductSKU"></p>
-
-                            <div class="mb-3">
-                                <span class="badge bg-primary me-2" id="detailProductCategory"></span>
-                                <span class="badge" id="detailProductStatus"></span>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <strong>Harga:</strong>
-                                    <div class="h5 text-primary" id="detailProductPrice"></div>
-                                </div>
-                                <div class="col-6">
-                                    <strong>Stok Tersedia:</strong>
-                                    <div class="h5" id="detailProductStock"></div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <strong>Deskripsi:</strong>
-                                <p id="detailProductDescription" class="mt-2"></p>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Berat:</strong>
-                                    <p id="detailProductWeight" class="mb-1"></p>
-                                </div>
-                                <div class="col-6">
-                                    <strong>Dimensi:</strong>
-                                    <p id="detailProductDimensions" class="mb-1"></p>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <strong>Tanggal Ditambah:</strong>
-                                <p id="detailProductDate" class="mb-1"></p>
-                            </div>
-
-                            <div class="mb-3">
-                                <strong>Tags:</strong>
-                                <div id="detailProductTags" class="mt-1"></div>
-                            </div>
-                        </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
                     </div>
+                    <h5 class="mb-3">Anda Yakin Ingin Menghapus Data Ini?</h5>
+                    <p class="text-muted" id="deleteProductInfo">Produk: <span id="productNameToDelete"></span></p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading Modal -->
-    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0">
-                <div class="modal-body text-center py-5">
-                    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <h5 class="mb-2">Memproses...</h5>
-                    <p class="text-muted mb-0">Sedang memproses permintaan Anda</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0">
-                <div class="modal-header bg-gradient-danger text-white border-0">
-                    <div class="modal-icon">
-                        <i class="fas fa-exclamation-circle"></i>
-                    </div>
-                    <div>
-                        <h5 class="modal-title mb-0" id="deleteProductModalLabel">Konfirmasi Hapus</h5>
-                        <p class="mb-0 small opacity-75">Tindakan ini tidak dapat dibatalkan</p>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center py-4">
-                    <div class="delete-icon">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                    <h4 class="text-danger mb-3">Hapus Produk?</h4>
-                    <p class="text-muted mb-2">Anda akan menghapus produk:</p>
-                    <h6 class="text-dark mb-3" id="deleteProductName">Nama Produk</h6>
-                    <p class="text-danger small mb-0">
-                        <i class="fas fa-exclamation-triangle me-1"></i>
-                        Data yang dihapus tidak dapat dikembalikan
-                    </p>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-lg btn-outline-secondary px-4" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Batal
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Tidak
                     </button>
-                    <button type="button" class="btn btn-lg btn-danger px-4 shadow-sm" id="confirmDeleteBtn">
-                        <i class="fas fa-trash me-2"></i>Ya, Hapus
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-check me-2"></i>Ya
                     </button>
                 </div>
             </div>
@@ -601,149 +503,6 @@
             box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
         }
 
-        /* Custom arrow styles */
-        .pagination .page-item:first-child .page-link,
-        .pagination .page-item:last-child .page-link {
-            font-weight: 600;
-            background-color: #f8f9fc;
-        }
-
-        .pagination .page-item:first-child .page-link:hover,
-        .pagination .page-item:last-child .page-link:hover {
-            background-color: #4e73df;
-            color: white;
-            border-color: #4e73df;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 576px) {
-            .pagination .page-link {
-                padding: 6px 12px;
-                min-width: 40px;
-                font-size: 0.875rem;
-            }
-        }
-
-        /* Animation for page change */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Enhanced Delete Modal Styles */
-        #deleteProductModal .modal-content {
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.3);
-            border: none;
-            overflow: hidden;
-        }
-
-        #deleteProductModal .modal-header {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            padding: 2rem 1.5rem 1rem;
-            position: relative;
-        }
-
-        #deleteProductModal .modal-header .modal-icon {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        #deleteProductModal .modal-header .modal-icon i {
-            font-size: 1.5rem;
-            color: #e74c3c;
-        }
-
-        #deleteProductModal .modal-body {
-            padding: 2rem 1.5rem;
-        }
-
-        #deleteProductModal .delete-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #ffeaea 0%, #ffd1d1 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            border: 3px solid #ffebee;
-        }
-
-        #deleteProductModal .delete-icon i {
-            font-size: 2rem;
-            color: #e74c3c;
-        }
-
-        #deleteProductModal .modal-footer {
-            padding: 1.5rem;
-            background: #f8f9fa;
-        }
-
-        #deleteProductModal .btn {
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        #deleteProductModal .btn-outline-secondary {
-            border-color: #6c757d;
-            color: #6c757d;
-        }
-
-        #deleteProductModal .btn-outline-secondary:hover {
-            background: #6c757d;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        #deleteProductModal .btn-danger {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            border: none;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-        }
-
-        #deleteProductModal .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
-        }
-
-        /* Animation for modal */
-        @keyframes modalEnter {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(-20px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        #deleteProductModal .modal-content {
-            animation: modalEnter 0.3s ease-out;
-        }
-
         /* Success Toast Styles */
         .toast-container {
             position: fixed;
@@ -768,16 +527,9 @@
             color: white;
         }
 
-        /* Improved Loading Modal Styles */
-        #loadingModal .modal-content {
-            border-radius: 15px;
-            border: none;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        #loadingModal .spinner-border {
-            border-width: 3px;
+        .toast-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
         }
 
         /* Smooth transitions for filter changes */
@@ -797,8 +549,9 @@
         let currentPage = 1;
         const productsPerPage = 10;
         let productToDelete = null;
+        let currentFilterTimeout = null;
 
-        // Utility Functions - UPDATED
+        // Utility Functions
         function getStatusBadge(status) {
             switch (status) {
                 case 'active':
@@ -825,32 +578,24 @@
             });
         }
 
-        // Filter Products dengan AJAX - IMPROVED VERSION
+        // Filter Products dengan AJAX - NO LOADING VERSION
         function filterProducts() {
             const categoryValue = document.getElementById('categoryFilter').value;
             const statusValue = document.getElementById('statusFilter').value;
             const searchValue = document.getElementById('searchInput').value;
 
-            // Show loading
-            showLoading();
-
             // Clear previous timeout jika ada
-            if (window.filterTimeout) {
-                clearTimeout(window.filterTimeout);
+            if (currentFilterTimeout) {
+                clearTimeout(currentFilterTimeout);
             }
 
-            // Set timeout yang lebih pendek (3 detik)
-            window.filterTimeout = setTimeout(() => {
-                hideLoading();
-                showToast('Permintaan terlalu lama, coba lagi', 'error');
-            }, 3000); // 3 seconds timeout saja
+            // Langsung kosongkan tabel sementara
+            const tableBody = document.getElementById('productsTableBody');
+            tableBody.innerHTML = '';
 
             // AJAX request untuk filter
             fetch(`{{ route('products.filter') }}?category=${categoryValue}&status=${statusValue}&search=${searchValue}`)
                 .then(response => {
-                    // Clear timeout karena response sudah diterima
-                    clearTimeout(window.filterTimeout);
-
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -861,9 +606,9 @@
                         updateProductsTable(data.products);
                         updateStats(data.stats);
 
-                        // Jika tidak ada hasil, tampilkan pesan
+                        // Jika tidak ada hasil, tampilkan pesan info
                         if (data.products.length === 0) {
-                            showToast('Tidak ada produk yang ditemukan', 'info');
+                            showToast('Tidak ada produk yang ditemukan untuk filter yang dipilih', 'info');
                         }
                     } else {
                         showToast(data.message || 'Gagal memfilter produk', 'error');
@@ -877,15 +622,12 @@
                     }
                 })
                 .catch(error => {
-                    clearTimeout(window.filterTimeout);
                     console.error('Filter Error:', error);
 
                     // Tampilkan error yang lebih spesifik
                     let errorMessage = 'Terjadi kesalahan saat memfilter produk';
                     if (error.message.includes('Failed to fetch')) {
                         errorMessage = 'Koneksi internet bermasalah';
-                    } else if (error.message.includes('timeout')) {
-                        errorMessage = 'Permintaan timeout';
                     }
 
                     showToast(errorMessage, 'error');
@@ -896,9 +638,6 @@
                         low_stock: 0,
                         out_of_stock: 0
                     });
-                })
-                .finally(() => {
-                    hideLoading();
                 });
         }
 
@@ -930,8 +669,7 @@
 
             products.forEach((product, index) => {
                 const statusBadge = getStatusBadge(product.status);
-                const stockClass = product.stock === 0 ? 'text-danger' : (product.stock <= 10 ? 'text-warning' :
-                '');
+                const stockClass = product.stock === 0 ? 'text-danger' : (product.stock <= 10 ? 'text-warning' : '');
 
                 const row = document.createElement('tr');
                 row.className = 'product-row';
@@ -940,7 +678,7 @@
                 <td class="ps-4">${index + 1}</td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('storage') }}/${product.image}" alt="${product.name}" 
+                        <img src="{{ asset('storage') }}/${product.image}" alt="${product.name}"
                             class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;"
                             onerror="this.src='https://via.placeholder.com/40'">
                         <div>
@@ -960,7 +698,7 @@
                     <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="confirmDelete(${product.id}, '${product.name.replace(/'/g, "\\'")}')" title="Hapus">
+                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="confirmDelete(${product.id}, '${product.name}')" title="Hapus">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -980,7 +718,7 @@
             }
         }
 
-        // Edit Product Modal
+        // Edit Product Modal - TANPA LOADING
         window.openEditModal = function(productId) {
             fetch(`/products/${productId}/edit`)
                 .then(response => {
@@ -1007,8 +745,8 @@
                     if (product.image) {
                         currentImageDiv.innerHTML = `
                         <strong>Gambar Saat Ini:</strong><br>
-                        <img src="/storage/${product.image}" alt="Current Image" 
-                             style="max-width: 100px; max-height: 100px; object-fit: cover;" 
+                        <img src="/storage/${product.image}" alt="Current Image"
+                             style="max-width: 100px; max-height: 100px; object-fit: cover;"
                              class="mt-1 rounded">
                     `;
                     } else {
@@ -1025,29 +763,20 @@
                 });
         }
 
-        // Delete Confirmation
+        // Delete Confirmation - TAMPILKAN MODAL KONFIRMASI
         window.confirmDelete = function(productId, productName) {
             productToDelete = productId;
 
             // Update modal content
-            document.getElementById('deleteProductName').textContent = productName;
+            document.getElementById('productNameToDelete').textContent = productName;
 
             // Show delete confirmation modal
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
             deleteModal.show();
         }
 
-        // Confirm Delete Action
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-            if (productToDelete) {
-                deleteProduct(productToDelete);
-            }
-        });
-
-        // Delete Product Function
+        // Delete Product Function - TANPA DELAY
         window.deleteProduct = function(productId) {
-            showLoading();
-
             fetch(`/products/${productId}`, {
                     method: 'DELETE',
                     headers: {
@@ -1062,25 +791,21 @@
                     return response.json();
                 })
                 .then(data => {
-                    hideLoading();
-
                     // Hide delete modal
-                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteProductModal'));
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
                     if (deleteModal) {
                         deleteModal.hide();
                     }
 
                     if (data.success) {
                         showToast('Produk berhasil dihapus', 'success');
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
+                        // Langsung reload tanpa delay
+                        location.reload();
                     } else {
                         showToast('Gagal menghapus produk', 'error');
                     }
                 })
                 .catch(error => {
-                    hideLoading();
                     showToast('Terjadi kesalahan saat menghapus produk', 'error');
                 });
         }
@@ -1095,13 +820,13 @@
             toastContainer.className = 'toast-container';
 
             const toast = document.createElement('div');
-            toast.className =
-            `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
             toast.setAttribute('role', 'alert');
             toast.setAttribute('aria-live', 'assertive');
             toast.setAttribute('aria-atomic', 'true');
 
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            const icon = type === 'success' ? 'fa-check-circle' :
+                        type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
 
             toast.innerHTML = `
             <div class="d-flex">
@@ -1128,46 +853,6 @@
             });
         }
 
-        // Loading functions - IMPROVED
-        function showLoading() {
-            try {
-                const loadingModalElement = document.getElementById('loadingModal');
-                if (loadingModalElement) {
-                    const loadingModal = new bootstrap.Modal(loadingModalElement);
-                    loadingModal.show();
-                }
-            } catch (error) {
-                console.error('Error showing loading modal:', error);
-            }
-        }
-
-        function hideLoading() {
-            try {
-                const loadingModalElement = document.getElementById('loadingModal');
-                if (loadingModalElement) {
-                    const loadingModal = bootstrap.Modal.getInstance(loadingModalElement);
-                    if (loadingModal) {
-                        loadingModal.hide();
-                    } else {
-                        const newModal = new bootstrap.Modal(loadingModalElement);
-                        newModal.hide();
-                    }
-                }
-            } catch (error) {
-                console.error('Error hiding loading modal:', error);
-                const loadingModalElement = document.getElementById('loadingModal');
-                if (loadingModalElement) {
-                    loadingModalElement.classList.remove('show');
-                    loadingModalElement.style.display = 'none';
-                    document.body.classList.remove('modal-open');
-                    const backdrop = document.querySelector('.modal-backdrop');
-                    if (backdrop) {
-                        backdrop.remove();
-                    }
-                }
-            }
-        }
-
         // Initialize event listeners when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             // Filter functionality
@@ -1181,7 +866,7 @@
             if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
             if (statusFilter) statusFilter.addEventListener('change', filterProducts);
 
-            // Gunakan debounce untuk search input
+            // Gunakan debounce untuk search input saja
             const debouncedFilter = debounce(filterProducts, 500);
             if (searchInput) searchInput.addEventListener('input', debouncedFilter);
             if (searchButton) searchButton.addEventListener('click', filterProducts);

@@ -67,7 +67,7 @@ class ProductController extends Controller
                 'stats' => $stats
             ]);
         } catch (\Exception $e) {
-            \Log::error('Filter error: ' . $e->getMessage());
+            Log::error('Filter error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memfilter produk',
