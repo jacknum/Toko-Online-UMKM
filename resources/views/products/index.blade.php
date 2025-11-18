@@ -29,10 +29,12 @@
                                 <label class="form-label fw-semibold">Kategori</label>
                                 <select class="form-select" id="categoryFilter">
                                     <option value="all" selected>Semua Kategori</option>
-                                    <option value="sepatu">Sepatu & Sandal</option>
-                                    <option value="pakaian">Pakaian</option>
-                                    <option value="elektronik">Elektronik</option>
-                                    <option value="aksesoris">Aksesoris</option>
+                                    <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                    <option value="Pakaian">Pakaian</option>
+                                    <option value="Elektronik">Elektronik</option>
+                                    <option value="Aksesoris">Aksesoris</option>
+                                    <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                    <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -73,7 +75,7 @@
                         <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
                             <i class="fas fa-box text-white"></i>
                         </div>
-                        <div class="stat-number">24</div>
+                        <div class="stat-number">{{ $products->count() }}</div>
                         <div class="stat-title">Total Produk</div>
                     </div>
                 </div>
@@ -85,7 +87,7 @@
                         <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
                             <i class="fas fa-check-circle text-white"></i>
                         </div>
-                        <div class="stat-number">18</div>
+                        <div class="stat-number">{{ $products->where('stock', '>', 10)->count() }}</div>
                         <div class="stat-title">Produk Aktif</div>
                     </div>
                 </div>
@@ -97,7 +99,8 @@
                         <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
                             <i class="fas fa-exclamation-triangle text-white"></i>
                         </div>
-                        <div class="stat-number">3</div>
+                        <div class="stat-number">{{ $products->where('stock', '>', 0)->where('stock', '<=', 10)->count() }}
+                        </div>
                         <div class="stat-title">Stok Menipis</div>
                     </div>
                 </div>
@@ -109,7 +112,7 @@
                         <div class="stat-icon bg-white-20 rounded-circle p-3 mb-3">
                             <i class="fas fa-times-circle text-white"></i>
                         </div>
-                        <div class="stat-number">2</div>
+                        <div class="stat-number">{{ $products->where('stock', 0)->count() }}</div>
                         <div class="stat-title">Stok Habis</div>
                     </div>
                 </div>
@@ -155,14 +158,20 @@
                                             <td class="ps-4">{{ $loop->iteration }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('storage/' . $product->image) }}"
-                                                        alt="{{ $product->name }}"
-                                                        class="rounded me-3"
-                                                        style="width: 40px; height: 40px; object-fit: cover;">
-
+                                                    @if ($product->image)
+                                                        <img src="{{ Storage::disk('public')->exists($product->image) ? asset('storage/' . $product->image) : 'https://via.placeholder.com/40' }}"
+                                                            alt="{{ $product->name }}" class="rounded me-3"
+                                                            style="width: 40px; height: 40px; object-fit: cover;"
+                                                            onerror="this.src='https://via.placeholder.com/40'">
+                                                    @else
+                                                        <img src="https://via.placeholder.com/40" alt="No Image"
+                                                            class="rounded me-3"
+                                                            style="width: 40px; height: 40px; object-fit: cover;">
+                                                    @endif
                                                     <div>
                                                         <strong>{{ $product->name }}</strong><br>
-                                                        <small class="text-muted">{{ $product->sku ?? '-' }}</small>
+                                                        <small
+                                                            class="text-muted">{{ $product->sku ?? 'SKU-' . $product->id }}</small>
                                                     </div>
                                                 </div>
                                             </td>
@@ -170,9 +179,9 @@
                                             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                                             <td>{{ $product->stock }}</td>
                                             <td>
-                                                @if ($product->stock == 0)
+                                                @if ($product->status == 'out_of_stock')
                                                     <span class="badge bg-danger">Stok Habis</span>
-                                                @elseif ($product->stock < 5)
+                                                @elseif ($product->status == 'low_stock')
                                                     <span class="badge bg-warning">Stok Menipis</span>
                                                 @else
                                                     <span class="badge bg-success">Aktif</span>
@@ -180,10 +189,12 @@
                                             </td>
                                             <td>{{ $product->created_at->format('d M Y') }}</td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="openEditModal({{ $product->id }})" title="Edit">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    onclick="openEditModal({{ $product->id }})" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct({{ $product->id }})" title="Hapus">
+                                                <button class="btn btn-sm btn-outline-danger ms-1"
+                                                    onclick="deleteProduct({{ $product->id }})" title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -229,21 +240,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addProductForm" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="addProductForm" action="{{ route('products.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nama Produk</label>
-                                <input type="text" name="name" class="form-control" placeholder="Masukkan nama produk" required>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="Masukkan nama produk" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kategori</label>
                                 <select class="form-select" name="category" required>
                                     <option value="">Pilih Kategori</option>
-                                    <option value="Fashion">Sepatu & Sandal</option>
-                                    <option value="Elektronik">Aksesoris</option>
-                                    <option value="Makanan">Elektronik</option>
-                                    <option value="Kesehatan">Pakaian</option>
+                                    <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                    <option value="Pakaian">Pakaian</option>
+                                    <option value="Elektronik">Elektronik</option>
+                                    <option value="Aksesoris">Aksesoris</option>
+                                    <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                    <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -271,6 +286,72 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" form="addProductForm" class="btn btn-primary">Simpan Produk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editProductId" name="id">
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Produk</label>
+                                <input type="text" id="editProductName" name="name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kategori</label>
+                                <select class="form-select" id="editProductCategory" name="category" required>
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                    <option value="Pakaian">Pakaian</option>
+                                    <option value="Elektronik">Elektronik</option>
+                                    <option value="Aksesoris">Aksesoris</option>
+                                    <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                    <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Harga</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" id="editProductPrice" name="price" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Stok</label>
+                                <input type="number" id="editProductStock" name="stock" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Deskripsi</label>
+                                <textarea class="form-control" id="editProductDescription" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Gambar Produk</label>
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                                <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar</small>
+                                <div id="currentImage" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" form="editProductForm" class="btn btn-primary">Update Produk</button>
                 </div>
             </div>
         </div>
@@ -356,6 +437,46 @@
                     </div>
                     <h5 class="mb-2">Memproses...</h5>
                     <p class="text-muted mb-0">Sedang memproses permintaan Anda</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-gradient-danger text-white border-0">
+                    <div class="modal-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title mb-0" id="deleteProductModalLabel">Konfirmasi Hapus</h5>
+                        <p class="mb-0 small opacity-75">Tindakan ini tidak dapat dibatalkan</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="delete-icon">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                    <h4 class="text-danger mb-3">Hapus Produk?</h4>
+                    <p class="text-muted mb-2">Anda akan menghapus produk:</p>
+                    <h6 class="text-dark mb-3" id="deleteProductName">Nama Produk</h6>
+                    <p class="text-danger small mb-0">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Data yang dihapus tidak dapat dikembalikan
+                    </p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-lg btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Batal
+                    </button>
+                    <button type="button" class="btn btn-lg btn-danger px-4 shadow-sm" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-2"></i>Ya, Hapus
+                    </button>
                 </div>
             </div>
         </div>
@@ -515,254 +636,540 @@
                 transform: translateY(0);
             }
         }
+
+        /* Enhanced Delete Modal Styles */
+        #deleteProductModal .modal-content {
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.3);
+            border: none;
+            overflow: hidden;
+        }
+
+        #deleteProductModal .modal-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 2rem 1.5rem 1rem;
+            position: relative;
+        }
+
+        #deleteProductModal .modal-header .modal-icon {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #deleteProductModal .modal-header .modal-icon i {
+            font-size: 1.5rem;
+            color: #e74c3c;
+        }
+
+        #deleteProductModal .modal-body {
+            padding: 2rem 1.5rem;
+        }
+
+        #deleteProductModal .delete-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffeaea 0%, #ffd1d1 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            border: 3px solid #ffebee;
+        }
+
+        #deleteProductModal .delete-icon i {
+            font-size: 2rem;
+            color: #e74c3c;
+        }
+
+        #deleteProductModal .modal-footer {
+            padding: 1.5rem;
+            background: #f8f9fa;
+        }
+
+        #deleteProductModal .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        #deleteProductModal .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        #deleteProductModal .btn-outline-secondary:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        #deleteProductModal .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border: none;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        #deleteProductModal .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+        }
+
+        /* Animation for modal */
+        @keyframes modalEnter {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        #deleteProductModal .modal-content {
+            animation: modalEnter 0.3s ease-out;
+        }
+
+        /* Success Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border: none;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        /* Improved Loading Modal Styles */
+        #loadingModal .modal-content {
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        #loadingModal .spinner-border {
+            border-width: 3px;
+        }
+
+        /* Smooth transitions for filter changes */
+        #productsTableBody {
+            transition: opacity 0.3s ease;
+        }
+
+        #productsTableBody.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
 @endsection
 
 @section('scripts')
     <script>
         let currentPage = 1;
-        const productsPerPage = 4;
+        const productsPerPage = 10;
+        let productToDelete = null;
 
-        // Utility Functions
+        // Utility Functions - UPDATED
         function getStatusBadge(status) {
             switch (status) {
                 case 'active':
-                    return '<span class="badge bg-success badge-custom px-3 py-2">Aktif</span>';
+                    return '<span class="badge bg-success">Aktif</span>';
                 case 'low_stock':
-                    return '<span class="badge bg-warning badge-custom px-3 py-2">Stok Sedikit</span>';
+                    return '<span class="badge bg-warning">Stok Menipis</span>';
                 case 'out_of_stock':
-                    return '<span class="badge bg-danger badge-custom px-3 py-2">Stok Habis</span>';
+                    return '<span class="badge bg-danger">Stok Habis</span>';
                 default:
-                    return '<span class="badge bg-secondary badge-custom px-3 py-2">Tidak Aktif</span>';
-            }
-        }
-
-        function getStatusText(status) {
-            switch (status) {
-                case 'active':
-                    return 'Aktif';
-                case 'low_stock':
-                    return 'Stok Sedikit';
-                case 'out_of_stock':
-                    return 'Stok Habis';
-                default:
-                    return 'Tidak Aktif';
-            }
-        }
-
-        function getCategoryName(category) {
-            switch (category) {
-                case 'sepatu':
-                    return 'Sepatu & Sandal';
-                case 'pakaian':
-                    return 'Pakaian';
-                case 'elektronik':
-                    return 'Elektronik';
-                case 'aksesoris':
-                    return 'Aksesoris';
-                default:
-                    return category;
+                    return '<span class="badge bg-secondary">Tidak Diketahui</span>';
             }
         }
 
         function formatPrice(price) {
-            return parseInt(price).toLocaleString('id-ID');
+            return 'Rp ' + parseInt(price).toLocaleString('id-ID');
         }
 
-        // Global function for pagination
-        window.changePage = function(page) {
-            currentPage = page;
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
 
-            // Get current filtered products
+        // Filter Products dengan AJAX - IMPROVED VERSION
+        function filterProducts() {
             const categoryValue = document.getElementById('categoryFilter').value;
             const statusValue = document.getElementById('statusFilter').value;
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const searchValue = document.getElementById('searchInput').value;
 
-            const filteredProducts = allProducts.filter(product => {
-                const categoryMatch = categoryValue === 'all' || product.category === categoryValue;
-                const statusMatch = statusValue === 'all' || product.status === statusValue;
-                const searchMatch = product.name.toLowerCase().includes(searchValue) ||
-                    product.sku.toLowerCase().includes(searchValue);
+            // Show loading
+            showLoading();
 
-                return categoryMatch && statusMatch && searchMatch;
-            });
+            // Clear previous timeout jika ada
+            if (window.filterTimeout) {
+                clearTimeout(window.filterTimeout);
+            }
 
-            updateProductsTable(filteredProducts);
-        };
+            // Set timeout yang lebih pendek (3 detik)
+            window.filterTimeout = setTimeout(() => {
+                hideLoading();
+                showToast('Permintaan terlalu lama, coba lagi', 'error');
+            }, 3000); // 3 seconds timeout saja
+
+            // AJAX request untuk filter
+            fetch(`{{ route('products.filter') }}?category=${categoryValue}&status=${statusValue}&search=${searchValue}`)
+                .then(response => {
+                    // Clear timeout karena response sudah diterima
+                    clearTimeout(window.filterTimeout);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        updateProductsTable(data.products);
+                        updateStats(data.stats);
+
+                        // Jika tidak ada hasil, tampilkan pesan
+                        if (data.products.length === 0) {
+                            showToast('Tidak ada produk yang ditemukan', 'info');
+                        }
+                    } else {
+                        showToast(data.message || 'Gagal memfilter produk', 'error');
+                        updateProductsTable([]);
+                        updateStats({
+                            total: 0,
+                            active: 0,
+                            low_stock: 0,
+                            out_of_stock: 0
+                        });
+                    }
+                })
+                .catch(error => {
+                    clearTimeout(window.filterTimeout);
+                    console.error('Filter Error:', error);
+
+                    // Tampilkan error yang lebih spesifik
+                    let errorMessage = 'Terjadi kesalahan saat memfilter produk';
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessage = 'Koneksi internet bermasalah';
+                    } else if (error.message.includes('timeout')) {
+                        errorMessage = 'Permintaan timeout';
+                    }
+
+                    showToast(errorMessage, 'error');
+                    updateProductsTable([]);
+                    updateStats({
+                        total: 0,
+                        active: 0,
+                        low_stock: 0,
+                        out_of_stock: 0
+                    });
+                })
+                .finally(() => {
+                    hideLoading();
+                });
+        }
+
+        // Debounce function untuk search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
 
         function updateProductsTable(products) {
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-            const currentProducts = products.slice(startIndex, endIndex);
-
             const productsTableBody = document.getElementById('productsTableBody');
             const noResults = document.getElementById('noResults');
 
             productsTableBody.innerHTML = '';
 
-            if (currentProducts.length === 0) {
+            if (products.length === 0) {
                 noResults.classList.remove('d-none');
-                updatePagination(products.length);
                 return;
             }
 
             noResults.classList.add('d-none');
 
-            currentProducts.forEach((product, index) => {
-                const rowNumber = startIndex + index + 1;
+            products.forEach((product, index) => {
                 const statusBadge = getStatusBadge(product.status);
-                const stockClass = product.stock === 0 ? 'text-danger' : (product.stock <= 3 ? 'text-warning' : '');
+                const stockClass = product.stock === 0 ? 'text-danger' : (product.stock <= 10 ? 'text-warning' :
+                '');
 
                 const row = document.createElement('tr');
                 row.className = 'product-row';
-                row.setAttribute('data-category', product.category);
-                row.setAttribute('data-status', product.status);
-                row.setAttribute('data-name', product.name);
-                row.addEventListener('click', () => showProductDetail(product));
 
                 row.innerHTML = `
-                    <td class="ps-4">${rowNumber}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="${product.image}" alt="${product.name}" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
-                            <div>
-                                <div class="fw-bold">${product.name}</div>
-                                <small class="text-muted">SKU: ${product.sku}</small>
-                            </div>
+                <td class="ps-4">${index + 1}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset('storage') }}/${product.image}" alt="${product.name}" 
+                            class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;"
+                            onerror="this.src='https://via.placeholder.com/40'">
+                        <div>
+                            <strong>${product.name}</strong><br>
+                            <small class="text-muted">${product.sku || '-'}</small>
                         </div>
-                    </td>
-                    <td>${getCategoryName(product.category)}</td>
-                    <td>Rp ${formatPrice(product.price)}</td>
-                    <td>
-                        <span class="fw-bold ${stockClass}">${product.stock}</span>
-                    </td>
-                    <td>${statusBadge}</td>
-                    <td>${product.date_added}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(${product.id})" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
+                    </div>
+                </td>
+                <td>${product.category}</td>
+                <td>${formatPrice(product.price)}</td>
+                <td>
+                    <span class="fw-bold ${stockClass}">${product.stock}</span>
+                </td>
+                <td>${statusBadge}</td>
+                <td>${formatDate(product.created_at)}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger ms-1" onclick="confirmDelete(${product.id}, '${product.name.replace(/'/g, "\\'")}')" title="Hapus">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
 
                 productsTableBody.appendChild(row);
             });
-
-            updatePagination(products.length);
         }
 
-        function updatePagination(totalProducts) {
-            const totalPages = Math.ceil(totalProducts / productsPerPage);
-            const pagination = document.getElementById('productsPagination');
-            pagination.innerHTML = '';
-
-            // Previous button
-            const prevDisabled = currentPage === 1 ? 'disabled' : '';
-            pagination.innerHTML += `
-                <li class="page-item ${prevDisabled}">
-                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            `;
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                const active = i === currentPage ? 'active' : '';
-                pagination.innerHTML += `
-                    <li class="page-item ${active}">
-                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-                    </li>
-                `;
+        function updateStats(stats) {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            if (statNumbers.length >= 4) {
+                statNumbers[0].textContent = stats.total;
+                statNumbers[1].textContent = stats.active;
+                statNumbers[2].textContent = stats.low_stock;
+                statNumbers[3].textContent = stats.out_of_stock;
             }
-
-            // Next button
-            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-            pagination.innerHTML += `
-                <li class="page-item ${nextDisabled}">
-                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            `;
         }
 
-        function loadProductsTable() {
-            updateProductsTable(allProducts);
+        // Edit Product Modal
+        window.openEditModal = function(productId) {
+            fetch(`/products/${productId}/edit`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(product => {
+                    // Set form action dengan route yang benar
+                    const form = document.getElementById('editProductForm');
+                    form.action = `/products/${product.id}`;
+
+                    // Isi form edit dengan data produk
+                    document.getElementById('editProductId').value = product.id;
+                    document.getElementById('editProductName').value = product.name;
+                    document.getElementById('editProductCategory').value = product.category;
+                    document.getElementById('editProductPrice').value = product.price;
+                    document.getElementById('editProductStock').value = product.stock;
+                    document.getElementById('editProductDescription').value = product.description || '';
+
+                    // Tampilkan gambar saat ini jika ada
+                    const currentImageDiv = document.getElementById('currentImage');
+                    if (product.image) {
+                        currentImageDiv.innerHTML = `
+                        <strong>Gambar Saat Ini:</strong><br>
+                        <img src="/storage/${product.image}" alt="Current Image" 
+                             style="max-width: 100px; max-height: 100px; object-fit: cover;" 
+                             class="mt-1 rounded">
+                    `;
+                    } else {
+                        currentImageDiv.innerHTML = '<strong>Gambar Saat Ini:</strong> Tidak ada gambar';
+                    }
+
+                    // Show edit modal
+                    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                    editModal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal memuat data produk');
+                });
         }
 
-        function filterProducts() {
-            const categoryValue = document.getElementById('categoryFilter').value;
-            const statusValue = document.getElementById('statusFilter').value;
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-
-            const filteredProducts = allProducts.filter(product => {
-                const categoryMatch = categoryValue === 'all' || product.category === categoryValue;
-                const statusMatch = statusValue === 'all' || product.status === statusValue;
-                const searchMatch = product.name.toLowerCase().includes(searchValue) ||
-                    product.sku.toLowerCase().includes(searchValue);
-
-                return categoryMatch && statusMatch && searchMatch;
-            });
-
-            currentPage = 1;
-            updateProductsTable(filteredProducts);
-        }
-
-        // Product Detail Modal
-        window.showProductDetail = function(product) {
-            // Set badge color based on status
-            let statusClass = 'bg-success';
-            if (product.status === 'low_stock') {
-                statusClass = 'bg-warning';
-            } else if (product.status === 'out_of_stock') {
-                statusClass = 'bg-danger';
-            }
-
-            // Format price
-            const formattedPrice = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(product.price);
+        // Delete Confirmation
+        window.confirmDelete = function(productId, productName) {
+            productToDelete = productId;
 
             // Update modal content
-            document.getElementById('detailProductImage').src = product.image;
-            document.getElementById('detailProductName').textContent = product.name;
-            document.getElementById('detailProductSKU').textContent = `SKU: ${product.sku}`;
-            document.getElementById('detailProductCategory').textContent = getCategoryName(product.category);
-            document.getElementById('detailProductStatus').textContent = getStatusText(product.status);
-            document.getElementById('detailProductStatus').className = `badge ${statusClass}`;
-            document.getElementById('detailProductPrice').textContent = formattedPrice;
-            document.getElementById('detailProductStock').textContent = product.stock;
-            document.getElementById('detailProductStock').className = product.stock === 0 ? 'h5 text-danger' : 'h5';
-            document.getElementById('detailProductDescription').textContent = product.description;
-            document.getElementById('detailProductWeight').textContent = product.weight;
-            document.getElementById('detailProductDimensions').textContent = product.dimensions;
-            document.getElementById('detailProductDate').textContent = product.date_added;
+            document.getElementById('deleteProductName').textContent = productName;
 
-            // Update tags
-            const tagsContainer = document.getElementById('detailProductTags');
-            tagsContainer.innerHTML = '';
-            product.tags.forEach(tag => {
-                const tagElement = document.createElement('span');
-                tagElement.className = 'product-tag';
-                tagElement.textContent = tag;
-                tagsContainer.appendChild(tagElement);
+            // Show delete confirmation modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+            deleteModal.show();
+        }
+
+        // Confirm Delete Action
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (productToDelete) {
+                deleteProduct(productToDelete);
+            }
+        });
+
+        // Delete Product Function
+        window.deleteProduct = function(productId) {
+            showLoading();
+
+            fetch(`/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    hideLoading();
+
+                    // Hide delete modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteProductModal'));
+                    if (deleteModal) {
+                        deleteModal.hide();
+                    }
+
+                    if (data.success) {
+                        showToast('Produk berhasil dihapus', 'success');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showToast('Gagal menghapus produk', 'error');
+                    }
+                })
+                .catch(error => {
+                    hideLoading();
+                    showToast('Terjadi kesalahan saat menghapus produk', 'error');
+                });
+        }
+
+        // Enhanced Toast notification function
+        function showToast(message, type = 'info') {
+            // Remove existing toasts
+            const existingToasts = document.querySelectorAll('.toast-container');
+            existingToasts.forEach(toast => toast.remove());
+
+            const toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+
+            const toast = document.createElement('div');
+            toast.className =
+            `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+
+            toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center">
+                    <i class="fas ${icon} me-2"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+            toastContainer.appendChild(toast);
+            document.body.appendChild(toastContainer);
+
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 3000
             });
+            bsToast.show();
 
-            // Show modal
-            const productDetailModal = new bootstrap.Modal(document.getElementById('productDetailModal'));
-            productDetailModal.show();
-        };
+            // Remove toast after hide
+            toast.addEventListener('hidden.bs.toast', () => {
+                toastContainer.remove();
+            });
+        }
 
+        // Loading functions - IMPROVED
+        function showLoading() {
+            try {
+                const loadingModalElement = document.getElementById('loadingModal');
+                if (loadingModalElement) {
+                    const loadingModal = new bootstrap.Modal(loadingModalElement);
+                    loadingModal.show();
+                }
+            } catch (error) {
+                console.error('Error showing loading modal:', error);
+            }
+        }
+
+        function hideLoading() {
+            try {
+                const loadingModalElement = document.getElementById('loadingModal');
+                if (loadingModalElement) {
+                    const loadingModal = bootstrap.Modal.getInstance(loadingModalElement);
+                    if (loadingModal) {
+                        loadingModal.hide();
+                    } else {
+                        const newModal = new bootstrap.Modal(loadingModalElement);
+                        newModal.hide();
+                    }
+                }
+            } catch (error) {
+                console.error('Error hiding loading modal:', error);
+                const loadingModalElement = document.getElementById('loadingModal');
+                if (loadingModalElement) {
+                    loadingModalElement.classList.remove('show');
+                    loadingModalElement.style.display = 'none';
+                    document.body.classList.remove('modal-open');
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                }
+            }
+        }
+
+        // Initialize event listeners when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Load products table
-            loadProductsTable();
-
             // Filter functionality
             const categoryFilter = document.getElementById('categoryFilter');
             const statusFilter = document.getElementById('statusFilter');
@@ -771,16 +1178,30 @@
             const resetFilters = document.getElementById('resetFilters');
 
             // Event listeners for filters
-            categoryFilter.addEventListener('change', filterProducts);
-            statusFilter.addEventListener('change', filterProducts);
-            searchInput.addEventListener('input', filterProducts);
-            searchButton.addEventListener('click', filterProducts);
-            resetFilters.addEventListener('click', function() {
+            if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
+            if (statusFilter) statusFilter.addEventListener('change', filterProducts);
+
+            // Gunakan debounce untuk search input
+            const debouncedFilter = debounce(filterProducts, 500);
+            if (searchInput) searchInput.addEventListener('input', debouncedFilter);
+            if (searchButton) searchButton.addEventListener('click', filterProducts);
+
+            if (resetFilters) resetFilters.addEventListener('click', function() {
                 categoryFilter.value = 'all';
                 statusFilter.value = 'all';
                 searchInput.value = '';
-                loadProductsTable();
+                filterProducts();
             });
+
+            // Initialize confirm delete button
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (productToDelete) {
+                        deleteProduct(productToDelete);
+                    }
+                });
+            }
         });
     </script>
 @endsection

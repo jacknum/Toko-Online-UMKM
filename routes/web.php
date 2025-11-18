@@ -75,15 +75,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
         Route::post('/settings/update-all', [SettingsController::class, 'updateAll'])->name('settings.update-all');
+
+        // PRODUCT ROUTES
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-        // CREATE PRODUCT
+        Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-        // EDIT PRODUCT
         Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-        // DELETE PRODUCT
+        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update'); // INI METHOD PUT
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        // ORDER ROUTES (sisanya tetap sama)
         Route::get('/orders/incoming', [OrderController::class, 'incoming'])->name('orders.incoming');
         Route::get('/orders/outgoing', [OrderController::class, 'outgoing'])->name('orders.outgoing');
         Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
@@ -94,8 +96,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
         Route::post('/orders/{id}/mark-delivered', [OrderController::class, 'markDelivered'])->name('orders.mark-delivered');
         Route::post('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+
+        // PAYMENT ROUTES
         Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
         Route::get('/payments/{id}', [PaymentController::class, 'detail'])->name('payments.detail');
+
+        // STORE ROUTES
         Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
     });
 
