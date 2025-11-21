@@ -6,11 +6,16 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Composer builder (PHP 8.2 image)
-FROM composer:2 AS composer-builder
+# Stage 2: Composer builder (PHP 8.2)
+FROM composer:2.7-php8.2-alpine AS composer-builder
 WORKDIR /app
+
+# Install dependencies needed by composer (zip extension etc)
+RUN apk add --no-cache zip unzip git
+
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
+
 COPY . .
 RUN composer dump-autoload --optimize
 
@@ -24,14 +29,14 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www
 
-# Copy hasil build Node
+# Copy Node build
 COPY --from=node-builder /app/public/build ./public/build
 
-# Copy vendor Composer
+# Copy vendor
 COPY --from=composer-builder /app/vendor ./vendor
 
-# Copy seluruh project
+# Copy full project
 COPY . .
 
-# Permissions
+# Fix permissions
 RUN chown -R www-data:www-data /var/www
