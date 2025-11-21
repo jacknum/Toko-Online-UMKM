@@ -2,15 +2,27 @@
 builder = "NIXPACKS"
 
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl", "php82Extensions.pdo_mysql", "nodejs_20"]
+nixPkgs = [
+  "php82",
+  "php82Extensions.mbstring",
+  "php82Extensions.xml",
+  "php82Extensions.curl",
+  "php82Extensions.pdo_mysql",
+  "php82Extensions.tokenizer",
+  "php82Extensions.openssl",
+  "php82Extensions.fileinfo",
+  "nodejs_20"
+]
 
 [phases.install]
+providers = ["nodejs", "php"]
 cmds = [
   "composer install --no-dev --optimize-autoloader",
   "npm install"
 ]
 
 [phases.build]
+providers = ["nodejs", "php"]
 cmds = [
   "npm run build",
   "php artisan config:cache",
