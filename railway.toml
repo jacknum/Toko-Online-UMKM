@@ -25,3 +25,9 @@ cmds = [
   "php artisan route:cache",
   "php artisan view:cache"
 ]
+
+[build]
+builder = "HEROKU"
+
+[env]
+NODE_ENV = "production"
