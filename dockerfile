@@ -6,8 +6,8 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Composer builder (PHP 8.2)
-FROM composer:2-php8.2 AS composer-builder
+# Stage 2: Composer builder (PHP 8.2 image)
+FROM composer:2 AS composer-builder
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
@@ -17,7 +17,7 @@ RUN composer dump-autoload --optimize
 # Stage 3: Final image for Laravel
 FROM php:8.2-fpm
 
-# Install dependencies PHP
+# Install PHP extensions
 RUN apt-get update && apt-get install -y \
     zip unzip git curl libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql mbstring bcmath gd
@@ -33,5 +33,5 @@ COPY --from=composer-builder /app/vendor ./vendor
 # Copy seluruh project
 COPY . .
 
-# set permissions
+# Permissions
 RUN chown -R www-data:www-data /var/www
