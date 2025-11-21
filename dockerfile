@@ -6,8 +6,8 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Composer builder
-FROM composer:2 AS composer-builder
+# Stage 2: Composer builder (PHP 8.2)
+FROM composer:2.7-php8.2 AS composer-builder
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
