@@ -1,15 +1,37 @@
-# Build stage
+# Stage 1: Node builder
 FROM node:20 AS node-builder
 WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
 COPY . .
-RUN npm install && npm run build
+RUN npm run build
 
-# PHP stage
-FROM dunglas/frankenphp
-
+# Stage 2: Composer builder
+FROM composer:2 AS composer-builder
 WORKDIR /app
-
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
 COPY . .
+RUN composer dump-autoload --optimize
+
+# Stage 3: Final image for Laravel
+FROM php:8.2-fpm
+
+# Install dependencies PHP
+RUN apt-get update && apt-get install -y \
+    zip unzip git curl libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring bcmath gd
+
+WORKDIR /var/www
+
+# Copy hasil build Node
 COPY --from=node-builder /app/public/build ./public/build
 
-RUN composer install --no-dev --optimize-autoloader
+# Copy vendor Composer
+COPY --from=composer-builder /app/vendor ./vendor
+
+# Copy seluruh project
+COPY . .
+
+# set permissions
+RUN chown -R www-data:www-data /var/www
