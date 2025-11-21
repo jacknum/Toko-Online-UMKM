@@ -6,12 +6,12 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/app.js',
                 'resources/css/seller.css',
-                'resources/js/bootstrap.js',
                 'resources/css/buyer.css',
                 'resources/css/landing.css',
-                'resources/css/auth.css'
+                'resources/css/auth.css',
+                'resources/js/bootstrap.js',
+                'resources/js/app.js'
             ],
             refresh: true,
         }),
