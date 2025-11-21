@@ -1,5 +1,5 @@
 [build]
-builder = "HEROKU"
+builder = "NIXPACKS"
 
 [phases.setup]
 nixPkgs = [
@@ -25,6 +25,3 @@ cmds = [
   "php artisan route:cache",
   "php artisan view:cache"
 ]
-
-[env]
-NODE_ENV = "production"
