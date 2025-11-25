@@ -27,13 +27,12 @@ class ProductController extends Controller
         try {
             $userId = Auth::id();
 
-            // Query dasar dengan select hanya kolom yang diperlukan
             $query = Product::where('user_id', $userId)
-                ->select(['id', 'name', 'sku', 'category_id', 'price', 'stock', 'status', 'image', 'created_at']); // UBAH: category -> category_id
+                ->select(['id', 'name', 'sku', 'category', 'price', 'stock', 'status', 'image', 'created_at']); // ← UBAH
 
             // Filter by category
             if ($request->category && $request->category !== 'all') {
-                $query->where('category_id', $request->category); // UBAH: category -> category_id
+                $query->where('category', $request->category); // ← UBAH
             }
 
             // Filter by status
@@ -41,14 +40,13 @@ class ProductController extends Controller
                 $query->where('status', $request->status);
             }
 
-            // Search by name - gunakan index jika ada
+            // Search by name
             if ($request->search) {
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
 
             $products = $query->latest()->get();
 
-            // Hitung stats dengan query terpisah untuk performa lebih baik
             $totalQuery = Product::where('user_id', $userId);
             $activeQuery = clone $totalQuery;
             $lowStockQuery = clone $totalQuery;
@@ -72,19 +70,11 @@ class ProductController extends Controller
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memfilter produk',
                 'products' => [],
-                'stats' => [
-                    'total' => 0,
-                    'active' => 0,
-                    'low_stock' => 0,
-                    'out_of_stock' => 0
-                ]
+                'stats' => ['total' => 0, 'active' => 0, 'low_stock' => 0, 'out_of_stock' => 0]
             ], 500);
         }
     }
 
-    /**
-     * Get product for editing
-     */
     public function edit($id)
     {
         try {
@@ -93,11 +83,13 @@ class ProductController extends Controller
             return response()->json([
                 'id' => $product->id,
                 'name' => $product->name,
-                'category_id' => $product->category_id, // UBAH: category -> category_id
+                'category' => $product->category, // ← UBAH
                 'price' => $product->price,
+                'original_price' => $product->original_price,
                 'stock' => $product->stock,
                 'description' => $product->description,
                 'image' => $product->image,
+                'tags' => $product->tags,
                 'created_at' => $product->created_at,
                 'updated_at' => $product->updated_at
             ]);
@@ -106,14 +98,11 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Store new product - DENGAN AUTO STATUS
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
-            'category_id' => 'required|integer|exists:categories,id', // UBAH: category -> category_id
+            'category'    => 'required|string|max:255', // ← UBAH
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'description' => 'nullable|string',
@@ -126,15 +115,13 @@ class ProductController extends Controller
             $product = new Product();
             $product->user_id = Auth::id();
             $product->name = $validated['name'];
-            $product->category_id = $validated['category_id']; // UBAH: category -> category_id
+            $product->category = $validated['category']; // ← UBAH
             $product->price = $validated['price'];
             $product->stock = $validated['stock'];
             $product->description = $validated['description'] ?? null;
             $product->tags = $validated['tags'] ?? null;
             $product->original_price = $validated['original_price'] ?? null;
             $product->sku = 'SKU-' . time() . rand(100, 999);
-
-            // Status akan otomatis di-set oleh boot method di Model
 
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('products', 'public');
@@ -146,13 +133,12 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
         } catch (\Exception $e) {
             Log::error('Store product error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
+            return redirect()->back()
+                ->withErrors(['error' => $e->getMessage()])
+                ->withInput();
         }
     }
 
-    /**
-     * Update product - DENGAN AUTO STATUS
-     */
     public function update(Request $request, $id)
     {
         try {
@@ -160,7 +146,7 @@ class ProductController extends Controller
 
             $validated = $request->validate([
                 'name'        => 'required|string|max:255',
-                'category_id' => 'required|integer|exists:categories,id', // UBAH: category -> category_id
+                'category'    => 'required|string|max:255', // ← UBAH
                 'price'       => 'required|integer|min:0',
                 'stock'       => 'required|integer|min:0',
                 'description' => 'nullable|string',
@@ -169,9 +155,7 @@ class ProductController extends Controller
                 'original_price' => 'nullable|numeric|min:0'
             ]);
 
-            // Handle image upload
             if ($request->hasFile('image')) {
-                // Delete old image if exists
                 if ($product->image && Storage::disk('public')->exists($product->image)) {
                     Storage::disk('public')->delete($product->image);
                 }
@@ -180,14 +164,14 @@ class ProductController extends Controller
                 $validated['image'] = $imagePath;
             }
 
-            // Status akan otomatis di-update oleh boot method di Model saat update
-
             $product->update($validated);
 
             return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('Update product error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal memperbarui produk.');
+            return redirect()->back()
+                ->withErrors(['error' => $e->getMessage()])
+                ->withInput();
         }
     }
 

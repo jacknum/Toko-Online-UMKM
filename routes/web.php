@@ -71,26 +71,6 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard - otomatis redirect berdasarkan role
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // =============================================
-    // DASHBOARD ROUTES YANG DITAMBAHKAN
-    // =============================================
-    Route::prefix('dashboard')->name('dashboard.')->group(function () {
-        // Filter products untuk dashboard
-        Route::get('/products/filter', [DashboardController::class, 'filterProducts'])->name('products.filter');
-
-        // Get product detail untuk edit modal
-        Route::get('/products/{id}', [DashboardController::class, 'getProduct'])->name('products.get');
-
-        // Update product dari dashboard
-        Route::put('/products/{id}', [DashboardController::class, 'updateProduct'])->name('products.update');
-
-        // Delete product dari dashboard
-        Route::delete('/products/{id}', [DashboardController::class, 'deleteProduct'])->name('products.delete');
-
-        // Bulk delete products dari dashboard
-        Route::post('/products/bulk-delete', [DashboardController::class, 'bulkDeleteProducts'])->name('products.bulk-delete');
-    });
-
     // Routes khusus Penjual
     Route::middleware(['role:penjual'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -105,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store');
         Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update'); // INI METHOD PUT
+        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update'); // ✅ INI YANG BENAR
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
         // ORDER ROUTES (sisanya tetap sama)

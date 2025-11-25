@@ -189,14 +189,14 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($product->tags)
+                                                @if ($product->tags)
                                                     @php
                                                         $tagsArray = explode(',', $product->tags);
                                                     @endphp
-                                                    @foreach(array_slice($tagsArray, 0, 2) as $tag)
+                                                    @foreach (array_slice($tagsArray, 0, 2) as $tag)
                                                         <span class="product-tag">{{ trim($tag) }}</span>
                                                     @endforeach
-                                                    @if(count($tagsArray) > 2)
+                                                    @if (count($tagsArray) > 2)
                                                         <span class="product-tag">+{{ count($tagsArray) - 2 }}</span>
                                                     @endif
                                                 @else
@@ -210,7 +210,8 @@
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-danger ms-1"
-                                                    onclick="confirmDelete({{ $product->id }}, '{{ $product->name }}')" title="Hapus">
+                                                    onclick="confirmDelete({{ $product->id }}, '{{ $product->name }}')"
+                                                    title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -364,7 +365,8 @@
                                 <label class="form-label">Harga Asli</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" id="editProductOriginalPrice" name="original_price" class="form-control">
+                                    <input type="number" id="editProductOriginalPrice" name="original_price"
+                                        class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -400,7 +402,8 @@
     </div>
 
     <!-- Simple Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -665,7 +668,6 @@
                         updateProductsTable(data.products);
                         updateStats(data.stats);
 
-                        // Jika tidak ada hasil, tampilkan pesan info
                         if (data.products.length === 0) {
                             showToast('Tidak ada produk yang ditemukan untuk filter yang dipilih', 'info');
                         }
@@ -683,7 +685,6 @@
                 .catch(error => {
                     console.error('Filter Error:', error);
 
-                    // Tampilkan error yang lebih spesifik
                     let errorMessage = 'Terjadi kesalahan saat memfilter produk';
                     if (error.message.includes('Failed to fetch')) {
                         errorMessage = 'Koneksi internet bermasalah';
@@ -778,7 +779,10 @@
             }
         }
 
-        // Edit Product Modal - TANPA LOADING
+        // HAPUS function editProduct() yang duplikat di sini!
+        // Hanya pakai window.openEditModal di bawah
+
+        // Edit Product Modal
         window.openEditModal = function(productId) {
             fetch(`/products/${productId}/edit`)
                 .then(response => {
@@ -821,11 +825,11 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Gagal memuat data produk');
+                    showToast('Gagal memuat data produk', 'error');
                 });
         }
 
-        // Delete Confirmation - TAMPILKAN MODAL KONFIRMASI
+        // Delete Confirmation
         window.confirmDelete = function(productId, productName) {
             productToDelete = productId;
 
@@ -837,7 +841,7 @@
             deleteModal.show();
         }
 
-        // Delete Product Function - TANPA DELAY
+        // Delete Product Function
         window.deleteProduct = function(productId) {
             fetch(`/products/${productId}`, {
                     method: 'DELETE',
@@ -861,7 +865,6 @@
 
                     if (data.success) {
                         showToast('Produk berhasil dihapus', 'success');
-                        // Langsung reload tanpa delay
                         location.reload();
                     } else {
                         showToast('Gagal menghapus produk', 'error');
@@ -874,7 +877,6 @@
 
         // Enhanced Toast notification function
         function showToast(message, type = 'info') {
-            // Remove existing toasts
             const existingToasts = document.querySelectorAll('.toast-container');
             existingToasts.forEach(toast => toast.remove());
 
@@ -888,7 +890,7 @@
             toast.setAttribute('aria-atomic', 'true');
 
             const icon = type === 'success' ? 'fa-check-circle' :
-                        type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+                type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
 
             toast.innerHTML = `
             <div class="d-flex">
@@ -909,7 +911,6 @@
             });
             bsToast.show();
 
-            // Remove toast after hide
             toast.addEventListener('hidden.bs.toast', () => {
                 toastContainer.remove();
             });
@@ -917,18 +918,15 @@
 
         // Initialize event listeners when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Filter functionality
             const categoryFilter = document.getElementById('categoryFilter');
             const statusFilter = document.getElementById('statusFilter');
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
             const resetFilters = document.getElementById('resetFilters');
 
-            // Event listeners for filters
             if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
             if (statusFilter) statusFilter.addEventListener('change', filterProducts);
 
-            // Gunakan debounce untuk search input saja
             const debouncedFilter = debounce(filterProducts, 500);
             if (searchInput) searchInput.addEventListener('input', debouncedFilter);
             if (searchButton) searchButton.addEventListener('click', filterProducts);
@@ -940,7 +938,6 @@
                 filterProducts();
             });
 
-            // Initialize confirm delete button
             const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
             if (confirmDeleteBtn) {
                 confirmDeleteBtn.addEventListener('click', function() {

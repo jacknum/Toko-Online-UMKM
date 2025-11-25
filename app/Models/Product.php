@@ -13,7 +13,7 @@ class Product extends Model
         'user_id',
         'name',
         'sku',
-        'category_id',
+        'category',
         'price',
         'original_price',
         'stock',

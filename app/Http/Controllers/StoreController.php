@@ -11,24 +11,17 @@ class StoreController extends Controller
 {
     public function index()
     {
-        $categories = Category::active()
-            ->select('id', 'name', 'icon')
-            ->limit(8)
-            ->get();
-
         $trendingProducts = Product::with('category')
-            ->trending()
-            ->select('id', 'name', 'description', 'price', 'original_price', 'image', 'rating', 'review_count', 'discount_percent')
+            ->where('is_trending', true)
             ->limit(8)
             ->get();
 
-        $discountProducts = Product::with('category')
-            ->discount()
-            ->select('id', 'name', 'description', 'price', 'original_price', 'image', 'rating', 'review_count', 'discount_percent')
+        $newArrivals = Product::with('category')
+            ->latest()
             ->limit(8)
             ->get();
 
-        return view('stores.index', compact('categories', 'trendingProducts', 'discountProducts'));
+        return view('stores.index', compact('trendingProducts', 'newArrivals'));
     }
 
     public function categoryProducts($categoryId)

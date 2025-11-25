@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('sku')->unique()->nullable();
 
-            // Ubah category menjadi foreign key
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('category');
 
             $table->decimal('price', 10, 2)->default(0);
             $table->decimal('original_price', 10, 2)->nullable(); // Harga asli sebelum diskon
@@ -51,7 +50,6 @@ return new class extends Migration
 
             // Index untuk performa query
             $table->index('user_id');
-            $table->index('category_id');
             $table->index('status');
             $table->index('is_trending');
         });
