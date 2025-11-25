@@ -28,8 +28,13 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-white text-uppercase mb-1">
                                 Produk Saya</div>
-                            <div class="h5 mb-0 font-weight-bold text-white">145</div>
-                            <small class="text-white">+5 dari bulan lalu</small>
+                            <div class="h5 mb-0 font-weight-bold text-white">{{ $totalProducts }}</div>
+                            <small class="text-white">
+                                @php
+                                    $activePercentage = $totalProducts > 0 ? round(($activeProducts / $totalProducts) * 100) : 0;
+                                @endphp
+                                {{ $activePercentage }}% produk aktif
+                            </small>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-box fa-2x text-white" data-toggle="modal" data-target="#iconModal"
@@ -107,7 +112,7 @@
         <div class="col-xl-8 col-lg-7">
             <div class="card card-custom shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Ringkasan Pendapatan</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Ringkasan Pendapatan (Juta Rupiah)</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
@@ -128,7 +133,7 @@
                         <div class="activity-item d-flex mb-3">
                             <div class="activity-icon bg-primary-light rounded-circle p-2 me-3"
                                 style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-shopping-cart text-primary" data-toggle="modal" data-target="#iconModal"
+                                <i class="fas fa-shopping-cart text-primary" data-bs-toggle="modal" data-bs-target="#iconModal"
                                     data-icon="fa-shopping-cart" data-title="Pesanan Baru"></i>
                             </div>
                             <div>
@@ -139,7 +144,7 @@
                         <div class="activity-item d-flex mb-3">
                             <div class="activity-icon bg-success-light rounded-circle p-2 me-3"
                                 style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-money-bill-wave text-success" data-toggle="modal" data-target="#iconModal"
+                                <i class="fas fa-money-bill-wave text-success" data-bs-toggle="modal" data-bs-target="#iconModal"
                                     data-icon="fa-money-bill-wave" data-title="Pembayaran Diterima"></i>
                             </div>
                             <div>
@@ -150,7 +155,7 @@
                         <div class="activity-item d-flex mb-3">
                             <div class="activity-icon bg-warning-light rounded-circle p-2 me-3"
                                 style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-box text-warning" data-toggle="modal" data-target="#iconModal"
+                                <i class="fas fa-box text-warning" data-bs-toggle="modal" data-bs-target="#iconModal"
                                     data-icon="fa-box" data-title="Stok Produk"></i>
                             </div>
                             <div>
@@ -161,8 +166,8 @@
                         <div class="activity-item d-flex">
                             <div class="activity-icon bg-danger-light rounded-circle p-2 me-3"
                                 style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-exclamation-triangle text-danger" data-toggle="modal"
-                                    data-target="#iconModal" data-icon="fa-exclamation-triangle"
+                                <i class="fas fa-exclamation-triangle text-danger" data-bs-toggle="modal"
+                                    data-bs-target="#iconModal" data-icon="fa-exclamation-triangle"
                                     data-title="Pesanan Dibatalkan"></i>
                             </div>
                             <div>
@@ -182,12 +187,65 @@
             <div class="card card-custom shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Produk Terbaru</h6>
-                    <button class="btn btn-sm btn-outline-danger" onclick="bulkDeleteProducts()" id="bulkDeleteBtn"
-                        style="display: none;">
-                        <i class="fas fa-trash me-1"></i> Hapus Terpilih
-                    </button>
+                    <div>
+                        <a href="{{ route('products.index') }}" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="fas fa-list me-1"></i> Lihat Semua
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" onclick="bulkDeleteProducts()" id="bulkDeleteBtn"
+                            style="display: none;">
+                            <i class="fas fa-trash me-1"></i> Hapus Terpilih
+                        </button>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
+                    <!-- Filter & Search Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card card-custom">
+                                <div class="card-body p-3">
+                                    <div class="row g-3 align-items-end">
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Kategori</label>
+                                            <select class="form-select" id="categoryFilter">
+                                                <option value="all" selected>Semua Kategori</option>
+                                                <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                                <option value="Pakaian">Pakaian</option>
+                                                <option value="Elektronik">Elektronik</option>
+                                                <option value="Aksesoris">Aksesoris</option>
+                                                <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                                <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Status</label>
+                                            <select class="form-select" id="statusFilter">
+                                                <option value="all" selected>Semua Status</option>
+                                                <option value="active">Aktif</option>
+                                                <option value="low_stock">Stok Sedikit</option>
+                                                <option value="out_of_stock">Stok Habis</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Pencarian</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="searchInput"
+                                                    placeholder="Cari produk...">
+                                                <button class="btn btn-outline-primary" type="button" id="searchButton">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-outline-secondary w-100" id="resetFilters">
+                                                <i class="fas fa-refresh me-2"></i>Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-custom table-hover">
                             <thead>
@@ -198,8 +256,7 @@
                                         </div>
                                     </th>
                                     <th width="50">No</th>
-                                    <th width="80">Gambar</th>
-                                    <th>Nama Produk</th>
+                                    <th>Produk</th>
                                     <th>Kategori</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
@@ -208,31 +265,89 @@
                                 </tr>
                             </thead>
                             <tbody id="productsTableBody">
-                                <!-- Data produk akan diisi oleh JavaScript -->
+                                @forelse ($recentProducts as $product)
+                                    <tr class="product-row" id="product-row-{{ $product->id }}">
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input product-checkbox" type="checkbox" value="{{ $product->id }}">
+                                            </div>
+                                        </td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if ($product->image)
+                                                    <img src="{{ Storage::disk('public')->exists($product->image) ? asset('storage/' . $product->image) : 'https://via.placeholder.com/40' }}"
+                                                        alt="{{ $product->name }}" class="rounded me-3"
+                                                        style="width: 40px; height: 40px; object-fit: cover;"
+                                                        onerror="this.src='https://via.placeholder.com/40'">
+                                                @else
+                                                    <img src="https://via.placeholder.com/40" alt="No Image"
+                                                        class="rounded me-3"
+                                                        style="width: 40px; height: 40px; object-fit: cover;">
+                                                @endif
+                                                <div>
+                                                    <strong>{{ $product->name }}</strong><br>
+                                                    <small class="text-muted">{{ $product->sku ?? 'SKU-' . $product->id }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ $product->category }}</td>
+                                        <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                        <td>
+                                            <span class="fw-bold {{ $product->stock == 0 ? 'text-danger' : ($product->stock <= 10 ? 'text-warning' : '') }}">
+                                                {{ $product->stock }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($product->stock == 0)
+                                                <span class="badge bg-danger">Stok Habis</span>
+                                            @elseif ($product->stock <= 10)
+                                                <span class="badge bg-warning">Stok Menipis</span>
+                                            @else
+                                                <span class="badge bg-success">Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                onclick="openEditModal({{ $product->id }})" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger ms-1"
+                                                onclick="confirmDelete({{ $product->id }}, '{{ $product->name }}')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center py-5">
+                                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                            <h5 class="text-muted">Tidak ada produk yang ditemukan</h5>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
-                    <!-- Pagination -->
-                    <nav aria-label="Product pagination">
-                        <ul class="pagination justify-content-center mb-0" id="productsPagination">
-                            <!-- Pagination akan diisi oleh JavaScript -->
-                        </ul>
-                    </nav>
+
+                    <!-- No Results Message -->
+                    <div id="noResults" class="text-center py-5 d-none">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Tidak ada produk yang ditemukan</h5>
+                        <p class="text-muted">Coba ubah filter pencarian Anda</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal for Icons -->
-    <div class="modal fade" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="iconModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="iconModal" tabindex="-1" aria-labelledby="iconModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="iconModalLabel">Informasi Ikon</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-icon-placeholder fa-4x mb-3 text-primary"></i>
@@ -240,155 +355,148 @@
                     <p id="iconDescription">Deskripsi akan muncul di sini.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Edit Actions -->
-    <div class="modal fade" id="editActionModal" tabindex="-1" role="dialog" aria-labelledby="editActionModalLabel"
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editActionModalLabel">Edit Produk</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editActionForm">
-                        <input type="hidden" id="editProductId">
+                    <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editProductId" name="id">
 
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="editProductName">Nama Produk</label>
-                                    <input type="text" class="form-control" id="editProductName" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductCategory">Kategori</label>
-                                    <input type="text" class="form-control" id="editProductCategory" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductPrice">Harga</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Rp</span>
-                                        </div>
-                                        <input type="text" class="form-control" id="editProductPrice" readonly>
-                                    </div>
-                                </div>
+                                <label class="form-label">Nama Produk</label>
+                                <input type="text" id="editProductName" name="name" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="editProductStock">Stok</label>
-                                    <input type="number" class="form-control" id="editProductStock" min="0"
+                                <label class="form-label">Kategori</label>
+                                <select class="form-select" id="editProductCategory" name="category" required>
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="Sepatu & Sandal">Sepatu & Sandal</option>
+                                    <option value="Pakaian">Pakaian</option>
+                                    <option value="Elektronik">Elektronik</option>
+                                    <option value="Aksesoris">Aksesoris</option>
+                                    <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                    <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Harga</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" id="editProductPrice" name="price" class="form-control"
                                         required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editProductStatus">Status</label>
-                                    <select class="form-control" id="editProductStatus" required>
-                                        <option value="active">Aktif</option>
-                                        <option value="warning">Stok Sedikit</option>
-                                        <option value="danger">Habis</option>
-                                        <option value="inactive">Nonaktif</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductImagePreview">Gambar Produk</label>
-                                    <div class="image-preview mb-2 text-center">
-                                        <img src="https://via.placeholder.com/150/6c757d/ffffff?text=Preview"
-                                            alt="Preview" class="img-thumbnail" id="editProductImagePreview"
-                                            style="max-height: 150px;">
-                                    </div>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="editProductImage"
-                                            accept="image/*">
-                                        <label class="custom-file-label" for="editProductImage">Ubah gambar</label>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editProductDescription">Deskripsi Produk</label>
-                            <textarea class="form-control" id="editProductDescription" rows="3"></textarea>
-                        </div>
-
-                        <div class="alert alert-info mt-3">
-                            <small>
-                                <i class="fas fa-info-circle me-1"></i>
-                                Perubahan akan langsung diterapkan setelah Anda menyimpannya.
-                            </small>
+                            <div class="col-md-6">
+                                <label class="form-label">Stok</label>
+                                <input type="number" id="editProductStock" name="stock" class="form-control"
+                                        required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Deskripsi</label>
+                                <textarea class="form-control" id="editProductDescription" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Gambar Produk</label>
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                                <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar</small>
+                                <div id="currentImage" class="mt-2"></div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger" id="deleteProductBtn"
-                        onclick="confirmDeleteProduct()">
-                        <i class="fas fa-trash me-1"></i> Hapus
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Update Produk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="mb-3">Anda Yakin Ingin Menghapus Data Ini?</h5>
+                    <p class="text-muted" id="deleteProductInfo">Produk: <span id="productNameToDelete"></span></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Tidak
                     </button>
-                    <button type="button" class="btn btn-primary" id="saveEditBtn" onclick="saveProductChanges()">
-                        <i class="fas fa-save me-1"></i> Simpan Perubahan
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="executeDelete()">
+                        <i class="fas fa-check me-2"></i>Ya
                     </button>
                 </div>
             </div>
         </div>
     </div>
-@endsection
 
-@section('styles')
     <style>
-        /* Tambahan styling untuk kontras yang lebih baik */
-        .text-white-90 {
-            color: rgba(255, 255, 255, 0.9) !important;
+        .stat-card-primary {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
         }
 
-        .text-white-70 {
-            color: rgba(255, 255, 255, 0.7) !important;
+        .stat-card-success {
+            background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%) !important;
         }
 
-        .report-card:hover {
-            transform: translateY(-5px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .stat-card-warning {
+            background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%) !important;
+        }
+
+        .stat-card-danger {
+            background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%) !important;
+        }
+
+        .stat-card.text-white .stat-number,
+        .stat-card.text-white .stat-title {
+            color: white !important;
+        }
+
+        .stat-card.text-white .stat-icon {
+            color: white !important;
+            opacity: 0.9;
+        }
+
+        .bg-white-20 {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .product-row {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-row:hover {
+            background-color: #f8f9fa;
         }
 
         .card-custom {
             border: none;
             border-radius: 10px;
-        }
-
-        .badge-custom {
-            font-size: 0.75em;
-            padding: 0.35em 0.65em;
-        }
-
-        .product-image-container {
-            width: 50px;
-            height: 50px;
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f9fa;
-            margin: 0 auto;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .image-preview {
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            padding: 10px;
         }
 
         .table-custom th {
@@ -410,37 +518,61 @@
             border-color: #4e73df;
         }
 
-        .pagination .page-item.active .page-link {
-            background-color: #4e73df;
-            border-color: #4e73df;
+        /* Success Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
         }
 
-        .pagination .page-link {
-            color: #4e73df;
+        .toast {
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border: none;
         }
 
-        .pagination .page-link:hover {
-            color: #224abe;
-        }
-
-        /* Styling untuk modal edit */
-        #editActionModal .modal-header {
-            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+        .toast-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
         }
 
-        #editActionModal .modal-header .close {
+        .toast-error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
-            opacity: 0.8;
         }
 
-        #editActionModal .modal-header .close:hover {
-            opacity: 1;
+        .toast-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
         }
 
-        #editActionModal .form-control:read-only {
-            background-color: #f8f9fa;
-            opacity: 0.8;
+        /* Smooth transitions for filter changes */
+        #productsTableBody {
+            transition: opacity 0.3s ease;
+        }
+
+        #productsTableBody.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .modal-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+
+        .modal-body {
+            padding: 0 1.5rem 1rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem 1.5rem;
         }
     </style>
 @endsection
@@ -449,127 +581,97 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Data produk dengan lebih banyak item untuk demo pagination
-        const allProducts = [{
-                id: 1,
-                name: 'Sepatu Running Premium',
-                category: 'Olahraga',
-                price: '450000',
-                stock: '24',
-                status: 'active',
-                image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80',
-                description: 'Sepatu running dengan teknologi terbaru untuk kenyamanan maksimal'
-            },
-            {
-                id: 2,
-                name: 'Tas Laptop Minimalis',
-                category: 'Aksesoris',
-                price: '320000',
-                stock: '15',
-                status: 'active',
-                image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80',
-                description: 'Tas laptop dengan desain minimalis dan bahan waterproof'
-            },
-            {
-                id: 3,
-                name: 'Smartwatch Series 5',
-                category: 'Elektronik',
-                price: '1200000',
-                stock: '8',
-                status: 'warning',
-                image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80',
-                description: 'Smartwatch dengan fitur kesehatan dan konektivitas lengkap'
-            },
-            {
-                id: 4,
-                name: 'Kaos Polo Cotton',
-                category: 'Pakaian',
-                price: '125000',
-                stock: '0',
-                status: 'danger',
-                image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&h=150&q=80',
-                description: 'Kaos polo berbahan cotton premium dengan jahitan rapi'
-            }
-        ];
-
-        let currentPage = 1;
-        const productsPerPage = 4;
+        // Data untuk chart pendapatan dari PHP
+        const revenueData = @json($revenueData);
+        let productToDelete = null;
+        let currentFilterTimeout = null;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Load products table
-            loadProductsTable();
-
-            // Initialize chart hanya jika elemen ada
-            const chartCanvas = document.getElementById('revenueChart');
-            if (chartCanvas) {
-                initializeChart();
-            }
+            // Initialize chart
+            initializeChart();
 
             // Icon Modal Handler
-            $('#iconModal').on('show.bs.modal', function(event) {
-                const button = $(event.relatedTarget);
-                const iconClass = button.data('icon');
-                const iconTitle = button.data('title');
-                const modal = $(this);
+            const iconModal = document.getElementById('iconModal');
+            if (iconModal) {
+                iconModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const iconClass = button.getAttribute('data-icon');
+                    const iconTitle = button.getAttribute('data-title');
 
-                modal.find('.fa-icon-placeholder').attr('class',
-                    `fas ${iconClass} fa-4x mb-3 text-primary`);
-                modal.find('#iconTitle').text(iconTitle);
+                    const modal = this;
+                    modal.querySelector('.fa-icon-placeholder').className = `fas ${iconClass} fa-4x mb-3 text-primary`;
+                    modal.querySelector('#iconTitle').textContent = iconTitle;
 
-                let description = '';
-                switch (iconClass) {
-                    case 'fa-box':
-                        description = 'Ikon ini mewakili jumlah produk yang tersedia di toko Anda.';
-                        break;
-                    case 'fa-shopping-cart':
-                        description = 'Ikon ini menunjukkan jumlah pesanan masuk yang belum diproses.';
-                        break;
-                    case 'fa-truck':
-                        description =
-                            'Ikon ini menampilkan jumlah pesanan yang sedang dalam proses pengiriman.';
-                        break;
-                    case 'fa-money-bill-wave':
-                        description =
-                            'Ikon ini menunjukkan total pendapatan dan biaya yang telah diterima.';
-                        break;
-                    case 'fa-exclamation-triangle':
-                        description =
-                            'Ikon ini menandakan adanya masalah atau peringatan yang perlu perhatian.';
-                        break;
-                    default:
-                        description =
-                            'Ikon ini memberikan informasi tentang aktivitas terbaru di toko Anda.';
-                }
-                modal.find('#iconDescription').text(description);
-            });
-
-            // Image preview handler untuk modal edit
-            $('#editProductImage').on('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#editProductImagePreview').attr('src', e.target.result);
+                    let description = '';
+                    switch (iconClass) {
+                        case 'fa-box':
+                            description = 'Ikon ini mewakili jumlah produk yang tersedia di toko Anda.';
+                            break;
+                        case 'fa-shopping-cart':
+                            description = 'Ikon ini menunjukkan jumlah pesanan masuk yang belum diproses.';
+                            break;
+                        case 'fa-money-bill-wave':
+                            description = 'Ikon ini menunjukkan total pendapatan dan biaya yang telah diterima.';
+                            break;
+                        case 'fa-star':
+                            description = 'Ikon ini menunjukkan rating toko berdasarkan ulasan pelanggan.';
+                            break;
+                        case 'fa-exclamation-triangle':
+                            description = 'Ikon ini menandakan adanya masalah atau peringatan yang perlu perhatian.';
+                            break;
+                        default:
+                            description = 'Ikon ini memberikan informasi tentang aktivitas terbaru di toko Anda.';
                     }
-                    reader.readAsDataURL(file);
-                    $(this).next('.custom-file-label').html(file.name);
-                }
+                    modal.querySelector('#iconDescription').textContent = description;
+                });
+            }
+
+            // Filter functionality
+            const categoryFilter = document.getElementById('categoryFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const resetFilters = document.getElementById('resetFilters');
+
+            // Event listeners for filters
+            if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
+            if (statusFilter) statusFilter.addEventListener('change', filterProducts);
+
+            // Gunakan debounce untuk search input
+            const debouncedFilter = debounce(filterProducts, 500);
+            if (searchInput) searchInput.addEventListener('input', debouncedFilter);
+            if (searchButton) searchButton.addEventListener('click', filterProducts);
+
+            if (resetFilters) resetFilters.addEventListener('click', function() {
+                categoryFilter.value = 'all';
+                statusFilter.value = 'all';
+                searchInput.value = '';
+                filterProducts();
             });
 
             // Select all checkboxes
-            $('#selectAll').on('change', function() {
-                $('.product-checkbox').prop('checked', this.checked);
-                updateBulkDeleteButton();
-            });
+            const selectAll = document.getElementById('selectAll');
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.product-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateBulkDeleteButton();
+                });
+            }
 
             // Attach event listeners to dynamically created checkboxes
-            $(document).on('change', '.product-checkbox', updateBulkDeleteButton);
+            document.addEventListener('change', '.product-checkbox', updateBulkDeleteButton);
         });
 
         function initializeChart() {
-            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) return;
 
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            const chartCtx = ctx.getContext('2d');
+
+            const gradient = chartCtx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, 'rgba(78, 115, 223, 0.5)');
             gradient.addColorStop(1, 'rgba(78, 115, 223, 0)');
 
@@ -577,7 +679,7 @@
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                 datasets: [{
                     label: 'Pendapatan (Juta Rupiah)',
-                    data: [5, 7, 8, 10, 12, 15, 18, 16, 14, 12, 10, 8],
+                    data: Object.values(revenueData),
                     backgroundColor: gradient,
                     borderColor: 'rgba(78, 115, 223, 1)',
                     borderWidth: 2,
@@ -631,115 +733,180 @@
                 }
             };
 
-            new Chart(ctx, {
+            new Chart(chartCtx, {
                 type: 'line',
                 data: data,
                 options: options
             });
         }
 
-        function loadProductsTable() {
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-            const currentProducts = allProducts.slice(startIndex, endIndex);
+        // Utility Functions
+        function getStatusBadge(stock) {
+            if (stock == 0) {
+                return '<span class="badge bg-danger">Stok Habis</span>';
+            } else if (stock <= 10) {
+                return '<span class="badge bg-warning">Stok Menipis</span>';
+            } else {
+                return '<span class="badge bg-success">Aktif</span>';
+            }
+        }
 
+        function formatPrice(price) {
+            return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Debounce function untuk search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Filter Products dengan AJAX
+        function filterProducts() {
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const statusValue = document.getElementById('statusFilter').value;
+            const searchValue = document.getElementById('searchInput').value;
+
+            // Clear previous timeout jika ada
+            if (currentFilterTimeout) {
+                clearTimeout(currentFilterTimeout);
+            }
+
+            // Langsung kosongkan tabel sementara
             const tableBody = document.getElementById('productsTableBody');
             tableBody.innerHTML = '';
 
-            currentProducts.forEach((product, index) => {
-                const rowNumber = startIndex + index + 1;
-                const statusBadge = getStatusBadge(product.status);
+            // AJAX request untuk filter
+            fetch(`/dashboard/products/filter?category=${categoryValue}&status=${statusValue}&search=${searchValue}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        updateProductsTable(data.products);
+                        updateStats(data.stats);
 
-                const row = `
-                <tr>
+                        // Jika tidak ada hasil, tampilkan pesan info
+                        if (data.products.length === 0) {
+                            showToast('Tidak ada produk yang ditemukan untuk filter yang dipilih', 'info');
+                        }
+                    } else {
+                        showToast(data.message || 'Gagal memfilter produk', 'error');
+                        updateProductsTable([]);
+                        updateStats({
+                            total: 0,
+                            active: 0,
+                            low_stock: 0,
+                            out_of_stock: 0
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Filter Error:', error);
+
+                    // Tampilkan error yang lebih spesifik
+                    let errorMessage = 'Terjadi kesalahan saat memfilter produk';
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessage = 'Koneksi internet bermasalah';
+                    }
+
+                    showToast(errorMessage, 'error');
+                    updateProductsTable([]);
+                    updateStats({
+                        total: 0,
+                        active: 0,
+                        low_stock: 0,
+                        out_of_stock: 0
+                    });
+                });
+        }
+
+        function updateProductsTable(products) {
+            const productsTableBody = document.getElementById('productsTableBody');
+            const noResults = document.getElementById('noResults');
+
+            productsTableBody.innerHTML = '';
+
+            if (products.length === 0) {
+                noResults.classList.remove('d-none');
+                return;
+            }
+
+            noResults.classList.add('d-none');
+
+            products.forEach((product, index) => {
+                const statusBadge = getStatusBadge(product.stock);
+                const stockClass = product.stock === 0 ? 'text-danger' : (product.stock <= 10 ? 'text-warning' : '');
+
+                const row = document.createElement('tr');
+                row.className = 'product-row';
+                row.id = `product-row-${product.id}`;
+
+                row.innerHTML = `
                     <td>
                         <div class="form-check">
                             <input class="form-check-input product-checkbox" type="checkbox" value="${product.id}">
                         </div>
                     </td>
-                    <td>${rowNumber}</td>
+                    <td>${index + 1}</td>
                     <td>
-                        <div class="product-image-container">
-                            <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="d-flex align-items-center">
+                            <img src="/storage/${product.image}" alt="${product.name}"
+                                class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;"
+                                onerror="this.src='https://via.placeholder.com/40'">
+                            <div>
+                                <strong>${product.name}</strong><br>
+                                <small class="text-muted">${product.sku || '-'}</small>
+                            </div>
                         </div>
                     </td>
-                    <td>${product.name}</td>
                     <td>${product.category}</td>
-                    <td>Rp ${formatPrice(product.price)}</td>
-                    <td>${product.stock}</td>
+                    <td>${formatPrice(product.price)}</td>
+                    <td>
+                        <span class="fw-bold ${stockClass}">${product.stock}</span>
+                    </td>
                     <td>${statusBadge}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteProduct(${product.id})" title="Hapus">
+                        <button class="btn btn-sm btn-outline-danger ms-1" onclick="confirmDelete(${product.id}, '${product.name}')" title="Hapus">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
-                </tr>
-            `;
-                tableBody.innerHTML += row;
+                `;
+
+                productsTableBody.appendChild(row);
             });
-
-            updatePagination();
         }
 
-        function getStatusBadge(status) {
-            switch (status) {
-                case 'active':
-                    return '<span class="badge bg-success badge-custom">Aktif</span>';
-                case 'warning':
-                    return '<span class="badge bg-warning badge-custom">Stok Sedikit</span>';
-                case 'danger':
-                    return '<span class="badge bg-danger badge-custom">Habis</span>';
-                default:
-                    return '<span class="badge bg-secondary badge-custom">Tidak Aktif</span>';
+        function updateStats(stats) {
+            // Update hanya stat card "Produk Saya" dengan data real dari database
+            const produkSayaCard = document.querySelector('.card-custom:first-child');
+            if (produkSayaCard) {
+                produkSayaCard.querySelector('.h5').textContent = stats.total;
+                const activePercentage = stats.total > 0 ? Math.round((stats.active / stats.total) * 100) : 0;
+                produkSayaCard.querySelector('small').textContent = `${activePercentage}% produk aktif`;
             }
-        }
-
-        function formatPrice(price) {
-            return parseInt(price).toLocaleString('id-ID');
-        }
-
-        function updatePagination() {
-            const totalPages = Math.ceil(allProducts.length / productsPerPage);
-            const pagination = document.getElementById('productsPagination');
-            pagination.innerHTML = '';
-
-            // Previous button
-            const prevDisabled = currentPage === 1 ? 'disabled' : '';
-            pagination.innerHTML += `
-            <li class="page-item ${prevDisabled}">
-                <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-        `;
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                const active = i === currentPage ? 'active' : '';
-                pagination.innerHTML += `
-                <li class="page-item ${active}">
-                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-                </li>
-            `;
-            }
-
-            // Next button
-            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-            pagination.innerHTML += `
-            <li class="page-item ${nextDisabled}">
-                <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        `;
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            loadProductsTable();
         }
 
         function updateBulkDeleteButton() {
@@ -754,177 +921,332 @@
             }
         }
 
-        // EDIT PRODUCT FUNCTION - FIXED VERSION
-        function openEditModal(id) {
-            console.log('Opening edit modal for product ID:', id);
-
-            const product = allProducts.find(p => p.id === id);
-
-            if (product) {
-                // Isi form dengan data produk
-                $('#editProductId').val(product.id);
-                $('#editProductName').val(product.name);
-                $('#editProductCategory').val(product.category);
-                $('#editProductPrice').val('Rp ' + formatPrice(product.price));
-                $('#editProductStock').val(product.stock);
-                $('#editProductDescription').val(product.description);
-                $('#editProductStatus').val(product.status);
-                $('#editProductImagePreview').attr('src', product.image);
-
-                // Reset file input
-                $('#editProductImage').val('');
-                $('#editProductImage').next('.custom-file-label').html('Ubah gambar');
-
-                // Tampilkan modal dengan jQuery
-                $('#editActionModal').modal('show');
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Produk Tidak Ditemukan',
-                    text: 'Produk yang akan diedit tidak ditemukan!',
-                    confirmButtonText: 'OK'
-                });
-            }
-
-            editProduct(id);
-        }
-
-        function saveProductChanges() {
-            const productId = parseInt($('#editProductId').val());
-            const newStock = $('#editProductStock').val();
-            const newStatus = $('#editProductStatus').val();
-            const newDescription = $('#editProductDescription').val();
-
-            if (!newStock || newStock < 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Stok Tidak Valid',
-                    text: 'Harap masukkan stok yang valid!',
-                    confirmButtonText: 'OK'
-                });
-                return;
-            }
-
-            const productIndex = allProducts.findIndex(p => p.id === productId);
-
-            if (productIndex !== -1) {
-                allProducts[productIndex].stock = newStock;
-                allProducts[productIndex].status = newStatus;
-                allProducts[productIndex].description = newDescription;
-
-                const imageInput = document.getElementById('editProductImage');
-                if (imageInput.files && imageInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        allProducts[productIndex].image = e.target.result;
-                        loadProductsTable();
-                        showEditSuccess();
-                    };
-                    reader.readAsDataURL(imageInput.files[0]);
-                } else {
-                    loadProductsTable();
-                    showEditSuccess();
-                }
-            }
-        }
-
-        function showEditSuccess() {
-            $('#editActionModal').modal('hide');
-            Swal.fire({
-                icon: 'success',
-                title: 'Perubahan Disimpan',
-                text: 'Data produk berhasil diperbarui.',
-                confirmButtonText: 'OK',
-                timer: 2000
-            });
-        }
-
-        function confirmDeleteProduct() {
-            const productId = parseInt($('#editProductId').val());
-            const product = allProducts.find(p => p.id === productId);
-
-            if (product) {
-                Swal.fire({
-                    title: 'Hapus Produk?',
-                    html: `Anda akan menghapus produk <strong>"${product.name}"</strong>. Tindakan ini tidak dapat dibatalkan!`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#editActionModal').modal('hide');
-                        deleteProduct(productId);
+        // Edit Product Modal
+        window.openEditModal = function(productId) {
+            fetch(`/dashboard/products/${productId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
                     }
-                });
-            }
-        }
+                    return response.json();
+                })
+                .then(product => {
+                    const form = document.getElementById('editProductForm');
+                    form.action = `/dashboard/products/${product.id}`;
 
-        function deleteProduct(id) {
-            Swal.fire({
-                title: 'Hapus Produk?',
-                text: "Anda tidak dapat mengembalikan produk yang telah dihapus!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const index = allProducts.findIndex(p => p.id === id);
-                    if (index !== -1) {
-                        allProducts.splice(index, 1);
-                        loadProductsTable();
+                    document.getElementById('editProductId').value = product.id;
+                    document.getElementById('editProductName').value = product.name;
+                    document.getElementById('editProductCategory').value = product.category;
+                    document.getElementById('editProductPrice').value = product.price;
+                    document.getElementById('editProductStock').value = product.stock;
+                    document.getElementById('editProductDescription').value = product.description || '';
+
+                    const currentImageDiv = document.getElementById('currentImage');
+                    if (product.image) {
+                        currentImageDiv.innerHTML = `
+                        <strong>Gambar Saat Ini:</strong><br>
+                        <img src="/storage/${product.image}" alt="Current Image"
+                            style="max-width: 100px; max-height: 100px; object-fit: cover;"
+                            class="mt-1 rounded">
+                    `;
+                    } else {
+                        currentImageDiv.innerHTML = '<strong>Gambar Saat Ini:</strong> Tidak ada gambar';
                     }
-                    Swal.fire('Terhapus!', 'Produk telah berhasil dihapus.', 'success');
-                }
-            });
+
+                    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                    editModal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Gagal memuat data produk', 'error');
+                });
         }
 
-        function bulkDeleteProducts() {
-            const selectedProducts = $('.product-checkbox:checked').map(function() {
-                return parseInt($(this).val());
-            }).get();
+        // Function untuk submit form edit - TANPA JEDA
+        window.submitEditForm = function() {
+            const form = document.getElementById('editProductForm');
+            const formData = new FormData(form);
+            const productId = document.getElementById('editProductId').value;
 
-            if (selectedProducts.length === 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Tidak ada produk dipilih',
-                    text: 'Silakan pilih produk terlebih dahulu.',
-                    confirmButtonText: 'OK'
-                });
-                return;
-            }
+            const submitBtn = document.querySelector('#editProductModal .btn-primary');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
+            submitBtn.disabled = true;
 
-            Swal.fire({
-                title: 'Hapus Produk Terpilih?',
-                text: `Anda akan menghapus ${selectedProducts.length} produk. Tindakan ini tidak dapat dibatalkan!`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    selectedProducts.forEach(id => {
-                        const index = allProducts.findIndex(p => p.id === id);
-                        if (index !== -1) {
-                            allProducts.splice(index, 1);
-                        }
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-HTTP-Method-Override': 'PUT'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                if (editModal) {
+                    editModal.hide();
+                }
+
+                if (data.success) {
+                    showToast('Produk berhasil diperbarui', 'success');
+
+                    // LANGSUNG UPDATE DATA DI TABEL TANPA JEDA
+                    updateProductRowInTable(productId, {
+                        name: document.getElementById('editProductName').value,
+                        category: document.getElementById('editProductCategory').value,
+                        price: document.getElementById('editProductPrice').value,
+                        stock: document.getElementById('editProductStock').value,
+                        description: document.getElementById('editProductDescription').value
                     });
-                    loadProductsTable();
-                    Swal.fire('Terhapus!', `${selectedProducts.length} produk telah berhasil dihapus.`, 'success');
+
+                } else {
+                    showToast(data.message || 'Gagal memperbarui produk', 'error');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showToast('Terjadi kesalahan saat memperbarui produk', 'error');
+            });
+        }
+
+        // Function untuk langsung update row di tabel
+        function updateProductRowInTable(productId, productData) {
+            const row = document.getElementById(`product-row-${productId}`);
+            if (row) {
+                // Update nama produk
+                const nameElement = row.querySelector('strong');
+                if (nameElement) {
+                    nameElement.textContent = productData.name;
+                }
+
+                // Update kategori
+                const categoryCell = row.cells[3];
+                if (categoryCell) {
+                    categoryCell.textContent = productData.category;
+                }
+
+                // Update harga
+                const priceCell = row.cells[4];
+                if (priceCell) {
+                    priceCell.textContent = formatPrice(productData.price);
+                }
+
+                // Update stok dan status
+                const stockCell = row.cells[5];
+                const statusCell = row.cells[6];
+                if (stockCell && statusCell) {
+                    const stockSpan = stockCell.querySelector('span');
+                    if (stockSpan) {
+                        stockSpan.textContent = productData.stock;
+
+                        // Update class untuk warna stok
+                        stockSpan.className = 'fw-bold ' +
+                            (productData.stock == 0 ? 'text-danger' :
+                             (productData.stock <= 10 ? 'text-warning' : ''));
+                    }
+
+                    // Update status badge
+                    statusCell.innerHTML = getStatusBadge(productData.stock);
+                }
+            }
+        }
+
+        // Delete Confirmation
+        window.confirmDelete = function(productId, productName) {
+            productToDelete = productId;
+            document.getElementById('productNameToDelete').textContent = productName;
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            deleteModal.show();
+        }
+
+        // Execute Delete Function - PERBAIKAN UTAMA
+        window.executeDelete = function() {
+            if (!productToDelete) {
+                showToast('Tidak ada produk yang dipilih untuk dihapus', 'error');
+                return;
+            }
+
+            // Tampilkan loading state pada tombol
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const originalText = confirmDeleteBtn.innerHTML;
+            confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menghapus...';
+            confirmDeleteBtn.disabled = true;
+
+            fetch(`/dashboard/products/${productToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Reset tombol
+                confirmDeleteBtn.innerHTML = originalText;
+                confirmDeleteBtn.disabled = false;
+
+                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+                if (deleteModal) {
+                    deleteModal.hide();
+                }
+
+                if (data.success) {
+                    showToast('Produk berhasil dihapus', 'success');
+                    // LANGSUNG hapus row dari tabel TANPA JEDA
+                    const row = document.getElementById(`product-row-${productToDelete}`);
+                    if (row) {
+                        row.remove();
+                    }
+                    // Update stats langsung
+                    updateStatsAfterDelete();
+                    // Reset productToDelete
+                    productToDelete = null;
+                } else {
+                    showToast(data.message || 'Gagal menghapus produk', 'error');
+                }
+            })
+            .catch(error => {
+                // Reset tombol
+                confirmDeleteBtn.innerHTML = originalText;
+                confirmDeleteBtn.disabled = false;
+                showToast('Terjadi kesalahan saat menghapus produk', 'error');
+                console.error('Delete error:', error);
+            });
+        }
+
+        // Update stats setelah delete
+        function updateStatsAfterDelete() {
+            const produkSayaCard = document.querySelector('.card-custom:first-child');
+            if (produkSayaCard) {
+                const currentTotal = parseInt(produkSayaCard.querySelector('.h5').textContent);
+                produkSayaCard.querySelector('.h5').textContent = currentTotal - 1;
+
+                // Update persentase
+                const activeProducts = parseInt(document.querySelector('.card-custom:nth-child(2) .h5').textContent);
+                const newTotal = currentTotal - 1;
+                const activePercentage = newTotal > 0 ? Math.round((activeProducts / newTotal) * 100) : 0;
+                produkSayaCard.querySelector('small').textContent = `${activePercentage}% produk aktif`;
+            }
+        }
+
+        // Bulk Delete Products
+        function bulkDeleteProducts() {
+            const selectedProducts = document.querySelectorAll('.product-checkbox:checked');
+            const productIds = Array.from(selectedProducts).map(checkbox => parseInt(checkbox.value));
+
+            if (productIds.length === 0) {
+                showToast('Tidak ada produk yang dipilih', 'warning');
+                return;
+            }
+
+            if (!confirm(`Anda yakin ingin menghapus ${productIds.length} produk?`)) {
+                return;
+            }
+
+            fetch('/dashboard/products/bulk-delete', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ product_ids: productIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast(`${productIds.length} produk berhasil dihapus`, 'success');
+                        // Langsung hapus rows dari tabel
+                        productIds.forEach(productId => {
+                            const row = document.getElementById(`product-row-${productId}`);
+                            if (row) {
+                                row.remove();
+                            }
+                        });
+                        // Update stats
+                        updateBulkStatsAfterDelete(productIds.length);
+                    } else {
+                        showToast('Gagal menghapus produk', 'error');
+                    }
+                })
+                .catch(error => {
+                    showToast('Terjadi kesalahan saat menghapus produk', 'error');
+                });
+        }
+
+        // Update stats setelah bulk delete
+        function updateBulkStatsAfterDelete(deletedCount) {
+            const produkSayaCard = document.querySelector('.card-custom:first-child');
+            if (produkSayaCard) {
+                const currentTotal = parseInt(produkSayaCard.querySelector('.h5').textContent);
+                produkSayaCard.querySelector('.h5').textContent = currentTotal - deletedCount;
+
+                // Update persentase
+                const activeProducts = parseInt(document.querySelector('.card-custom:nth-child(2) .h5').textContent);
+                const newTotal = currentTotal - deletedCount;
+                const activePercentage = newTotal > 0 ? Math.round((activeProducts / newTotal) * 100) : 0;
+                produkSayaCard.querySelector('small').textContent = `${activePercentage}% produk aktif`;
+            }
+        }
+
+        // Enhanced Toast notification function
+        function showToast(message, type = 'info') {
+            const existingToasts = document.querySelectorAll('.toast-container');
+            existingToasts.forEach(toast => toast.remove());
+
+            const toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            const icon = type === 'success' ? 'fa-check-circle' :
+                        type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+
+            toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center">
+                    <i class="fas ${icon} me-2"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+            toastContainer.appendChild(toast);
+            document.body.appendChild(toastContainer);
+
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 3000
+            });
+            bsToast.show();
+
+            toast.addEventListener('hidden.bs.toast', () => {
+                toastContainer.remove();
             });
         }
 
         // Generate Report Function
         function generateReport() {
-            // Show loading indicator
             Swal.fire({
                 title: 'Membuat Laporan',
                 text: 'Sedang memproses laporan Anda...',
@@ -935,19 +1257,17 @@
             });
 
             try {
-                // Initialize PDF
                 const {
                     jsPDF
                 } = window.jspdf;
                 const doc = new jsPDF('p', 'mm', 'a4');
 
-                // Add kop surat/header
                 doc.setFillColor(78, 115, 223);
                 doc.rect(0, 0, 210, 30, 'F');
 
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(20);
-                doc.text('TOKO ONLINE ELEGAN', 105, 15, {
+                doc.text('TOKO ONLINE UMKM', 105, 15, {
                     align: 'center'
                 });
 
@@ -956,7 +1276,6 @@
                     align: 'center'
                 });
 
-                // Add header info
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
                 doc.text(`Dibuat pada: ${new Date().toLocaleDateString('id-ID', {
@@ -970,24 +1289,21 @@
                     align: 'center'
                 });
 
-                // Add stats summary with table borders
                 doc.setFontSize(14);
                 doc.text('RINGKASAN PERFORMANCE', 15, 50);
 
                 doc.setFontSize(10);
                 const statsData = [
                     ['Metrik', 'Nilai', 'Keterangan'],
-                    ['Total Produk', '145 item', '+5 dari bulan lalu'],
-                    ['Pesanan Masuk', '67 pesanan', '12 menunggu konfirmasi'],
-                    ['Pesanan Keluar', '42 pesanan', '8 dalam pengiriman'],
-                    ['Total Pendapatan', 'Rp 18.250.000', 'Bersih setelah potongan']
+                    ['Total Produk', '{{ $totalProducts }} item', 'Total produk aktif'],
+                    ['Pesanan Masuk', '67 item', 'Pesanan dari pembeli'],
+                    ['Pesanan Keluar', '42 item', 'Pesanan yang dikirim'],
+                    ['Pembayaran', 'Rp 18.250.000', 'Bersih setelah potongan']
                 ];
 
                 let yPosition = 60;
 
-                // Draw table with borders
                 statsData.forEach((row, index) => {
-                    // Header background
                     if (index === 0) {
                         doc.setFillColor(78, 115, 223);
                         doc.rect(15, yPosition - 5, 180, 8, 'F');
@@ -998,12 +1314,11 @@
                         doc.setFont(undefined, 'normal');
                     }
 
-                    // Draw cell borders
                     doc.setDrawColor(200, 200, 200);
                     doc.rect(15, yPosition - 5, 180, 8);
-                    doc.rect(15, yPosition - 5, 60, 8); // Column 1
-                    doc.rect(75, yPosition - 5, 50, 8); // Column 2
-                    doc.rect(125, yPosition - 5, 70, 8); // Column 3
+                    doc.rect(15, yPosition - 5, 60, 8);
+                    doc.rect(75, yPosition - 5, 50, 8);
+                    doc.rect(125, yPosition - 5, 70, 8);
 
                     doc.text(row[0], 20, yPosition);
                     doc.text(row[1], 80, yPosition);
@@ -1011,31 +1326,29 @@
                     yPosition += 8;
                 });
 
-                // Add revenue chart data as table
                 yPosition += 10;
                 doc.setFontSize(14);
-                doc.text('DATA PENDAPATAN BULANAN', 15, yPosition);
+                doc.text('DATA PENDAPATAN BULANAN (Juta Rupiah)', 15, yPosition);
 
                 yPosition += 10;
                 doc.setFontSize(10);
-                const revenueData = [
+                const revenueDataTable = [
                     ['Bulan', 'Pendapatan'],
-                    ['Januari', 'Rp 5.000.000'],
-                    ['Februari', 'Rp 7.000.000'],
-                    ['Maret', 'Rp 8.000.000'],
-                    ['April', 'Rp 10.000.000'],
-                    ['Mei', 'Rp 12.000.000'],
-                    ['Juni', 'Rp 15.000.000'],
-                    ['Juli', 'Rp 18.000.000'],
-                    ['Agustus', 'Rp 16.000.000'],
-                    ['September', 'Rp 14.000.000'],
-                    ['Oktober', 'Rp 12.000.000'],
-                    ['November', 'Rp 10.000.000'],
-                    ['Desember', 'Rp 8.000.000']
+                    ['Januari', 'Rp ' + (revenueData[1] || 0)],
+                    ['Februari', 'Rp ' + (revenueData[2] || 0)],
+                    ['Maret', 'Rp ' + (revenueData[3] || 0)],
+                    ['April', 'Rp ' + (revenueData[4] || 0)],
+                    ['Mei', 'Rp ' + (revenueData[5] || 0)],
+                    ['Juni', 'Rp ' + (revenueData[6] || 0)],
+                    ['Juli', 'Rp ' + (revenueData[7] || 0)],
+                    ['Agustus', 'Rp ' + (revenueData[8] || 0)],
+                    ['September', 'Rp ' + (revenueData[9] || 0)],
+                    ['Oktober', 'Rp ' + (revenueData[10] || 0)],
+                    ['November', 'Rp ' + (revenueData[11] || 0)],
+                    ['Desember', 'Rp ' + (revenueData[12] || 0)]
                 ];
 
-                // Draw revenue table with borders
-                revenueData.forEach((row, index) => {
+                revenueDataTable.forEach((row, index) => {
                     if (index === 0) {
                         doc.setFillColor(78, 115, 223);
                         doc.rect(15, yPosition - 5, 180, 8, 'F');
@@ -1046,44 +1359,39 @@
                         doc.setFont(undefined, 'normal');
                     }
 
-                    // Draw cell borders
                     doc.setDrawColor(200, 200, 200);
                     doc.rect(15, yPosition - 5, 180, 8);
-                    doc.rect(15, yPosition - 5, 90, 8); // Column 1
-                    doc.rect(105, yPosition - 5, 90, 8); // Column 2
+                    doc.rect(15, yPosition - 5, 90, 8);
+                    doc.rect(105, yPosition - 5, 90, 8);
 
                     doc.text(row[0], 20, yPosition);
                     doc.text(row[1], 110, yPosition);
                     yPosition += 8;
 
-                    // Check if we need a new page
                     if (yPosition > 270) {
                         doc.addPage();
                         yPosition = 20;
                     }
                 });
 
-                // Add products table
                 yPosition += 10;
                 doc.setFontSize(14);
                 doc.text('PRODUK TERBARU', 15, yPosition);
 
                 yPosition += 10;
-                doc.setFontSize(8); // Smaller font for product table
+                doc.setFontSize(8);
                 const productsData = [
                     ['No', 'Nama Produk', 'Kategori', 'Harga', 'Stok', 'Status'],
-                    ...allProducts.map((product, index) => [
+                    ...@json($recentProducts).slice(0, 10).map((product, index) => [
                         (index + 1).toString(),
-                        product.name,
+                        product.name.length > 20 ? product.name.substring(0, 20) + '...' : product.name,
                         product.category,
-                        `Rp ${formatPrice(product.price)}`,
+                        `Rp ${parseInt(product.price).toLocaleString('id-ID')}`,
                         product.stock,
-                        product.status === 'active' ? 'Aktif' : product.status === 'warning' ? 'Stok Sedikit' :
-                        'Habis'
+                        product.stock > 10 ? 'Aktif' : product.stock > 0 ? 'Stok Sedikit' : 'Habis'
                     ])
                 ];
 
-                // Draw products table with borders
                 productsData.forEach((row, index) => {
                     if (index === 0) {
                         doc.setFillColor(78, 115, 223);
@@ -1095,44 +1403,40 @@
                         doc.setFont(undefined, 'normal');
                     }
 
-                    // Draw cell borders
                     doc.setDrawColor(200, 200, 200);
                     doc.rect(15, yPosition - 5, 180, 8);
-                    doc.rect(15, yPosition - 5, 10, 8); // No
-                    doc.rect(25, yPosition - 5, 50, 8); // Nama
-                    doc.rect(75, yPosition - 5, 30, 8); // Kategori
-                    doc.rect(105, yPosition - 5, 35, 8); // Harga
-                    doc.rect(140, yPosition - 5, 20, 8); // Stok
-                    doc.rect(160, yPosition - 5, 35, 8); // Status
+                    doc.rect(15, yPosition - 5, 10, 8);
+                    doc.rect(25, yPosition - 5, 50, 8);
+                    doc.rect(75, yPosition - 5, 30, 8);
+                    doc.rect(105, yPosition - 5, 35, 8);
+                    doc.rect(140, yPosition - 5, 20, 8);
+                    doc.rect(160, yPosition - 5, 35, 8);
 
                     doc.text(row[0], 17, yPosition);
-                    doc.text(row[1], 27, yPosition, {
-                        maxWidth: 45
-                    });
+                    doc.text(row[1], 27, yPosition);
                     doc.text(row[2], 77, yPosition);
                     doc.text(row[3], 107, yPosition);
                     doc.text(row[4], 142, yPosition);
                     doc.text(row[5], 162, yPosition);
                     yPosition += 8;
 
-                    // Check if we need a new page
                     if (yPosition > 270) {
                         doc.addPage();
                         yPosition = 20;
                     }
                 });
 
-                // Add summary
                 yPosition += 10;
                 doc.setFontSize(12);
                 doc.text('ANALISIS PERFORMANCE:', 15, yPosition);
 
                 doc.setFontSize(10);
                 const analysis = [
-                    '• Pertumbuhan pendapatan menunjukkan tren positif dengan peningkatan 15% dari bulan sebelumnya',
-                    '• Stok produk perlu diperhatikan, terutama untuk produk yang hampir habis',
-                    '• Rasio konversi pesanan masuk ke pesanan keluar sebesar 62.7%',
-                    '• Rekomendasi: Fokus pada restock produk populer dan optimasi proses pengiriman'
+                    '• Total produk aktif: {{ $totalProducts }} item',
+                    '• Pesanan masuk: 67 item (12 menunggu konfirmasi)',
+                    '• Pesanan keluar: 42 item (8 dalam pengiriman)',
+                    '• Total pendapatan bersih: Rp 18.250.000',
+                    '• Rekomendasi: Tingkatkan promosi untuk produk stok menipis'
                 ];
 
                 yPosition += 8;
@@ -1140,16 +1444,14 @@
                     doc.text(item, 20, yPosition, {
                         maxWidth: 170
                     });
-                    yPosition += 8;
+                    yPosition += 6;
 
-                    // Check if we need a new page
                     if (yPosition > 270) {
                         doc.addPage();
                         yPosition = 20;
                     }
                 });
 
-                // Add footer
                 const pageCount = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -1163,14 +1465,11 @@
                     });
                 }
 
-                // Save the PDF
                 setTimeout(() => {
                     doc.save(`Laporan-Performance-${new Date().toISOString().slice(0,10)}.pdf`);
 
-                    // Close loading indicator
                     Swal.close();
 
-                    // Show success message
                     Swal.fire({
                         icon: 'success',
                         title: 'Laporan Berhasil Diunduh',
@@ -1188,30 +1487,6 @@
                     confirmButtonText: 'OK'
                 });
             }
-        }
-
-        // === Perbaikan fungsi tombol Edit ===
-        // Memastikan kompatibilitas dengan Bootstrap 5
-        function openEditModal(id) {
-            const product = allProducts.find(p => p.id === id);
-            if (!product) return alert("Produk tidak ditemukan");
-
-            // Isi data ke form modal edit
-            document.getElementById('editProductId').value = product.id;
-            document.getElementById('editProductName').value = product.name;
-            document.getElementById('editProductCategory').value = product.category;
-            document.getElementById('editProductPrice').value = 'Rp ' + product.price.toLocaleString('id-ID');
-            document.getElementById('editProductStock').value = product.stock;
-            document.getElementById('editProductDescription').value = product.description;
-            document.getElementById('editProductStatus').value = product.status;
-
-            const imgPreview = document.getElementById('editProductImagePreview');
-            if (imgPreview) imgPreview.src = product.image;
-
-            // Buka modal dengan Bootstrap 5
-            const modalEl = document.getElementById('editActionModal');
-            const modal = new bootstrap.Modal(modalEl);
-            modal.show();
         }
     </script>
 @endsection

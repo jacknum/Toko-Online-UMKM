@@ -70,6 +70,26 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard - otomatis redirect berdasarkan role
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // =============================================
+    // DASHBOARD ROUTES YANG DITAMBAHKAN
+    // =============================================
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        // Filter products untuk dashboard
+        Route::get('/products/filter', [DashboardController::class, 'filterProducts'])->name('products.filter');
+
+        // Get product detail untuk edit modal
+        Route::get('/products/{id}', [DashboardController::class, 'getProduct'])->name('products.get');
+
+        // Update product dari dashboard
+        Route::put('/products/{id}', [DashboardController::class, 'updateProduct'])->name('products.update');
+
+        // Delete product dari dashboard
+        Route::delete('/products/{id}', [DashboardController::class, 'deleteProduct'])->name('products.delete');
+
+        // Bulk delete products dari dashboard
+        Route::post('/products/bulk-delete', [DashboardController::class, 'bulkDeleteProducts'])->name('products.bulk-delete');
+    });
+
     // Routes khusus Penjual
     Route::middleware(['role:penjual'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
