@@ -34,7 +34,7 @@
         <div class="row">
             @foreach($categories as $category)
             <div class="col-md-3 col-6 mb-4">
-                <a href="{{ route('stores.category-products', $category->id) }}" class="category-link">
+                <a href="{{ route('store.category-products', $category->id) }}" class="category-link">
                     <div class="store-category-card">
                         <div class="store-category-icon">
                             <i class="{{ $category->icon }}"></i>
@@ -46,7 +46,7 @@
             @endforeach
         </div>
         <div class="text-center mt-4">
-            <a href="{{ route('stores.categories') }}" class="btn store-view-all">Lihat Semua Kategori</a>
+            <a href="{{ route('store.categories') }}" class="btn store-view-all">Lihat Semua Kategori</a>
         </div>
     </div>
 </section>
@@ -56,7 +56,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="store-section-title">Sedang Trend</h2>
-            <a href="{{ route('stores.category-products', 'trending') }}" class="store-view-all">Lihat Semua</a>
+            <a href="{{ route('store.category-products', 'trending') }}" class="store-view-all">Lihat Semua</a>
         </div>
         <div class="row">
             @foreach($trendingProducts as $product)
@@ -93,19 +93,19 @@
                                 $halfStar = $rating - $fullStars >= 0.5;
                                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                             @endphp
-                            
+
                             @for($i = 0; $i < $fullStars; $i++)
                                 <i class="fas fa-star"></i>
                             @endfor
-                            
+
                             @if($halfStar)
                                 <i class="fas fa-star-half-alt"></i>
                             @endif
-                            
+
                             @for($i = 0; $i < $emptyStars; $i++)
                                 <i class="far fa-star"></i>
                             @endfor
-                            
+
                             <span class="store-rating-count">({{ $product->review_count ?? 0 }})</span>
                         </div>
                         <button class="btn store-add-to-cart" data-product-id="{{ $product->id }}">
@@ -124,7 +124,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="store-section-title">Diskon Spesial</h2>
-            <a href="{{ route('stores.category.products', 'discount') }}" class="store-view-all">Lihat Semua</a>
+            <a href="{{ route('store.category-products', 'discount') }}" class="store-view-all">Lihat Semua</a>
         </div>
         <div class="row">
             @foreach($discountProducts as $product)
@@ -159,19 +159,19 @@
                                 $halfStar = $rating - $fullStars >= 0.5;
                                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                             @endphp
-                            
+
                             @for($i = 0; $i < $fullStars; $i++)
                                 <i class="fas fa-star"></i>
                             @endfor
-                            
+
                             @if($halfStar)
                                 <i class="fas fa-star-half-alt"></i>
                             @endif
-                            
+
                             @for($i = 0; $i < $emptyStars; $i++)
                                 <i class="far fa-star"></i>
                             @endfor
-                            
+
                             <span class="store-rating-count">({{ $product->review_count ?? 0 }})</span>
                         </div>
                         <button class="btn store-add-to-cart" data-product-id="{{ $product->id }}">

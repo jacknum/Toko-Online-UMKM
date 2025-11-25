@@ -13,8 +13,8 @@ class DashboardController extends Controller
     public function index()
     {
         // Ambil data produk dari database menggunakan Model Product
-        $products = Product::where('user_id', Auth::id())->get();
-        $recentProducts = Product::where('user_id', Auth::id())
+        $products = Product::where('id', Auth::id())->get();
+        $recentProducts = Product::where('id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
@@ -64,7 +64,7 @@ class DashboardController extends Controller
             $userId = Auth::id();
 
             // Query dasar dengan select hanya kolom yang diperlukan - SESUAI DENGAN PRODUCTCONTROLLER
-            $query = Product::where('user_id', $userId)
+            $query = Product::where('id', $userId)
                 ->select(['id', 'name', 'sku', 'category', 'price', 'stock', 'status', 'image', 'created_at']);
 
             // Filter by category
@@ -121,7 +121,7 @@ class DashboardController extends Controller
     public function updateProduct(Request $request, $id)
     {
         try {
-            $product = Product::where('user_id', Auth::id())->findOrFail($id);
+            $product = Product::where('id', Auth::id())->findOrFail($id);
 
             $validated = $request->validate([
                 'name'        => 'required|string|max:255',
@@ -156,7 +156,7 @@ class DashboardController extends Controller
     public function deleteProduct($id)
     {
         try {
-            $product = Product::where('user_id', Auth::id())->findOrFail($id);
+            $product = Product::where('id', Auth::id())->findOrFail($id);
             $product->delete();
 
             return response()->json(['success' => true, 'message' => 'Produk berhasil dihapus']);
@@ -173,7 +173,7 @@ class DashboardController extends Controller
         ]);
 
         try {
-            Product::where('user_id', Auth::id())
+            Product::where('id', Auth::id())
                 ->whereIn('id', $request->product_ids)
                 ->delete();
 

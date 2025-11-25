@@ -94,16 +94,16 @@
                     <div class="register-role-wrapper">
                         <label class="register-role-label"><i class="fas fa-user-tag me-2"></i>Pilih Role:</label>
                         <div class="register-role-selection">
-                            <div class="register-role-option active" data-role="buyer">
+                            <div class="register-role-option active" data-role="pembeli">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span>Pembeli</span>
                             </div>
-                            <div class="register-role-option" data-role="seller">
+                            <div class="register-role-option" data-role="penjual">
                                 <i class="fas fa-store"></i>
                                 <span>Penjual</span>
                             </div>
                         </div>
-                        <input type="hidden" name="role" id="selectedRole" value="buyer">
+                        <input type="hidden" name="role" id="selectedRole" value="pembeli">
                     </div>
 
                     <div class="register-terms-wrapper">

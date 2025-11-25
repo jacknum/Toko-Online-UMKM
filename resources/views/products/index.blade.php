@@ -148,6 +148,7 @@
                                         <th>Harga</th>
                                         <th>Stok</th>
                                         <th>Status</th>
+                                        <th>Tags</th>
                                         <th>Tanggal Ditambah</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -187,6 +188,21 @@
                                                     <span class="badge bg-success">Aktif</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if($product->tags)
+                                                    @php
+                                                        $tagsArray = explode(',', $product->tags);
+                                                    @endphp
+                                                    @foreach(array_slice($tagsArray, 0, 2) as $tag)
+                                                        <span class="product-tag">{{ trim($tag) }}</span>
+                                                    @endforeach
+                                                    @if(count($tagsArray) > 2)
+                                                        <span class="product-tag">+{{ count($tagsArray) - 2 }}</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $product->created_at->format('d M Y') }}</td>
                                             <td>
                                                 <button class="btn btn-sm btn-outline-primary"
@@ -201,7 +217,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="8" class="text-center py-5">
+                                            <td colspan="9" class="text-center py-5">
                                                 <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                                 <h5 class="text-muted">Tidak ada produk yang ditemukan</h5>
                                             </td>
@@ -269,8 +285,21 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">Harga Asli</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" name="original_price" class="form-control" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Stok</label>
                                 <input type="number" name="stock" class="form-control" placeholder="0" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tags</label>
+                                <input type="text" name="tags" class="form-control"
+                                    placeholder="Pisahkan dengan koma, contoh: trending, baru, diskon">
+                                <small class="text-muted">Masukkan tags untuk produk, pisahkan dengan koma</small>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Deskripsi</label>
@@ -332,9 +361,22 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">Harga Asli</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" id="editProductOriginalPrice" name="original_price" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Stok</label>
                                 <input type="number" id="editProductStock" name="stock" class="form-control"
                                     required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tags</label>
+                                <input type="text" id="editProductTags" name="tags" class="form-control"
+                                    placeholder="Pisahkan dengan koma">
+                                <small class="text-muted">Masukkan tags untuk produk, pisahkan dengan koma</small>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Deskripsi</label>
@@ -578,6 +620,23 @@
             });
         }
 
+        function formatTags(tags) {
+            if (!tags) return '<span class="text-muted">-</span>';
+
+            const tagsArray = tags.split(',');
+            let html = '';
+
+            tagsArray.slice(0, 2).forEach(tag => {
+                html += `<span class="product-tag">${tag.trim()}</span>`;
+            });
+
+            if (tagsArray.length > 2) {
+                html += `<span class="product-tag">+${tagsArray.length - 2}</span>`;
+            }
+
+            return html;
+        }
+
         // Filter Products dengan AJAX - NO LOADING VERSION
         function filterProducts() {
             const categoryValue = document.getElementById('categoryFilter').value;
@@ -693,6 +752,7 @@
                     <span class="fw-bold ${stockClass}">${product.stock}</span>
                 </td>
                 <td>${statusBadge}</td>
+                <td>${formatTags(product.tags)}</td>
                 <td>${formatDate(product.created_at)}</td>
                 <td>
                     <button class="btn btn-sm btn-outline-primary" onclick="openEditModal(${product.id})" title="Edit">
@@ -737,7 +797,9 @@
                     document.getElementById('editProductName').value = product.name;
                     document.getElementById('editProductCategory').value = product.category;
                     document.getElementById('editProductPrice').value = product.price;
+                    document.getElementById('editProductOriginalPrice').value = product.original_price || '';
                     document.getElementById('editProductStock').value = product.stock;
+                    document.getElementById('editProductTags').value = product.tags || '';
                     document.getElementById('editProductDescription').value = product.description || '';
 
                     // Tampilkan gambar saat ini jika ada

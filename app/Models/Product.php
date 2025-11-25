@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
+        'user_id',
         'name',
         'sku',
         'category_id',
@@ -34,27 +37,32 @@ class Product extends Model
         'is_trending' => 'boolean'
     ];
 
+    // Relationship ke User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relationship ke Category
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function scopeTrending(Builder $query)
+    // Boot method untuk auto status (jika ada di controller)
+    protected static function boot()
     {
-        return $query->where('is_trending', true)
-            ->where('status', 'active')
-            ->orderBy('created_at', 'desc');
-    }
+        parent::boot();
 
-    public function scopeDiscount(Builder $query)
-    {
-        return $query->where('discount_percent', '>', 0)
-            ->where('status', 'active')
-            ->orderBy('discount_percent', 'desc');
-    }
-
-    public function scopeActive(Builder $query)
-    {
-        return $query->where('status', 'active');
+        static::saving(function ($product) {
+            // Auto update status berdasarkan stock
+            if ($product->stock == 0) {
+                $product->status = 'out_of_stock';
+            } elseif ($product->stock <= 10) {
+                $product->status = 'low_stock';
+            } else {
+                $product->status = 'active';
+            }
+        });
     }
 }

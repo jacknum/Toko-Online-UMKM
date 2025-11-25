@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+
+            // TAMBAHKAN INI - foreign key ke users
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             $table->string('name');
             $table->string('sku')->unique()->nullable();
 
@@ -44,6 +48,12 @@ return new class extends Migration
             $table->json('tags')->nullable();
 
             $table->timestamps();
+
+            // Index untuk performa query
+            $table->index('user_id');
+            $table->index('category_id');
+            $table->index('status');
+            $table->index('is_trending');
         });
     }
 

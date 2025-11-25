@@ -29,11 +29,11 @@ class ProductController extends Controller
 
             // Query dasar dengan select hanya kolom yang diperlukan
             $query = Product::where('user_id', $userId)
-                ->select(['id', 'name', 'sku', 'category', 'price', 'stock', 'status', 'image', 'created_at']);
+                ->select(['id', 'name', 'sku', 'category_id', 'price', 'stock', 'status', 'image', 'created_at']); // UBAH: category -> category_id
 
             // Filter by category
             if ($request->category && $request->category !== 'all') {
-                $query->where('category', $request->category);
+                $query->where('category_id', $request->category); // UBAH: category -> category_id
             }
 
             // Filter by status
@@ -93,7 +93,7 @@ class ProductController extends Controller
             return response()->json([
                 'id' => $product->id,
                 'name' => $product->name,
-                'category' => $product->category,
+                'category_id' => $product->category_id, // UBAH: category -> category_id
                 'price' => $product->price,
                 'stock' => $product->stock,
                 'description' => $product->description,
@@ -113,21 +113,25 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
-            'category'    => 'required|string',
+            'category_id' => 'required|integer|exists:categories,id', // UBAH: category -> category_id
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'description' => 'nullable|string',
             'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'tags'        => 'nullable|string',
+            'original_price' => 'nullable|numeric|min:0'
         ]);
 
         try {
             $product = new Product();
             $product->user_id = Auth::id();
             $product->name = $validated['name'];
-            $product->category = $validated['category'];
+            $product->category_id = $validated['category_id']; // UBAH: category -> category_id
             $product->price = $validated['price'];
             $product->stock = $validated['stock'];
             $product->description = $validated['description'] ?? null;
+            $product->tags = $validated['tags'] ?? null;
+            $product->original_price = $validated['original_price'] ?? null;
             $product->sku = 'SKU-' . time() . rand(100, 999);
 
             // Status akan otomatis di-set oleh boot method di Model
@@ -156,11 +160,13 @@ class ProductController extends Controller
 
             $validated = $request->validate([
                 'name'        => 'required|string|max:255',
-                'category'    => 'required|string',
+                'category_id' => 'required|integer|exists:categories,id', // UBAH: category -> category_id
                 'price'       => 'required|integer|min:0',
                 'stock'       => 'required|integer|min:0',
                 'description' => 'nullable|string',
                 'image'       => 'nullable|image|max:2048',
+                'tags'        => 'nullable|string',
+                'original_price' => 'nullable|numeric|min:0'
             ]);
 
             // Handle image upload
