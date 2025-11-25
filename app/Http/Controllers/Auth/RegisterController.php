@@ -30,7 +30,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:500',
-            'role' => 'required|in:admin,penjual,pembeli',
+            'role' => 'required|in:admin,seller,buyer',
         ]);
 
         if ($validator->fails()) {
@@ -42,6 +42,7 @@ class RegisterController extends Controller
         // Create user
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,

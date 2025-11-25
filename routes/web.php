@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
@@ -25,7 +26,7 @@ Route::get('/pricing', [LandingController::class, 'pricing'])->name('pricing');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Password Reset Routes (Simplified - No Email)
 Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
@@ -41,8 +42,9 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
-    Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
-    Route::get('/category/{category}', [StoreController::class, 'categoryProducts'])->name('category.products');
+    Route::get('/categories', [StoreController::class, 'allCategories'])->name('store.categories');
+    Route::get('/category/{categoryId}', [StoreController::class, 'categoryProducts'])->name('store.category.products');
+    Route::get('/product/{productId}', [StoreController::class, 'productDetail'])->name('store.product.detail');
     // Tambahkan route ini di dalam group prefix('store')
     Route::get('/orders', [StoreController::class, 'orders'])->name('orders');
 

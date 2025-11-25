@@ -2,58 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
-    use HasFactory;
-
-    protected $table = 'products';
-
     protected $fillable = [
-        'user_id', // PASTIKAN INI ADA
         'name',
-        'description',
-        'price',
-        'stock',
-        'category',
-        'image',
-        'status',
         'sku',
+        'category_id',
+        'price',
+        'original_price',
+        'stock',
+        'status',
+        'description',
+        'image',
+        'rating',
+        'review_count',
+        'discount_percent',
+        'is_trending',
         'weight',
         'dimensions',
         'tags'
     ];
 
     protected $casts = [
-        'tags' => 'array'
+        'tags' => 'array',
+        'price' => 'decimal:2',
+        'original_price' => 'decimal:2',
+        'rating' => 'decimal:2',
+        'is_trending' => 'boolean'
     ];
 
-    /**
-     * Boot method untuk auto-set status berdasarkan stock
-     */
-    protected static function boot()
+    public function category()
     {
-        parent::boot();
-
-        static::saving(function ($product) {
-            // Auto-set status berdasarkan stock
-            if ($product->stock == 0) {
-                $product->status = 'out_of_stock';
-            } elseif ($product->stock <= 10) { // <= 5 untuk stock menipis
-                $product->status = 'low_stock';
-            } else {
-                $product->status = 'active';
-            }
-        });
+        return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Relationship dengan User
-     */
-    public function user()
+    public function scopeTrending(Builder $query)
     {
-        return $this->belongsTo(User::class);
+        return $query->where('is_trending', true)
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function scopeDiscount(Builder $query)
+    {
+        return $query->where('discount_percent', '>', 0)
+            ->where('status', 'active')
+            ->orderBy('discount_percent', 'desc');
+    }
+
+    public function scopeActive(Builder $query)
+    {
+        return $query->where('status', 'active');
     }
 }

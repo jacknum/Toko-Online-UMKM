@@ -13,30 +13,34 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-
             $table->string('name');
             $table->string('sku')->unique()->nullable();
 
-            // kategori: sepatu, aksesoris, pakaian, elektronik
-            $table->string('category');
+            // Ubah category menjadi foreign key
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
 
-            $table->integer('price')->default(0);
+            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('original_price', 10, 2)->nullable(); // Harga asli sebelum diskon
             $table->integer('stock')->default(0);
 
-            // active, low_stock, out_of_stock
-            $table->enum('status', ['active', 'low_stock', 'out_of_stock'])
+            // Update status enum
+            $table->enum('status', ['active', 'inactive', 'low_stock', 'out_of_stock'])
                 ->default('active');
 
             $table->text('description')->nullable();
-
-            // URL atau path storage
             $table->string('image')->nullable();
 
-            // Info tambahan
-            $table->string('weight')->nullable();     // Contoh “0.8 kg”
-            $table->string('dimensions')->nullable(); // Contoh “30 x 20 x 10 cm”
+            // Rating & Review
+            $table->decimal('rating', 3, 2)->default(0); // Rating 0.00 - 5.00
+            $table->integer('review_count')->default(0);
 
-            // Tags disimpan dalam JSON
+            // Discount & Trending
+            $table->integer('discount_percent')->default(0); // Persentase diskon
+            $table->boolean('is_trending')->default(false);
+
+            // Info tambahan
+            $table->string('weight')->nullable();
+            $table->string('dimensions')->nullable();
             $table->json('tags')->nullable();
 
             $table->timestamps();
