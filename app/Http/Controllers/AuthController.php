@@ -139,7 +139,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard')->with('success', 'Login berhasil! Selamat datang Penjual.');
         } else {
             // Default untuk pembeli dan role lainnya
-            return redirect()->route('store.home')->with('success', 'Login berhasil! Selamat datang.');
+            return redirect()->route('store.index')->with('success', 'Login berhasil! Selamat datang.');
         }
     }
 

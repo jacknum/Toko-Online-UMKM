@@ -146,8 +146,8 @@ class ProductController extends Controller
 
             $validated = $request->validate([
                 'name'        => 'required|string|max:255',
-                'category'    => 'required|string|max:255', // ← UBAH
-                'price'       => 'required|integer|min:0',
+                'category'    => 'required|string|max:255',
+                'price'       => 'required|numeric|min:0',
                 'stock'       => 'required|integer|min:0',
                 'description' => 'nullable|string',
                 'image'       => 'nullable|image|max:2048',
@@ -155,23 +155,56 @@ class ProductController extends Controller
                 'original_price' => 'nullable|numeric|min:0'
             ]);
 
+            // Update fields
+            $product->name = $validated['name'];
+            $product->category = $validated['category'];
+            $product->price = $validated['price'];
+            $product->stock = $validated['stock'];
+            $product->description = $validated['description'] ?? null;
+            $product->tags = $validated['tags'] ?? null;
+            $product->original_price = $validated['original_price'] ?? null;
+
+            // Handle image upload
             if ($request->hasFile('image')) {
+                // Delete old image
                 if ($product->image && Storage::disk('public')->exists($product->image)) {
                     Storage::disk('public')->delete($product->image);
                 }
 
+                // Store new image
                 $imagePath = $request->file('image')->store('products', 'public');
-                $validated['image'] = $imagePath;
+                $product->image = $imagePath;
             }
 
-            $product->update($validated);
+            // Update status based on stock
+            if ($product->stock == 0) {
+                $product->status = 'out_of_stock';
+            } elseif ($product->stock <= 10) {
+                $product->status = 'low_stock';
+            } else {
+                $product->status = 'active';
+            }
 
-            return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
+            $product->save();
+
+            // Return JSON response for AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil diperbarui',
+                'product' => $product
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak valid',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Update product error: ' . $e->getMessage());
-            return redirect()->back()
-                ->withErrors(['error' => $e->getMessage()])
-                ->withInput();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengupdate produk: ' . $e->getMessage()
+            ], 500);
         }
     }
 

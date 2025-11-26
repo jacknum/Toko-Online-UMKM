@@ -946,6 +946,49 @@
                     }
                 });
             }
+
+            const editProductForm = document.getElementById('editProductForm');
+            if (editProductForm) {
+                editProductForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const productId = document.getElementById('editProductId').value;
+                    const formData = new FormData(this);
+
+                    fetch(`/products/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Hide edit modal
+                        const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                        if (editModal) {
+                            editModal.hide();
+                        }
+
+                        if (data.success) {
+                            showToast('Produk berhasil diupdate', 'success');
+                            // Refresh data tanpa reload halaman
+                            filterProducts();
+                        } else {
+                            showToast(data.message || 'Gagal mengupdate produk', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('Terjadi kesalahan saat mengupdate produk', 'error');
+                    });
+                });
+            }
         });
     </script>
 @endsection

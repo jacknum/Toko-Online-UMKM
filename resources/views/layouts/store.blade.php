@@ -1,3 +1,4 @@
+<!-- layouts/store.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
@@ -72,15 +73,35 @@
                         <span>Beranda</span>
                     </a>
                     <a href="{{ url('/store/wishlist') }}" class="store-nav-icon" title="Wishlist">
-                        <i class="fas fa-heart"></i>
-                        <span class="store-badge">3</span>
-                        <span>Wishlist</span>
-                    </a>
-                    <a href="{{ url('/store/cart') }}" class="store-nav-icon" title="Keranjang">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="store-badge">5</span>
-                        <span>Keranjang</span>
-                    </a>
+                    <i class="fas fa-heart"></i>
+                    @php
+                        // Hitung jumlah wishlist dari database
+                        $wishlistCount = 0;
+                        if (auth()->check()) {
+                            // Menggunakan method yang sudah diperbaiki
+                            $wishlistCount = \App\Models\Wishlist::getCountForCurrentUser();
+                        }
+                    @endphp
+                    @if($wishlistCount > 0)
+                        <span class="store-badge">{{ $wishlistCount }}</span>
+                    @endif
+                    <span>Wishlist</span>
+                </a>
+                <a href="{{ url('/store/cart') }}" class="store-nav-icon" title="Keranjang">
+                    <i class="fas fa-shopping-cart"></i>
+                    @php
+                        // Hitung jumlah item keranjang dari database
+                        $cartCount = 0;
+                        if (auth()->check()) {
+                            // Menggunakan method yang sudah diperbaiki
+                            $cartCount = \App\Models\Cart::getTotalQuantityForCurrentUser();
+                        }
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="store-badge">{{ $cartCount }}</span>
+                    @endif
+                    <span>Keranjang</span>
+                </a>
                     <div class="dropdown">
                         <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown"
                             data-bs-toggle="dropdown" title="Akun Saya">
@@ -161,125 +182,224 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /// Tambahkan script ini untuk fungsionalitas search yang lebih baik
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.querySelector('.store-search-input');
-            const searchBtn = document.querySelector('.store-search-btn');
-            const searchForm = document.querySelector('.search-form');
-            const clearBtn = document.querySelector('.store-search-clear');
-            const suggestions = document.querySelector('.store-search-suggestions');
+        class ProductManager {
+            constructor() {
+                this.wishlistState = new Map();
+                this.cartState = new Map();
+                this.init();
+            }
 
-            // Show/hide clear button based on input
-            if (searchInput && clearBtn) {
-                searchInput.addEventListener('input', function() {
-                    if (this.value.trim()) {
-                        clearBtn.classList.add('show');
+            init() {
+                this.bindWishlistEvents();
+                this.bindCartEvents();
+                this.bindProductCardHover();
+                this.autoHideModals();
+                this.loadInitialWishlistState();
+            }
+
+            async loadInitialWishlistState() {
+                try {
+                    const response = await fetch('{{ route("store.wishlist.count") }}');
+                    const data = await response.json();
+
+                    // Update badge count
+                    this.updateWishlistBadge(data.count);
+
+                    // Load individual product wishlist states (bisa ditambahkan endpoint khusus jika perlu)
+                } catch (error) {
+                    console.error('Error loading wishlist state:', error);
+                }
+            }
+
+            bindWishlistEvents() {
+                document.querySelectorAll('.store-wishlist-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.toggleWishlist(btn.dataset.productId, btn);
+                    });
+                });
+            }
+
+            bindCartEvents() {
+                document.querySelectorAll('.store-add-to-cart').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.toggleCart(btn.dataset.productId, btn);
+                    });
+                });
+            }
+
+            bindProductCardHover() {
+                document.querySelectorAll('.store-product-card').forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        card.style.transform = 'translateY(-5px)';
+                        card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.15)';
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'translateY(0)';
+                        card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.08)';
+                    });
+                });
+            }
+
+            async toggleWishlist(productId, button) {
+                try {
+                    const response = await fetch('{{ route("store.wishlist.toggle") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: productId
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!data.success) {
+                        if (data.login_required) {
+                            this.showLoginAlert();
+                            return;
+                        }
+                        throw new Error(data.message);
+                    }
+
+                    this.updateWishlistUI(productId, button, data.in_wishlist);
+                    this.updateWishlistBadge(data.wishlist_count);
+
+                    // Show appropriate modal
+                    if (data.in_wishlist) {
+                        this.showModal('wishlistModal');
                     } else {
-                        clearBtn.classList.remove('show');
+                        this.showModal('wishlistRemoveModal');
                     }
-                });
 
-                // Clear search functionality
-                clearBtn.addEventListener('click', function() {
-                    searchInput.value = '';
-                    searchInput.focus();
-                    clearBtn.classList.remove('show');
-                    if (suggestions) {
-                        suggestions.classList.remove('show');
-                    }
-                });
+                } catch (error) {
+                    console.error('Error toggling wishlist:', error);
+                    this.showErrorAlert('Terjadi kesalahan saat memproses wishlist');
+                }
             }
 
-            // Search suggestions (basic implementation)
-            if (searchInput && suggestions) {
-                searchInput.addEventListener('focus', function() {
-                    if (this.value.trim()) {
-                        suggestions.classList.add('show');
-                    }
-                });
+            updateWishlistUI(productId, button, inWishlist) {
+                const icon = button.querySelector('i');
 
-                searchInput.addEventListener('input', function() {
-                    if (this.value.trim()) {
-                        suggestions.classList.add('show');
-                        // Here you would typically fetch suggestions from an API
+                if (inWishlist) {
+                    icon.classList.replace('far', 'fas');
+                    button.classList.add('active');
+                    icon.style.color = '#dc3545';
+                } else {
+                    icon.classList.replace('fas', 'far');
+                    button.classList.remove('active');
+                    icon.style.color = '';
+                    button.classList.add('removing');
+                    setTimeout(() => button.classList.remove('removing'), 300);
+                }
+            }
+
+            updateWishlistBadge(count) {
+                const badge = document.querySelector('.store-nav-icon[href*="wishlist"] .store-badge');
+                const navIcon = document.querySelector('.store-nav-icon[href*="wishlist"]');
+
+                if (count > 0) {
+                    if (!badge) {
+                        // Create badge if it doesn't exist
+                        const newBadge = document.createElement('span');
+                        newBadge.className = 'store-badge';
+                        newBadge.textContent = count;
+                        navIcon.appendChild(newBadge);
                     } else {
-                        suggestions.classList.remove('show');
+                        badge.textContent = count;
                     }
-                });
-
-                // Hide suggestions when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
-                        suggestions.classList.remove('show');
-                    }
-                });
-            }
-
-            // Enhanced search functionality
-            if (searchForm) {
-                searchForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const searchTerm = searchInput.value.trim();
-                    if (searchTerm) {
-                        // Add loading state
-                        searchForm.classList.add('loading');
-
-                        // Simulate search (replace with actual search logic)
-                        setTimeout(() => {
-                            window.location.href =
-                                `/store/search?q=${encodeURIComponent(searchTerm)}`;
-                        }, 500);
-                    }
-                });
-            }
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                // Focus search with Ctrl+K or Cmd+K
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    if (searchInput) {
-                        searchInput.focus();
+                } else {
+                    // Remove badge if count is 0
+                    if (badge) {
+                        badge.remove();
                     }
                 }
-
-                // Clear search with Escape
-                if (e.key === 'Escape' && searchInput) {
-                    searchInput.value = '';
-                    searchInput.blur();
-                    if (clearBtn) clearBtn.classList.remove('show');
-                    if (suggestions) suggestions.classList.remove('show');
-                }
-            });
-        });
-
-        // Tambahkan di bagian script yang sudah ada
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchForm = document.querySelector('.search-form');
-            const searchBtn = document.querySelector('.store-search-btn');
-
-            if (searchForm && searchBtn) {
-                searchForm.addEventListener('submit', function(e) {
-                    // Trigger loading state
-                    searchBtn.classList.add('loading');
-
-                    // Optional: Simulate search delay (bisa dihapus jika menggunakan AJAX real)
-                    setTimeout(() => {
-                        searchBtn.classList.remove('loading');
-                    }, 2000); // Hapus loading setelah 2 detik (simulasi)
-                });
             }
 
-            // Pastikan teks tetap putih saat hover
-            const searchButtons = document.querySelectorAll('.store-search-btn');
-            searchButtons.forEach(btn => {
-                btn.addEventListener('mouseenter', function() {
-                    this.style.color = 'white';
+            showLoginAlert() {
+                if (confirm('Anda perlu login untuk menambahkan produk ke wishlist. Apakah Anda ingin login?')) {
+                    window.location.href = '{{ route("login") }}';
+                }
+            }
+
+            showErrorAlert(message) {
+                alert(message);
+            }
+
+            toggleCart(productId, button) {
+                const isInCart = this.cartState.get(productId) || false;
+
+                if (!isInCart) {
+                    this.addToCart(productId, button);
+                } else {
+                    this.removeFromCart(productId, button);
+                }
+            }
+
+            addToCart(productId, button) {
+                this.cartState.set(productId, true);
+                button.classList.add('added');
+                button.innerHTML = '<i class="fas fa-check me-2"></i>Dalam Keranjang';
+                this.showModal('cartModal');
+                this.updateCartCount(1);
+            }
+
+            removeFromCart(productId, button) {
+                this.cartState.set(productId, false);
+                button.classList.remove('added');
+                button.classList.add('removing');
+                button.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang';
+                this.showModal('cartRemoveModal');
+                this.updateCartCount(-1);
+                setTimeout(() => button.classList.remove('removing'), 300);
+            }
+
+            showModal(modalId) {
+                const modalElement = document.getElementById(modalId);
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+
+            updateCartCount(increment) {
+                this.updateBadgeCount('.store-nav-icon[href*="cart"] .store-badge', increment);
+            }
+
+            updateBadgeCount(selector, increment) {
+                const badge = document.querySelector(selector);
+                if (!badge) return;
+
+                let current = parseInt(badge.textContent.trim()) || 0;
+                let updated = current + increment;
+
+                if (updated < 0) updated = 0;
+                badge.textContent = updated;
+            }
+
+            autoHideModals() {
+                const modals = ['cartModal', 'cartRemoveModal', 'wishlistModal', 'wishlistRemoveModal'];
+                modals.forEach(id => {
+                    const modalElement = document.getElementById(id);
+                    if (modalElement) {
+                        modalElement.addEventListener('shown.bs.modal', () => {
+                            setTimeout(() => {
+                                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                                if (modalInstance) modalInstance.hide();
+                            }, 1500);
+                        });
+                    }
                 });
-                btn.addEventListener('mouseleave', function() {
-                    this.style.color = 'white';
-                });
-            });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProductManager();
         });
     </script>
 

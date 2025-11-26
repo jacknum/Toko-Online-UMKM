@@ -33,46 +33,73 @@ Route::post('/forgot-password', [AuthController::class, 'checkEmail'])->name('pa
 Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
-// Routes untuk Pembeli (Store) - Bisa diakses tanpa login
+// ============================================================
+// STORE ROUTES - Public (Bisa diakses tanpa login)
+// ============================================================
 Route::prefix('store')->name('store.')->group(function () {
-    Route::get('/', [StoreController::class, 'index'])->name('home');
+    // Homepage & Search
+    Route::get('/', [StoreController::class, 'index'])->name('index');
     Route::get('/search', [StoreController::class, 'search'])->name('search');
+
+    // Categories - MENGGUNAKAN SLUG
+    Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
+    Route::get('/category/{slug}', [StoreController::class, 'categoryProducts'])->name('category-products');
+
+    // Product Detail
     Route::get('/product/{id}', [StoreController::class, 'productDetail'])->name('product.detail');
-    Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+
+    // Cart & Wishlist (Public, bisa tanpa login dengan session)
+    Route::get('/cart', [StoreController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [StoreController::class, 'add'])->name('cart.add');
+    Route::put('/cart/update/{id}', [StoreController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [StoreController::class, 'remove'])->name('cart.remove');
+    Route::delete('/cart/clear', [StoreController::class, 'clear'])->name('cart.clear');
+    // Wishlist Routes
+    Route::post('/wishlist/toggle', [App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist/count', [App\Http\Controllers\WishlistController::class, 'getCount'])->name('wishlist.count');
+
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
-    Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
-    Route::get('/categories', [StoreController::class, 'allCategories'])->name('categories');
-    Route::get('/category/{categoryId}', [StoreController::class, 'categoryProducts'])->name('category-products');
-    Route::get('/product/{productId}', [StoreController::class, 'productDetail'])->name('product.detail');
-    // Tambahkan route ini di dalam group prefix('store')
-    Route::get('/orders', [StoreController::class, 'orders'])->name('orders');
+    Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
-    // Route langsung untuk profile dan addresses (tanpa /account)
-    Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile')->middleware(['auth']);
-    Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses')->middleware(['auth']);
-    Route::get('/security', [StoreAccountController::class, 'security'])->name('security')->middleware(['auth']);
+    // Checkout & Orders (Butuh login)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/checkout', [StoreController::class, 'checkout'])->name('checkout');
+        Route::post('/checkout/process', [StoreController::class, 'processCheckout'])->name('checkout.process');
+        Route::get('/orders', [StoreController::class, 'orders'])->name('orders');
+        Route::get('/orders/{id}', [StoreController::class, 'orderDetail'])->name('orders.detail');
+    });
 
-    // Akun pengguna - butuh login
-    Route::prefix('account')->name('account.')->middleware(['auth'])->group(function () {
+    // Account Management (Butuh login)
+    Route::middleware(['auth'])->group(function () {
         Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile');
-        Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses');
-        Route::get('/security', [StoreAccountController::class, 'security'])->name('security');
         Route::post('/profile/update', [StoreAccountController::class, 'updateProfile'])->name('profile.update');
-        Route::post('/password/update', [StoreAccountController::class, 'updatePassword'])->name('password.update');
+
+        Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses');
         Route::post('/address/add', [StoreAccountController::class, 'addAddress'])->name('address.add');
+        Route::put('/address/{id}/update', [StoreAccountController::class, 'updateAddress'])->name('address.update');
         Route::delete('/address/{id}/delete', [StoreAccountController::class, 'deleteAddress'])->name('address.delete');
+        Route::post('/address/{id}/set-default', [StoreAccountController::class, 'setDefaultAddress'])->name('address.set-default');
+
+        Route::get('/security', [StoreAccountController::class, 'security'])->name('security');
+        Route::post('/password/update', [StoreAccountController::class, 'updatePassword'])->name('password.update');
     });
 });
 
-// Protected Routes - Hanya bisa diakses setelah login
+// ============================================================
+// PROTECTED ROUTES - Butuh Login
+// ============================================================
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Dashboard - otomatis redirect berdasarkan role
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Routes khusus Penjual
+    // ============================================================
+    // PENJUAL ROUTES
+    // ============================================================
     Route::middleware(['role:penjual'])->group(function () {
+        // Profile & Settings
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
@@ -80,40 +107,49 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/settings/update-all', [SettingsController::class, 'updateAll'])->name('settings.update-all');
 
         // PRODUCT ROUTES
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
-        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-        Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update'); // ✅ INI YANG BENAR
-        Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/filter', [ProductController::class, 'filter'])->name('filter');
+            Route::get('/create', [ProductController::class, 'create'])->name('create');
+            Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
+            Route::post('/{id}', [ProductController::class, 'update'])->name('update'); // POST untuk support FormData
+            Route::put('/{id}', [ProductController::class, 'update']); // PUT fallback
+            Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
+        });
 
-        // ORDER ROUTES (sisanya tetap sama)
-        Route::get('/orders/incoming', [OrderController::class, 'incoming'])->name('orders.incoming');
-        Route::get('/orders/outgoing', [OrderController::class, 'outgoing'])->name('orders.outgoing');
-        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-        Route::post('/orders/{id}/accept', [OrderController::class, 'accept'])->name('orders.accept');
-        Route::post('/orders/{id}/reject', [OrderController::class, 'reject'])->name('orders.reject');
-        Route::post('/orders/{id}/process', [OrderController::class, 'process'])->name('orders.process');
-        Route::post('/orders/{id}/track', [OrderController::class, 'track'])->name('orders.track');
-        Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
-        Route::post('/orders/{id}/mark-delivered', [OrderController::class, 'markDelivered'])->name('orders.mark-delivered');
-        Route::post('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+        // ORDER ROUTES
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/incoming', [OrderController::class, 'incoming'])->name('incoming');
+            Route::get('/outgoing', [OrderController::class, 'outgoing'])->name('outgoing');
+            Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+            Route::post('/{id}/accept', [OrderController::class, 'accept'])->name('accept');
+            Route::post('/{id}/reject', [OrderController::class, 'reject'])->name('reject');
+            Route::post('/{id}/process', [OrderController::class, 'process'])->name('process');
+            Route::post('/{id}/track', [OrderController::class, 'track'])->name('track');
+            Route::post('/{id}/ship', [OrderController::class, 'ship'])->name('ship');
+            Route::post('/{id}/mark-delivered', [OrderController::class, 'markDelivered'])->name('mark-delivered');
+            Route::post('/{id}/complete', [OrderController::class, 'complete'])->name('complete');
+        });
 
         // PAYMENT ROUTES
-        Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
-        Route::get('/payments/{id}', [PaymentController::class, 'detail'])->name('payments.detail');
-
-        // STORE ROUTES
-        Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::get('/', [PaymentController::class, 'index'])->name('index');
+            Route::get('/{id}', [PaymentController::class, 'detail'])->name('detail');
+        });
     });
 
-    // Routes khusus Pembeli
+    // ============================================================
+    // PEMBELI ROUTES (Optional - jika ada route khusus pembeli)
+    // ============================================================
     Route::middleware(['role:pembeli'])->group(function () {
         // Tambahan routes khusus pembeli jika diperlukan
     });
 });
 
+// ============================================================
+// UTILITY ROUTES
+// ============================================================
 // Route untuk serve CSS
 Route::get('/css/{file}', function ($file) {
     $path = resource_path("css/{$file}");

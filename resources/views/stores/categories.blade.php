@@ -23,7 +23,7 @@
         <div class="row">
             @foreach($categories as $category)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{{ route('store.category.products', $category['id']) }}" class="category-page-link">
+                <a href="{{ route('store.category-products', $category['id']) }}" class="category-page-link">
                     <div class="store-category-page-card">
                         <div class="store-category-page-icon">
                             <i class="{{ $category['icon'] }}"></i>
