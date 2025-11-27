@@ -2,128 +2,127 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
-    use HasFactory;
+    protected $table = 'carts';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'user_id',
         'product_id',
-        'quantity',
+        'product_name',
         'price',
+        'product_image',
+        'quantity',
         'added_at',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'quantity' => 'integer',
         'price' => 'decimal:2',
+        'quantity' => 'integer',
         'added_at' => 'datetime',
     ];
 
     /**
-     * Get the user that owns the cart item.
+     * Get the user that owns this cart item
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the product that belongs to the cart item.
+     * Get the product of this cart item
      */
-    public function product()
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id'); // Tambahkan foreign key
     }
 
     /**
-     * Scope a query to only include cart items for a specific user.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int  $userId
-     * @return \Illuminate\Database\Eloquent\Builder
+     * Get subtotal for this cart item
      */
-    public function scopeForUser($query, $userId)
+    public function getSubtotalAttribute(): float
     {
-        return $query->where('user_id', $userId);
+        return $this->price * $this->quantity;
     }
 
     /**
-     * Scope a query to only include cart items for the authenticated user.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * Add or update cart item
      */
-    public function scopeForCurrentUser($query)
+    public static function addToCart($userId, $productId, $productName, $price, $productImage, $quantity = 1)
     {
-        return $query->where('user_id', Auth::id());
-    }
+        // Cek apakah produk sudah ada di cart
+        $cartItem = self::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
 
-    /**
-     * Calculate total quantity of items in cart for a user.
-     *
-     * @param  int  $userId
-     * @return int
-     */
-    public static function getTotalQuantityForUser($userId)
-    {
-        return static::where('user_id', $userId)->sum('quantity');
-    }
-
-    /**
-     * Calculate total quantity of items in cart for current authenticated user.
-     *
-     * @return int
-     */
-    public static function getTotalQuantityForCurrentUser()
-    {
-        if (Auth::check()) {
-            return static::where('user_id', Auth::id())->sum('quantity');
+        if ($cartItem) {
+            // Update quantity jika sudah ada
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+            return $cartItem;
         }
 
-        return 0;
+        // Buat item cart baru
+        return self::create([
+            'user_id' => $userId,
+            'product_id' => $productId,
+            'product_name' => $productName,
+            'price' => $price,
+            'product_image' => $productImage,
+            'quantity' => $quantity,
+            'added_at' => now(),
+        ]);
     }
 
     /**
-     * Calculate total price of items in cart for a user.
-     *
-     * @param  int  $userId
-     * @return float
+     * Get total price for user's cart
      */
-    public static function getTotalPriceForUser($userId)
+    public static function getUserCartTotal($userId): float
     {
-        return static::where('user_id', $userId)
-            ->get()
-            ->sum(function ($item) {
-                return $item->quantity * $item->price;
-            });
+        return (float) self::where('user_id', $userId)
+            ->sum(DB::raw('price * quantity'));
     }
 
     /**
-     * Check if a product is already in user's cart.
-     *
-     * @param  int  $userId
-     * @param  int  $productId
-     * @return bool
+     * Get cart item count for user
      */
-    public static function isProductInCart($userId, $productId)
+    public static function getUserCartCount($userId): int
     {
-        return static::where('user_id', $userId)
-            ->where('product_id', $productId)
-            ->exists();
+        return self::where('user_id', $userId)->sum('quantity');
+    }
+
+    /**
+     * Clear user's cart
+     */
+    public static function clearUserCart($userId): void
+    {
+        self::where('user_id', $userId)->delete();
+    }
+
+    /**
+     * Get total quantity for current authenticated user
+     */
+    public static function getTotalQuantityForCurrentUser(): int
+    {
+        $userId = auth()->id();
+        if (!$userId) {
+            return 0;
+        }
+        return self::where('user_id', $userId)->sum('quantity');
+    }
+
+    /**
+     * Get cart items with product information
+     */
+    public static function getUserCartItems($userId)
+    {
+        return self::with('product') // Eager load product relationship
+            ->where('user_id', $userId)
+            ->get();
     }
 }

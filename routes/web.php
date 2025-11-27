@@ -49,11 +49,13 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/product/{id}', [StoreController::class, 'productDetail'])->name('product.detail');
 
     // Cart & Wishlist (Public, bisa tanpa login dengan session)
-    Route::get('/cart', [StoreController::class, 'index'])->name('cart');
-    Route::post('/cart/add', [StoreController::class, 'add'])->name('cart.add');
-    Route::put('/cart/update/{id}', [StoreController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/remove/{id}', [StoreController::class, 'remove'])->name('cart.remove');
-    Route::delete('/cart/clear', [StoreController::class, 'clear'])->name('cart.clear');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
+    Route::get('/cart/summary', [CartController::class, 'getCartSummary'])->name('cart.summary');
     // Wishlist Routes
     Route::post('/wishlist/toggle', [App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::get('/wishlist/count', [App\Http\Controllers\WishlistController::class, 'getCount'])->name('wishlist.count');
@@ -61,6 +63,7 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+    
 
     // Checkout & Orders (Butuh login)
     Route::middleware(['auth'])->group(function () {
@@ -69,6 +72,8 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::get('/orders', [StoreController::class, 'orders'])->name('orders');
         Route::get('/orders/{id}', [StoreController::class, 'orderDetail'])->name('orders.detail');
     });
+
+    
 
     // Account Management (Butuh login)
     Route::middleware(['auth'])->group(function () {

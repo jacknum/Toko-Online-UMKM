@@ -103,7 +103,7 @@
                 <div class="col-auto">
                     <div class="d-flex align-items-center text-muted">
                         <i class="fas fa-heart me-2 text-danger"></i>
-                        <span class="fw-medium">{{ $wishlistItems->total() }} Item</span>
+                        <span class="fw-medium" id="wishlist-count">{{ $wishlistItems->total() }} Item</span>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         <!-- Wishlist Items Grid -->
                         <div class="row g-4" id="wishlist-items-container">
                             @foreach ($wishlistItems as $item)
-                                <div class="col-lg-3 col-md-4 col-6" data-product-id="{{ $item->product_id }}" data-wishlist-id="{{ $item->id }}">
+                                <div class="col-lg-3 col-md-4 col-6 wishlist-item" data-product-id="{{ $item->product_id }}" data-wishlist-id="{{ $item->id }}">
                                     <div class="store-product-card">
                                         <a href="{{ route('store.product.detail', $item->product_id) }}" class="product-link">
                                             <div class="store-product-image">
@@ -501,12 +501,79 @@
             color: inherit;
         }
 
-        /* Animation untuk remove item */
-        .removing {
-            animation: slideOut 0.4s ease forwards;
+        /* Animasi penghapusan wishlist yang lebih smooth */
+        .wishlist-item.removing {
+            animation: wishlistItemRemove 0.6s ease forwards;
+            pointer-events: none;
         }
 
-        @keyframes slideOut {
+        .wishlist-item.shrink-out {
+            animation: wishlistShrinkOut 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .wishlist-item.fade-out-up {
+            animation: wishlistFadeOutUp 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .wishlist-item.slide-out-right {
+            animation: wishlistSlideOutRight 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes wishlistItemRemove {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.95) translateY(-10px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistShrinkOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+                max-height: 500px;
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+                max-height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistFadeOutUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistSlideOutRight {
             0% {
                 opacity: 1;
                 transform: translateX(0);
@@ -514,7 +581,36 @@
             100% {
                 opacity: 0;
                 transform: translateX(100%);
+                height: 0;
+                margin: 0;
+                padding: 0;
             }
+        }
+
+        /* Style untuk wishlist count update */
+        #wishlist-count {
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-count-update {
+            animation: countPulse 0.6s ease;
+        }
+
+        @keyframes countPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #dc3545; }
+            100% { transform: scale(1); }
+        }
+
+        /* Animation untuk button wishlist */
+        .store-wishlist-btn.removing {
+            animation: heartShrink 0.4s ease;
+        }
+
+        @keyframes heartShrink {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.7); }
+            100% { transform: scale(1); }
         }
 
         /* Style yang sudah ada sebelumnya */
@@ -711,6 +807,7 @@
             constructor() {
                 this.wishlistState = new Map();
                 this.cartState = new Map();
+                this.animationTypes = ['removing', 'shrink-out', 'fade-out-up', 'slide-out-right'];
                 this.init();
             }
 
@@ -824,6 +921,9 @@
 
             async removeFromWishlist(productId, wishlistId, button) {
                 try {
+                    // Add removing animation to button
+                    button.classList.add('removing');
+                    
                     const response = await fetch(`/store/wishlist/remove/${wishlistId}`, {
                         method: 'DELETE',
                         headers: {
@@ -836,39 +936,44 @@
 
                     if (data.success) {
                         this.wishlistState.set(productId, false);
-                        button.classList.remove('active');
+                        button.classList.remove('active', 'removing');
                         this.showModal('wishlistRemoveModal');
                         this.updateWishlistCount(-1);
 
                         // Remove item from DOM with smooth animation
                         this.removeWishlistItemWithAnimation(productId);
                     } else {
+                        button.classList.remove('removing');
                         throw new Error(data.message);
                     }
                 } catch (error) {
                     console.error('Error removing from wishlist:', error);
+                    button.classList.remove('removing');
                     this.showErrorAlert('Gagal menghapus dari wishlist');
                 }
             }
 
             removeWishlistItemWithAnimation(productId) {
-                const productCard = document.querySelector(`[data-product-id="${productId}"]`);
-                if (productCard) {
-                    // Add removing class for animation
-                    productCard.classList.add('removing');
+                const wishlistItem = document.querySelector(`.wishlist-item[data-product-id="${productId}"]`);
+                if (wishlistItem) {
+                    // Pilih animasi secara random atau gunakan yang pertama
+                    const animationType = this.animationTypes[0]; // Bisa diubah ke random: Math.floor(Math.random() * this.animationTypes.length)
+                    
+                    // Add animation class
+                    wishlistItem.classList.add(animationType);
 
                     // Remove from DOM after animation completes
                     setTimeout(() => {
-                        productCard.remove();
+                        wishlistItem.remove();
 
                         // Check if container is empty
                         const container = document.getElementById('wishlist-items-container');
                         if (container && container.children.length === 0) {
                             setTimeout(() => {
                                 window.location.reload();
-                            }, 500);
+                            }, 1000);
                         }
-                    }, 400);
+                    }, 500); // Sesuaikan dengan durasi animasi
                 }
             }
 
@@ -962,7 +1067,23 @@
             }
 
             updateWishlistCount(increment) {
+                // Update badge count
                 this.updateBadgeCount('.store-nav-icon[href*="wishlist"] .store-badge', increment);
+                
+                // Update wishlist count text
+                const wishlistCountElement = document.getElementById('wishlist-count');
+                if (wishlistCountElement) {
+                    const currentText = wishlistCountElement.textContent;
+                    const currentCount = parseInt(currentText) || 0;
+                    const newCount = Math.max(0, currentCount + increment);
+                    
+                    wishlistCountElement.textContent = `${newCount} Item`;
+                    wishlistCountElement.classList.add('wishlist-count-update');
+                    
+                    setTimeout(() => {
+                        wishlistCountElement.classList.remove('wishlist-count-update');
+                    }, 600);
+                }
             }
 
             updateBadgeCount(selector, increment) {
