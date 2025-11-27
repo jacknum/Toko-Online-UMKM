@@ -7,16 +7,6 @@
         <div class="container">
             <<!-- Header yang Minimalis dan Informatif -->
                 <div class="row align-items-center mb-4">
-                    <div class="col">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">
-                                        <i class="fas fa-home me-1"></i>Beranda
-                                    </a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Keranjang Belanja</li>
-                            </ol>
-                        </nav>
-                    </div>
                     <div class="col-auto">
                         <div class="d-flex align-items-center gap-3">
                             @if ($cartCount > 0)
@@ -140,7 +130,7 @@
                             <p class="text-muted mb-4">Belum ada produk dalam keranjang belanja Anda. Yuk, mulai berbelanja!
                             </p>
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="/" class="btn btn-primary btn-lg">
+                                <a href="/store" class="btn btn-primary btn-lg">
                                     <i class="fas fa-shopping-bag me-2"></i>Mulai Belanja
                                 </a>
                                 <a href="/store" class="btn btn-outline-primary btn-lg">
@@ -672,13 +662,13 @@
                             </div>
 
                             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                                <a href="/orders" class="btn btn-primary btn-lg">
+                                <a href="{{ route('store.orders') }}" class="btn btn-primary btn-lg">
                                     <i class="fas fa-clipboard-list me-2"></i>Cek Pesanan Saya
                                 </a>
-                                <a href="/" class="btn btn-outline-primary btn-lg">
+                                <a href="{{ route('landing') }}" class="btn btn-outline-primary btn-lg">
                                     <i class="fas fa-home me-2"></i>Kembali ke Beranda
                                 </a>
-                                <a href="/store" class="btn btn-outline-primary btn-lg">
+                                <a href="{{ route('store.index') }}" class="btn btn-outline-primary btn-lg">
                                     <i class="fas fa-shopping-bag me-2"></i>Lanjut Belanja
                                 </a>
                             </div>
@@ -747,12 +737,10 @@
                     const allKurirOptions = document.querySelectorAll('.kurir-option');
 
                     if (filterType === 'all-kurir') {
-                        // Tampilkan semua kurir
                         allKurirOptions.forEach(option => {
                             option.style.display = 'block';
                         });
                     } else if (filterType === 'recommended-kurir') {
-                        // Hanya tampilkan pilihan penjual (rekomendasi)
                         allKurirOptions.forEach(option => {
                             if (option.classList.contains('recommended-kurir')) {
                                 option.style.display = 'block';
@@ -776,22 +764,15 @@
         });
 
         function navigateToStep(stepNumber) {
-            // Animate out current active panel
             const currentPanel = document.querySelector('.step-panel.active');
             if (currentPanel) {
                 currentPanel.classList.add('fade-out');
                 setTimeout(() => {
                     currentPanel.classList.remove('active', 'fade-out');
-
-                    // Update progress steps
                     updateProgressSteps(stepNumber);
-
-                    // Show new panel
                     const newPanel = document.querySelector(`.step-panel[data-step="${stepNumber}"]`);
                     if (newPanel) {
                         newPanel.classList.add('active');
-
-                        // Update order details in step 4
                         if (stepNumber == 4) {
                             updateOrderDetails();
                         }
@@ -820,7 +801,6 @@
             const emptyCart = document.getElementById('empty-cart');
             const cartWithItems = document.getElementById('cart-with-items');
 
-            // Update cart count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems + ' Item';
 
@@ -831,7 +811,6 @@
                 emptyCart.classList.add('d-none');
                 cartWithItems.classList.remove('d-none');
 
-                // Render cart items
                 cartItems.innerHTML = '';
                 cart.forEach(item => {
                     const subtotal = item.price * item.quantity;
@@ -839,9 +818,11 @@
                     <tr>
                         <td class="ps-4">
                             <div class="d-flex align-items-center">
-                                <img src="${item.image}" alt="${item.name}" 
-                                     class="rounded me-3 flex-shrink-0" 
-                                     style="width: 60px; height: 60px; object-fit: cover;">
+                                <img src="${item.image}"
+                                    alt="${item.name}"
+                                    class="rounded me-3 flex-shrink-0"
+                                    style="width: 60px; height: 60px; object-fit: cover;"
+                                    onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'">
                                 <div class="product-info flex-grow-1">
                                     <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem; line-height: 1.2;">${item.name}</h6>
                                     <small class="text-muted">Stok: Tersedia</small>
@@ -853,14 +834,15 @@
                         </td>
                         <td class="text-center">
                             <div class="d-flex align-items-center justify-content-center">
-                                <button class="btn btn-sm btn-outline-secondary px-2 py-1" 
-                                        onclick="updateQuantity(${item.id}, -1)"
-                                        style="min-width: 32px; height: 32px;">
+                                <button class="btn btn-sm btn-outline-secondary px-2 py-1"
+                                        onclick="updateQuantity(${item.id}, ${item.quantity - 1})"
+                                        style="min-width: 32px; height: 32px;"
+                                        ${item.quantity <= 1 ? 'disabled' : ''}>
                                     <i class="fas fa-minus" style="font-size: 0.7rem;"></i>
                                 </button>
                                 <span class="mx-2 fw-medium" style="min-width: 40px; text-align: center; font-size: 0.9rem;">${item.quantity}</span>
-                                <button class="btn btn-sm btn-outline-secondary px-2 py-1" 
-                                        onclick="updateQuantity(${item.id}, 1)"
+                                <button class="btn btn-sm btn-outline-secondary px-2 py-1"
+                                        onclick="updateQuantity(${item.id}, ${item.quantity + 1})"
                                         style="min-width: 32px; height: 32px;">
                                     <i class="fas fa-plus" style="font-size: 0.7rem;"></i>
                                 </button>
@@ -870,7 +852,7 @@
                             <span class="fw-bold text-primary text-nowrap" style="font-size: 0.9rem;">Rp ${formatNumber(subtotal)}</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-danger p-1" 
+                            <button class="btn btn-sm btn-outline-danger p-1"
                                     onclick="removeFromCart(${item.id})"
                                     style="width: 32px; height: 32px;">
                                 <i class="fas fa-trash" style="font-size: 0.7rem;"></i>
@@ -884,7 +866,13 @@
             }
         }
 
-        async function updateQuantity(cartId, change) {
+        async function updateQuantity(cartId, newQuantity) {
+            // Validasi quantity
+            if (newQuantity < 1) {
+                showToast('Jumlah minimal adalah 1', 'error');
+                return;
+            }
+
             try {
                 const response = await fetch(`/store/cart/update/${cartId}`, {
                     method: 'PUT',
@@ -893,7 +881,7 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        quantity: change
+                        quantity: newQuantity  // Kirim quantity yang baru, bukan change
                     })
                 });
 
@@ -927,7 +915,6 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    // Reload page untuk update data terbaru
                     location.reload();
                 } else {
                     showToast(data.message, 'error');
@@ -951,7 +938,6 @@
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Payment functionality
         function selectPayment(name, account, type) {
             selectedPayment = {
                 name,
@@ -959,10 +945,8 @@
                 type
             };
 
-            // Show payment proof section
             document.getElementById('payment-proof-section').style.display = 'block';
 
-            // Update payment details
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost;
 
@@ -970,7 +954,6 @@
             document.getElementById('payment-amount-display').textContent = 'Rp ' + formatNumber(total);
             document.getElementById('payment-account-display').textContent = account;
 
-            // Show appropriate instructions
             if (type === 'bank') {
                 document.getElementById('bank-instructions').classList.remove('d-none');
                 document.getElementById('ewallet-instructions').classList.add('d-none');
@@ -979,12 +962,10 @@
                 document.getElementById('ewallet-instructions').classList.remove('d-none');
             }
 
-            // Enable verify button if proof is already uploaded
             if (paymentProofUploaded) {
                 document.getElementById('btn-to-shipping').disabled = false;
             }
 
-            // Show selection feedback
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
             });
@@ -1011,7 +992,6 @@
 
             showToast('Bukti pembayaran berhasil diupload! Menunggu verifikasi...', 'success');
 
-            // Simulate verification process
             setTimeout(() => {
                 navigateToStep(3);
                 showToast('Pembayaran telah diverifikasi! Silakan pilih kurir pengiriman.', 'success');
@@ -1025,7 +1005,6 @@
             document.getElementById('order-total').textContent = 'Rp ' + formatNumber(total);
             document.getElementById('order-payment').textContent = selectedPayment ? selectedPayment.name : '-';
 
-            // Set shipping details
             if (selectedKurir) {
                 const kurirNames = {
                     'pilihan-penjual': 'Pilihan Penjual',
@@ -1056,7 +1035,6 @@
             const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
             const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
 
-            // Create toast element
             const toast = document.createElement('div');
             toast.className = `toast align-items-center text-white ${bgColor} border-0 position-fixed`;
             toast.style.top = '20px';
@@ -1074,11 +1052,9 @@
 
             document.body.appendChild(toast);
 
-            // Initialize and show toast
             const bsToast = new bootstrap.Toast(toast);
             bsToast.show();
 
-            // Remove toast after it's hidden
             toast.addEventListener('hidden.bs.toast', function() {
                 document.body.removeChild(toast);
             });
@@ -1110,414 +1086,4 @@
             }
         }
     </script>
-
-    <style>
-        .step {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .step:hover {
-            transform: translateY(-2px);
-        }
-
-        .step.completed .step-icon {
-            background-color: #198754;
-            color: white;
-        }
-
-        .step.active .step-icon {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-        .step-panel {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .step-panel.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .step-panel.fade-out {
-            opacity: 0;
-        }
-
-        .payment-option,
-        .kurir-option {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .payment-option:hover,
-        .kurir-option:hover {
-            border-color: #0d6efd !important;
-            transform: translateY(-2px);
-        }
-
-        .payment-option.selected,
-        .kurir-option:hover {
-            border-color: #0d6efd !important;
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        .kurir-option .form-check-input:checked+label {
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        .toast {
-            min-width: 300px;
-        }
-
-        .navigation-buttons {
-            margin-top: 2rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 160px;
-        }
-
-        .btn-lg {
-            padding: 12px 24px;
-            font-size: 1.1rem;
-        }
-
-        .payment-instruction {
-            text-align: left;
-        }
-
-        .payment-instruction p {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .payment-instruction i {
-            width: 20px;
-            margin-top: 2px;
-        }
-
-        .kurir-option img {
-            filter: grayscale(100%);
-            transition: filter 0.3s ease;
-        }
-
-        .kurir-option:hover img,
-        .kurir-option .form-check-input:checked+label img {
-            filter: grayscale(0%);
-        }
-
-        .upload-section {
-            border-top: 1px solid #dee2e6;
-            padding-top: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .preview-area {
-            border: 2px dashed #dee2e6;
-        }
-
-        /* Tambahan untuk memperbaiki layout keranjang */
-        .table th {
-            white-space: nowrap;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        .product-info {
-            min-width: 0;
-        }
-
-        .text-truncate {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .text-nowrap {
-            white-space: nowrap;
-        }
-
-        /* Perbaikan layout keranjang */
-        .table th {
-            white-space: nowrap;
-            font-size: 0.85rem;
-            padding: 12px 8px;
-        }
-
-        .table td {
-            vertical-align: middle;
-            padding: 12px 8px;
-        }
-
-        .product-info {
-            min-width: 0;
-        }
-
-        .text-truncate {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .text-nowrap {
-            white-space: nowrap;
-        }
-
-        /* Perbaikan tombol quantity */
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .quantity-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #dee2e6;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .quantity-btn:hover {
-            background: #f8f9fa;
-            border-color: #6c757d;
-        }
-
-        .quantity-display {
-            min-width: 40px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Perbaikan untuk mobile */
-        @media (max-width: 768px) {
-            .table-responsive {
-                font-size: 0.8rem;
-            }
-
-            .table th,
-            .table td {
-                padding: 8px 4px;
-            }
-
-            .product-info h6 {
-                font-size: 0.8rem !important;
-            }
-
-            .quantity-btn {
-                width: 28px;
-                height: 28px;
-            }
-
-            .quantity-display {
-                min-width: 30px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Styling untuk filter kurir */
-        .btn-group .btn {
-            flex: 1;
-        }
-
-        .btn-check:checked+.btn {
-            background-color: #0d6efd;
-            color: white;
-            border-color: #0d6efd;
-        }
-
-        /* Styling untuk logo kurir */
-        .kurir-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 10px;
-            flex-shrink: 0;
-        }
-
-        /* Badge rekomendasi */
-        .badge.bg-warning {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        /* Hover effect untuk kurir option */
-        .kurir-option {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .kurir-option:hover {
-            border-color: #0d6efd !important;
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        .form-check-input:checked+.form-check-label {
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .kurir-logo {
-                width: 35px;
-                height: 35px;
-                font-size: 9px;
-            }
-
-            .btn-group .btn {
-                font-size: 0.8rem;
-                padding: 0.5rem 0.25rem;
-            }
-        }
-
-        /* Styling untuk filter kurir */
-        .btn-group .btn {
-            flex: 1;
-        }
-
-        .btn-check:checked+.btn {
-            background-color: #0d6efd;
-            color: white;
-            border-color: #0d6efd;
-        }
-
-        /* Badge rekomendasi */
-        .badge.bg-warning {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        /* Hover effect untuk kurir option */
-        .kurir-option {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .kurir-option:hover {
-            border-color: #0d6efd !important;
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        .form-check-input:checked+.form-check-label {
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-
-        /* Styling untuk logo kurir */
-        .kurir-option img {
-            filter: grayscale(0%);
-            transition: filter 0.3s ease;
-        }
-
-        .kurir-option:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .btn-group .btn {
-                font-size: 0.8rem;
-                padding: 0.5rem 0.25rem;
-            }
-
-            .kurir-option img {
-                width: 35px !important;
-                height: 35px !important;
-            }
-        }
-
-        /* Styling khusus untuk pilihan penjual */
-        .kurir-option[data-kurir="pilihan-penjual"] {
-            border: 2px solid #28a745 !important;
-            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(40, 167, 69, 0.02) 100%);
-        }
-
-        .kurir-option[data-kurir="pilihan-penjual"]:hover {
-            border-color: #28a745 !important;
-            background: linear-gradient(135deg, rgba(40, 167, 69, 0.08) 0%, rgba(40, 167, 69, 0.04) 100%);
-        }
-
-        .kurir-option[data-kurir="pilihan-penjual"] .form-check-input:checked+.form-check-label {
-            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
-        }
-
-        /* Icon khusus untuk pilihan penjual */
-        .kurir-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        /* Badge rekomendasi khusus */
-        .badge.bg-success {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        /* Harga gratis dengan styling khusus */
-        .text-success {
-            color: #28a745 !important;
-            font-weight: 700;
-        }
-
-        /* Animasi untuk pilihan penjual */
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-            }
-        }
-
-        .kurir-option[data-kurir="pilihan-penjual"] {
-            animation: pulse-glow 2s infinite;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .kurir-option[data-kurir="pilihan-penjual"] {
-                border-width: 1px !important;
-            }
-
-            .kurir-logo {
-                width: 35px;
-                height: 35px;
-            }
-
-            .kurir-logo i {
-                font-size: 1rem !important;
-            }
-        }
-    </style>
 @endsection

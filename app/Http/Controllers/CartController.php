@@ -6,36 +6,10 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Tambahkan ini
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
-
-    public function cart()
-    {
-        $cartItems = Cart::where('user_id', auth()->id())->get();
-
-        $cartData = $cartItems->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'product_id' => $item->product_id,
-                'name' => $item->product_name,
-                'price' => floatval($item->price),
-                'image' => $item->product_image,
-                'quantity' => $item->quantity,
-                'subtotal' => floatval($item->price * $item->quantity),
-            ];
-        });
-
-        return view('cart', [
-            'cartItems' => $cartItems,
-            'cartData' => $cartData,
-            'cartCount' => $cartItems->count(),
-            'banks' => $this->getBanks(),
-            'ewallets' => $this->getEWallets()
-        ]);
-    }
-
     /**
      * Show cart page
      */
@@ -53,6 +27,31 @@ class CartController extends Controller
             ->where('user_id', $userId)
             ->get();
 
+        // Format cartData untuk JavaScript
+        $cartData = $cartItems->map(function ($item) {
+            // Pastikan image menggunakan path yang benar
+            $imagePath = $item->product_image;
+
+            // Jika path tidak dimulai dengan http/https, tambahkan base URL
+            if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                $imagePath = asset('storage/' . $imagePath);
+            }
+
+            // Fallback ke placeholder jika tidak ada gambar
+            if (!$imagePath) {
+                $imagePath = 'https://via.placeholder.com/400x300?text=No+Image';
+            }
+
+            return [
+                'id' => $item->id,
+                'product_id' => $item->product_id,
+                'name' => $item->product_name,
+                'price' => floatval($item->price),
+                'quantity' => $item->quantity,
+                'image' => $imagePath,
+            ];
+        })->toArray();
+
         // Hitung total dan jumlah item
         $cartTotal = $cartItems->sum(function ($item) {
             return $item->price * $item->quantity;
@@ -65,45 +64,46 @@ class CartController extends Controller
             [
                 'name' => 'BCA',
                 'account' => '1234567890',
-                'image' => 'https://www.bca.co.id/-/media/Feature/Header/Logo/logo-bca.svg'
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'
             ],
             [
                 'name' => 'Mandiri',
-                'account' => '1234567890',
-                'image' => 'https://www.bankmandiri.co.id/resource/img/logo-mandiri.png'
+                'account' => '0987654321',
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'
             ],
             [
                 'name' => 'BRI',
-                'account' => '1234567890',
-                'image' => 'https://www.bri.co.id/documents/20123/26921/Logo-BRI-325x200.png'
+                'account' => '1122334455',
+                'image' => 'https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg'
             ],
         ];
 
         $ewallets = [
             [
-                'name' => 'GCash',
+                'name' => 'GoPay',
                 'account' => null,
-                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/GCash_Logo.svg/1200px-GCash_Logo.svg.png'
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg'
             ],
             [
                 'name' => 'Dana',
                 'account' => null,
-                'image' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Logo_DANA_Indonesia.svg/1200px-Logo_DANA_Indonesia.svg.png'
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg'
             ],
             [
                 'name' => 'OVO',
                 'account' => null,
-                'image' => 'https://www.ovo.id/assets/images/og-image.jpg'
+                'image' => 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg'
             ],
             [
                 'name' => 'QRIS',
                 'account' => null,
-                'image' => 'https://upload.wikimedia.org/wikipedia/id/thumb/8/8a/QRIS_logo.svg/512px-QRIS_logo.svg.png'
+                'image' => 'https://qris.id/homepage/assets/images/logo-qris.png'
             ],
         ];
 
         return view('stores.cart', [
             'cartItems' => $cartItems,
+            'cartData' => $cartData,
             'cartTotal' => $cartTotal,
             'cartCount' => $cartCount,
             'banks' => $banks,
@@ -167,7 +167,7 @@ class CartController extends Controller
                 'cart_count' => $cartCount,
             ]);
         } catch (\Exception $e) {
-            Log::error('Cart Add Error: ' . $e->getMessage()); // Gunakan Log bukan \Log
+            Log::error('Cart Add Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
@@ -180,8 +180,9 @@ class CartController extends Controller
      */
     public function update(Request $request, $cartId)
     {
+        // Validasi - terima quantity langsung (bukan change)
         $request->validate([
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:0', // min:0 untuk bisa hapus
         ]);
 
         try {
@@ -201,15 +202,34 @@ class CartController extends Controller
                 ], 403);
             }
 
+            // Jika quantity 0, hapus item
+            if ($request->quantity <= 0) {
+                $cartItem->delete();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Produk berhasil dihapus dari keranjang',
+                    'deleted' => true
+                ]);
+            }
+
             // Cek stok produk terkait
             $product = Product::find($cartItem->product_id);
-            if (!$product || $product->stock < $request->quantity) {
+            if (!$product) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Stok produk tidak mencukupi. Stok tersedia: ' . ($product->stock ?? 0)
+                    'message' => 'Produk tidak ditemukan'
+                ], 404);
+            }
+
+            if ($product->stock < $request->quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stok produk tidak mencukupi. Stok tersedia: ' . $product->stock
                 ], 400);
             }
 
+            // Update quantity
             $cartItem->quantity = $request->quantity;
             $cartItem->save();
 
@@ -220,7 +240,7 @@ class CartController extends Controller
                 'message' => 'Keranjang berhasil diperbarui',
                 'cartTotal' => Cart::getUserCartTotal($userId),
                 'cartCount' => Cart::getUserCartCount($userId),
-                'itemSubtotal' => $cartItem->subtotal,
+                'itemSubtotal' => $cartItem->price * $cartItem->quantity,
             ]);
         } catch (\Exception $e) {
             Log::error('Cart Update Error: ' . $e->getMessage());

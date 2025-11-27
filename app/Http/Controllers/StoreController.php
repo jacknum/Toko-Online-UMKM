@@ -268,4 +268,172 @@ class StoreController extends Controller
 
         return $product;
     }
+
+    /**
+     * Display orders page with dummy data
+     */
+    public function orders()
+    {
+        // Generate dummy data for active orders
+        $activeOrders = $this->generateDummyActiveOrders();
+
+        // Generate dummy data for order history
+        $orderHistory = $this->generateDummyOrderHistory();
+
+        return view('stores.orders', compact('activeOrders', 'orderHistory'));
+    }
+
+    /**
+     * Generate dummy data for active orders (shipped status)
+     */
+    private function generateDummyActiveOrders()
+    {
+        $products = Product::where('stock', '>', 0)
+            ->take(3)
+            ->get()
+            ->map(function ($product) {
+                return $this->enrichProductData($product);
+            });
+
+        if ($products->count() === 0) {
+            return collect();
+        }
+
+        return collect([
+            [
+                'order_number' => 'ORD' . date('Ymd') . '001',
+                'status' => 'shipped',
+                'status_text' => 'Sedang Dikirim',
+                'date' => now()->subDays(1)->format('Y-m-d H:i:s'),
+                'estimated_delivery' => now()->addDays(2)->format('Y-m-d'),
+                'shipping_method' => 'JNE Reguler',
+                'tracking_number' => 'JNE' . rand(1000000000, 9999999999),
+                'total' => 289000,
+                'items' => [
+                    [
+                        'product_id' => $products[0]->id,
+                        'name' => $products[0]->name,
+                        'image' => $products[0]->image,
+                        'price' => $products[0]->price,
+                        'quantity' => 1,
+                        'category' => $products[0]->category
+                    ]
+                ]
+            ],
+            [
+                'order_number' => 'ORD' . date('Ymd') . '002',
+                'status' => 'shipped',
+                'status_text' => 'Sedang Dikirim',
+                'date' => now()->subHours(6)->format('Y-m-d H:i:s'),
+                'estimated_delivery' => now()->addDays(3)->format('Y-m-d'),
+                'shipping_method' => 'J&T Express',
+                'tracking_number' => 'JT' . rand(1000000000, 9999999999),
+                'total' => 450000,
+                'items' => [
+                    [
+                        'product_id' => $products->count() > 1 ? $products[1]->id : $products[0]->id,
+                        'name' => $products->count() > 1 ? $products[1]->name : $products[0]->name,
+                        'image' => $products->count() > 1 ? $products[1]->image : $products[0]->image,
+                        'price' => $products->count() > 1 ? $products[1]->price : $products[0]->price,
+                        'quantity' => 2,
+                        'category' => $products->count() > 1 ? $products[1]->category : $products[0]->category
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Generate dummy data for order history (delivered and completed status)
+     */
+    private function generateDummyOrderHistory()
+    {
+        $products = Product::where('stock', '>', 0)
+            ->take(4)
+            ->get()
+            ->map(function ($product) {
+                return $this->enrichProductData($product);
+            });
+
+        if ($products->count() === 0) {
+            return collect();
+        }
+
+        return collect([
+            [
+                'order_number' => 'ORD' . date('Ymd', strtotime('-5 days')) . '003',
+                'status' => 'delivered',
+                'status_text' => 'Terkirim',
+                'date' => now()->subDays(5)->format('Y-m-d H:i:s'),
+                'delivered_date' => now()->subDays(1)->format('Y-m-d H:i:s'),
+                'shipping_method' => 'JNE Reguler',
+                'tracking_number' => 'JNE' . rand(1000000000, 9999999999),
+                'total' => 189000,
+                'items' => [
+                    [
+                        'product_id' => $products[0]->id,
+                        'name' => $products[0]->name,
+                        'image' => $products[0]->image,
+                        'price' => $products[0]->price,
+                        'quantity' => 1,
+                        'category' => $products[0]->category
+                    ]
+                ]
+            ],
+            [
+                'order_number' => 'ORD' . date('Ymd', strtotime('-10 days')) . '004',
+                'status' => 'completed',
+                'status_text' => 'Selesai',
+                'date' => now()->subDays(10)->format('Y-m-d H:i:s'),
+                'delivered_date' => now()->subDays(7)->format('Y-m-d H:i:s'),
+                'shipping_method' => 'J&T Express',
+                'tracking_number' => 'JT' . rand(1000000000, 9999999999),
+                'total' => 325000,
+                'items' => [
+                    [
+                        'product_id' => $products->count() > 1 ? $products[1]->id : $products[0]->id,
+                        'name' => $products->count() > 1 ? $products[1]->name : $products[0]->name,
+                        'image' => $products->count() > 1 ? $products[1]->image : $products[0]->image,
+                        'price' => $products->count() > 1 ? $products[1]->price : $products[0]->price,
+                        'quantity' => 1,
+                        'category' => $products->count() > 1 ? $products[1]->category : $products[0]->category
+                    ]
+                ],
+                'review' => [
+                    'rating' => 5,
+                    'comment' => 'Produk sangat bagus, kualitas sesuai dengan harga. Pengiriman juga cepat!',
+                    'created_at' => now()->subDays(6)->format('Y-m-d H:i:s')
+                ]
+            ],
+            [
+                'order_number' => 'ORD' . date('Ymd', strtotime('-15 days')) . '005',
+                'status' => 'completed',
+                'status_text' => 'Selesai',
+                'date' => now()->subDays(15)->format('Y-m-d H:i:s'),
+                'delivered_date' => now()->subDays(12)->format('Y-m-d H:i:s'),
+                'shipping_method' => 'SiCepat',
+                'tracking_number' => 'SC' . rand(1000000000, 9999999999),
+                'total' => 542000,
+                'items' => [
+                    [
+                        'product_id' => $products->count() > 2 ? $products[2]->id : $products[0]->id,
+                        'name' => $products->count() > 2 ? $products[2]->name : $products[0]->name,
+                        'image' => $products->count() > 2 ? $products[2]->image : $products[0]->image,
+                        'price' => $products->count() > 2 ? $products[2]->price : $products[0]->price,
+                        'quantity' => 1,
+                        'category' => $products->count() > 2 ? $products[2]->category : $products[0]->category
+                    ],
+                    [
+                        'product_id' => $products->count() > 3 ? $products[3]->id : $products[0]->id,
+                        'name' => $products->count() > 3 ? $products[3]->name : $products[0]->name,
+                        'image' => $products->count() > 3 ? $products[3]->image : $products[0]->image,
+                        'price' => $products->count() > 3 ? $products[3]->price : $products[0]->price,
+                        'quantity' => 1,
+                        'category' => $products->count() > 3 ? $products[3]->category : $products[0]->category
+                    ]
+                ]
+                // No review for this order (to show review button)
+            ]
+        ]);
+    }
 }

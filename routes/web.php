@@ -63,7 +63,7 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
-    
+
 
     // Checkout & Orders (Butuh login)
     Route::middleware(['auth'])->group(function () {
@@ -73,7 +73,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::get('/orders/{id}', [StoreController::class, 'orderDetail'])->name('orders.detail');
     });
 
-    
+
 
     // Account Management (Butuh login)
     Route::middleware(['auth'])->group(function () {
