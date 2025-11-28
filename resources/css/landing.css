@@ -1151,3 +1151,35 @@ lottie-player {
     margin: 2rem auto;
     padding: 4rem 0;
 }
+
+/* Logo Bank Indonesia */
+.navbar-logo {
+    height: 70px;
+    /* Sesuaikan tinggi sesuai kebutuhan */
+    width: auto;
+    max-width: 200px;
+    /* Batas maksimal lebar */
+    object-fit: contain;
+}
+
+/* Optional: Tambahan styling untuk responsive */
+@media (max-width: 768px) {
+    .navbar-logo {
+        height: 35px;
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-logo {
+        height: 30px;
+        max-width: 100px;
+    }
+}
+
+/* Hover effects */
+.navbar-logo:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}

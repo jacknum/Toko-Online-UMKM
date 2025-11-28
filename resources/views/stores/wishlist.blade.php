@@ -198,9 +198,8 @@
                                                 data-product-id="{{ $item->product_id }}"
                                                 data-product-name="{{ $item->product_name }}"
                                                 data-product-price="{{ $item->product_price }}"
-                                                data-product-image="{{ $item->product_image }}"
-                                                data-product-stock="{{ $item->product_stock }}">
-                                                <i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang
+                                                data-product-image="{{ $item->product_image }}" <i
+                                                class="fas fa-shopping-cart me-2"></i>Tambah Keranjang
                                             </button>
                                         </div>
                                     </div>
@@ -230,7 +229,7 @@
                             <h3 class="fw-semibold mb-3">Wishlist Kosong</h3>
                             <p class="text-muted mb-4">Belum ada produk yang disimpan di wishlist Anda.</p>
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="/" class="btn btn-primary btn-lg">
+                                <a href="/store" class="btn btn-primary btn-lg">
                                     <i class="fas fa-shopping-bag me-2"></i>Jelajahi Produk
                                 </a>
                                 <a href="/store" class="btn btn-outline-primary btn-lg">
@@ -336,6 +335,822 @@
             </div>
         </div>
     </div>
+
+    <style>
+        /* Tambahan style untuk wishlist */
+        .store-product-card {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .store-product-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .store-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .store-product-card:hover .store-product-image img {
+            transform: scale(1.05);
+        }
+
+        .store-product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .store-product-badge.discount {
+            background: #dc3545;
+        }
+
+        .store-product-badge {
+            background: #28a745;
+        }
+
+        .store-wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: #666;
+            /* Warna default untuk hati */
+        }
+
+        .store-wishlist-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .store-wishlist-btn.active {
+            background: #dc3545 !important;
+            /* Background merah */
+            color: white !important;
+            /* Warna hati putih */
+        }
+
+        .store-wishlist-btn.active i {
+            color: white !important;
+            /* Pastikan ikon hati berwarna putih */
+        }
+
+        .store-product-info {
+            padding: 15px;
+        }
+
+        .store-product-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .store-product-desc {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .store-product-price {
+            margin-bottom: 10px;
+        }
+
+        .store-price-current {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #dc3545;
+        }
+
+        .store-price-original {
+            font-size: 0.875rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .store-product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .store-product-rating i {
+            font-size: 0.875rem;
+            color: #ffc107;
+            margin-right: 2px;
+        }
+
+        .store-rating-count {
+            font-size: 0.75rem;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        .store-product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.75rem;
+        }
+
+        .store-product-stock.in-stock {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .store-product-stock.out-of-stock {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .store-product-category {
+            color: #666;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .store-add-to-cart {
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .store-add-to-cart:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .product-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .product-link:hover {
+            color: inherit;
+        }
+
+        /* Animasi penghapusan wishlist yang lebih smooth */
+        .wishlist-item.removing {
+            animation: wishlistItemRemove 0.6s ease forwards;
+            pointer-events: none;
+        }
+
+        .wishlist-item.shrink-out {
+            animation: wishlistShrinkOut 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .wishlist-item.fade-out-up {
+            animation: wishlistFadeOutUp 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .wishlist-item.slide-out-right {
+            animation: wishlistSlideOutRight 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes wishlistItemRemove {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistShrinkOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+                max-height: 500px;
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0);
+                max-height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistFadeOutUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @keyframes wishlistSlideOutRight {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(100%);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        /* Style untuk wishlist count update */
+        #wishlist-count {
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-count-update {
+            animation: countPulse 0.6s ease;
+        }
+
+        @keyframes countPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+                color: #dc3545;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Animation untuk button wishlist */
+        .store-wishlist-btn.removing {
+            animation: heartShrink 0.4s ease;
+        }
+
+        @keyframes heartShrink {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.7);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Style yang sudah ada sebelumnya */
+        .success-animation,
+        .remove-animation,
+        .heart-animation,
+        .heart-remove-animation {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        .success-animation i {
+            font-size: 4rem;
+            color: #28a745;
+            animation: successPop 0.6s ease;
+        }
+
+        .remove-animation i {
+            font-size: 4rem;
+            color: #dc3545;
+            animation: removePop 0.6s ease;
+        }
+
+        .heart-animation i {
+            font-size: 4rem;
+            color: #dc3545;
+            animation: heartBeat 0.6s ease;
+        }
+
+        .heart-remove-animation i {
+            font-size: 4rem;
+            color: #6c757d;
+            animation: heartBreak 0.8s ease;
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes removePop {
+            0% {
+                transform: scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.3) rotate(180deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            75% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes heartBreak {
+            0% {
+                transform: scale(1) rotate(0deg);
+                color: #dc3545;
+            }
+
+            25% {
+                transform: scale(1.2) rotate(-15deg);
+                color: #ff6b7a;
+            }
+
+            50% {
+                transform: scale(1.1) rotate(15deg);
+                color: #ff6b7a;
+            }
+
+            75% {
+                transform: scale(0.8) rotate(-10deg);
+                color: #6c757d;
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                color: #6c757d;
+                opacity: 1;
+            }
+        }
+
+        .btn-wishlist.active i {
+            color: #dc3545 !important;
+            animation: heartPop 0.3s ease;
+        }
+
+        .add-to-cart.added {
+            background: #28a745 !important;
+            animation: cartPulse 0.5s ease;
+        }
+
+        .add-to-cart.removing {
+            background: #6c757d !important;
+            animation: cartShrink 0.3s ease;
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes cartPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes cartShrink {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-body {
+            padding: 2.5rem !important;
+        }
+
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+        }
+
+        .smaller {
+            font-size: 0.75rem;
+        }
+
+        .pagination {
+            margin-bottom: 0;
+        }
+
+        .pagination .page-item .page-link {
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            padding: 0.5rem 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-item .page-link:hover {
+            color: #dc3545;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            opacity: 0.6;
+        }
+
+        .pagination .page-link {
+            font-weight: 500;
+            margin: 0 2px;
+            border-radius: 8px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .store-badge {
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Your existing CSS styles remain the same */
+        .success-animation,
+        .remove-animation,
+        .heart-animation,
+        .heart-remove-animation {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        .success-animation i {
+            font-size: 4rem;
+            color: #28a745;
+            animation: successPop 0.6s ease;
+        }
+
+        .heart-animation i {
+            font-size: 4rem;
+            color: #dc3545;
+            animation: heartBeat 0.6s ease;
+        }
+
+        .heart-remove-animation i {
+            font-size: 4rem;
+            color: #6c757d;
+            animation: heartBreak 0.8s ease;
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            75% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes heartBreak {
+            0% {
+                transform: scale(1) rotate(0deg);
+                color: #dc3545;
+            }
+
+            25% {
+                transform: scale(1.2) rotate(-15deg);
+                color: #ff6b7a;
+            }
+
+            50% {
+                transform: scale(1.1) rotate(15deg);
+                color: #ff6b7a;
+            }
+
+            75% {
+                transform: scale(0.8) rotate(-10deg);
+                color: #6c757d;
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                color: #6c757d;
+                opacity: 1;
+            }
+        }
+
+        .store-wishlist-btn.active i {
+            color: #dc3545 !important;
+            animation: heartPop 0.3s ease;
+        }
+
+        .store-add-to-cart.added {
+            background: #28a745 !important;
+            animation: cartPulse 0.5s ease;
+        }
+
+        .store-add-to-cart.loading {
+            background: #6c757d !important;
+            pointer-events: none;
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes cartPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .empty-state {
+            padding: 3rem 1rem;
+        }
+
+        .empty-state i {
+            opacity: 0.5;
+        }
+
+        .empty-state h5 {
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            margin-bottom: 0;
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-body {
+            padding: 2.5rem !important;
+        }
+
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .store-product-card {
+            transition: all 0.3s ease;
+        }
+
+        .store-product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .store-badge {
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Fix untuk tombol wishlist - pastikan ini di bagian bawah */
+        .btn-wishlist.active,
+        .store-wishlist-btn.active {
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
+
+        .btn-wishlist.active i,
+        .store-wishlist-btn.active i {
+            color: white !important;
+        }
+
+        .btn-wishlist.active:hover,
+        .store-wishlist-btn.active:hover {
+            background-color: #c82333 !important;
+            border-color: #bd2130 !important;
+        }
+    </style>
 
     <script>
         class StoreProductManager {
@@ -542,32 +1357,34 @@
                 }
             }
 
-            // GANTI METHOD addToCart() DI WISHLIST.BLADE.PHP DENGAN INI
-            // GANTI METHOD addToCart() - Perbaiki pengecekan state
+            // GANTI METHOD addToCart() - FIX: Pengecekan class yang lebih robust
 
             async addToCart(button) {
                 const productId = button.dataset.productId;
 
-                // CEK STATE DARI CLASS, BUKAN DARI MAP!
+                // CEK STATE DARI CLASS - HARUS CEK SEBELUM AMBIL DATA LAIN!
                 const isInCart = button.classList.contains('in-cart');
 
-                console.log('🎯 Button clicked. Product ID:', productId, 'Is in cart:', isInCart);
-                console.log('🎯 Button classes:', button.className);
+                console.log('='.repeat(50));
+                console.log('🎯 BUTTON CLICKED');
+                console.log('Product ID:', productId);
+                console.log('Is in cart:', isInCart);
+                console.log('Button innerHTML:', button.innerHTML);
+                console.log('Button classList:', Array.from(button.classList));
+                console.log('='.repeat(50));
 
                 if (isInCart) {
                     // Jika sudah di cart, hapus dari cart
-                    console.log('🗑️ Product is in cart, removing...');
+                    console.log('🗑️ ACTION: REMOVING FROM CART');
                     await this.removeFromCart(button, productId);
-                    return;
+                    return; // PENTING: Return agar tidak lanjut ke add
                 }
 
                 // Jika belum di cart, tambahkan ke cart
-                console.log('➕ Product not in cart, adding...');
+                console.log('➕ ACTION: ADDING TO CART');
 
                 const productName = button.dataset.productName;
                 const productPrice = button.dataset.productPrice;
-                const productImage = button.dataset.productImage;
-                const productStock = button.dataset.productStock;
 
                 if (!productId) {
                     console.error('❌ Product ID is missing!');
@@ -584,6 +1401,8 @@
                         quantity: 1
                     };
 
+                    console.log('📤 Sending ADD request:', requestData);
+
                     const response = await fetch('/store/cart/add', {
                         method: 'POST',
                         headers: {
@@ -592,6 +1411,8 @@
                         },
                         body: JSON.stringify(requestData)
                     });
+
+                    console.log('📡 ADD Response status:', response.status);
 
                     const contentType = response.headers.get('content-type');
                     if (!contentType || !contentType.includes('application/json')) {
@@ -608,9 +1429,10 @@
                     }
 
                     const data = await response.json();
+                    console.log('📦 ADD Response data:', data);
 
                     if (!data.success) {
-                        console.error('❌ Request failed:', data.message);
+                        console.error('❌ ADD failed:', data.message);
 
                         if (data.login_required) {
                             this.showLoginAlert();
@@ -621,9 +1443,9 @@
                     }
 
                     // SUCCESS!
-                    console.log('✅ Product added to cart successfully');
+                    console.log('✅ Product ADDED to cart successfully');
 
-                    // Update button ke state "Dalam Keranjang" (PERMANEN)
+                    // Update button ke state "Dalam Keranjang"
                     this.setButtonInCart(button);
 
                     // Update cart count badge
@@ -634,24 +1456,35 @@
 
                 } catch (error) {
                     console.error('❌ Error adding to cart:', error);
-                    this.showErrorAlert('Error: ' + error.message);
+                    alert('Error: ' + error.message);
                     this.setButtonLoading(button, false);
                 }
             }
 
-            // PERBAIKI removeFromCart() - Tambahkan lebih banyak log
+            // PERBAIKI removeFromCart() - Tambahkan validasi lebih ketat
             async removeFromCart(button, productId) {
-                console.log('🗑️ === REMOVE FROM CART START ===');
-                console.log('🗑️ Product ID:', productId);
+                console.log('='.repeat(50));
+                console.log('🗑️ REMOVE FROM CART START');
+                console.log('Product ID:', productId);
+                console.log('Button state before remove:');
+                console.log('  - innerHTML:', button.innerHTML);
+                console.log('  - classList:', Array.from(button.classList));
+                console.log('='.repeat(50));
+
+                if (!productId) {
+                    console.error('❌ Product ID missing in removeFromCart');
+                    alert('Error: Product ID tidak ditemukan');
+                    return;
+                }
 
                 try {
                     // Show loading state
                     button.classList.add('loading');
-                    button.classList.remove('in-cart'); // Remove in-cart saat loading
+                    button.classList.remove('in-cart'); // PENTING: Remove in-cart class
                     button.disabled = true;
                     button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menghapus...';
 
-                    console.log('📤 Sending remove request...');
+                    console.log('📤 Sending REMOVE request for product:', productId);
 
                     const response = await fetch('/store/cart/remove-by-product', {
                         method: 'POST',
@@ -664,24 +1497,32 @@
                         })
                     });
 
-                    console.log('📡 Remove response status:', response.status);
+                    console.log('📡 REMOVE Response status:', response.status);
 
                     const contentType = response.headers.get('content-type');
                     if (!contentType || !contentType.includes('application/json')) {
                         const text = await response.text();
                         console.error('❌ Non-JSON response:', text.substring(0, 500));
+
+                        // Cek apakah redirect ke login
+                        if (text.includes('login') || response.redirected) {
+                            this.showLoginAlert();
+                            this.setButtonInCart(button); // Kembalikan state
+                            return;
+                        }
+
                         throw new Error('Server returned non-JSON response');
                     }
 
                     const data = await response.json();
-                    console.log('📦 Remove response data:', data);
+                    console.log('📦 REMOVE Response data:', data);
 
                     if (!data.success) {
-                        console.error('❌ Remove failed:', data.message);
+                        console.error('❌ REMOVE failed:', data.message);
                         throw new Error(data.message || 'Gagal menghapus dari keranjang');
                     }
 
-                    console.log('✅ Product removed from cart successfully');
+                    console.log('✅ Product REMOVED from cart successfully');
 
                     // Update button kembali ke "Tambah Keranjang"
                     this.setButtonNotInCart(button);
@@ -692,13 +1533,19 @@
                     // Show remove modal
                     this.showModal('cartRemoveModal');
 
-                    console.log('🗑️ === REMOVE FROM CART END ===');
+                    console.log('🗑️ REMOVE FROM CART END');
+                    console.log('='.repeat(50));
 
                 } catch (error) {
                     console.error('❌ Error removing from cart:', error);
-                    this.showErrorAlert('Error: ' + error.message);
+                    console.error('Error details:', {
+                        message: error.message,
+                        stack: error.stack
+                    });
 
-                    // Reset button ke state in-cart jika error
+                    alert('Error menghapus dari keranjang: ' + error.message);
+
+                    // Reset button ke state in-cart karena gagal hapus
                     this.setButtonInCart(button);
                 }
             }
@@ -715,14 +1562,16 @@
                 }
             }
 
-            // PERBAIKI setButtonInCart() - Pastikan class ditambahkan dengan benar
+            // PERBAIKI setButtonInCart() - Dengan validasi ekstra
             setButtonInCart(button) {
-                console.log('🟢 Setting button to IN CART state');
+                console.log('🟢 === SETTING BUTTON TO IN-CART STATE ===');
+                console.log('Before update:');
+                console.log('  - classList:', Array.from(button.classList));
 
-                // Remove semua class lain dulu
+                // Remove ALL other classes
                 button.classList.remove('loading', 'added');
 
-                // Add class in-cart
+                // Add in-cart class - PASTIKAN INI TERJADI!
                 button.classList.add('in-cart');
 
                 // Enable button
@@ -731,20 +1580,34 @@
                 // Update text dan icon
                 button.innerHTML = '<i class="fas fa-check me-2"></i>Dalam Keranjang';
 
-                // Simpan state di Map juga
+                // Simpan state di Map
                 const productId = button.dataset.productId;
                 this.cartState.set(productId, true);
 
-                // Verify class added
-                console.log('✅ Button classes after setInCart:', button.className);
-                console.log('✅ Has in-cart class:', button.classList.contains('in-cart'));
+                // VALIDASI - Pastikan class benar-benar ditambahkan
+                console.log('After update:');
+                console.log('  - classList:', Array.from(button.classList));
+                console.log('  - innerHTML:', button.innerHTML);
+                console.log('  - Has in-cart class?', button.classList.contains('in-cart'));
+
+                if (!button.classList.contains('in-cart')) {
+                    console.error('⚠️ WARNING: in-cart class NOT added! Retrying...');
+                    // Force add jika gagal
+                    button.className = button.className + ' in-cart';
+                    console.log('  - classList after force:', Array.from(button.classList));
+                }
+
+                console.log('✅ Button IN-CART state set successfully');
+                console.log('='.repeat(50));
             }
 
             // PERBAIKI setButtonNotInCart()
             setButtonNotInCart(button) {
-                console.log('🔴 Setting button to NOT IN CART state');
+                console.log('🔴 === SETTING BUTTON TO NOT-IN-CART STATE ===');
+                console.log('Before update:');
+                console.log('  - classList:', Array.from(button.classList));
 
-                // Remove semua class
+                // Remove ALL cart-related classes
                 button.classList.remove('loading', 'in-cart', 'added');
 
                 // Enable button
@@ -757,9 +1620,20 @@
                 const productId = button.dataset.productId;
                 this.cartState.set(productId, false);
 
-                // Verify class removed
-                console.log('✅ Button classes after setNotInCart:', button.className);
-                console.log('✅ Has in-cart class:', button.classList.contains('in-cart'));
+                // VALIDASI
+                console.log('After update:');
+                console.log('  - classList:', Array.from(button.classList));
+                console.log('  - innerHTML:', button.innerHTML);
+                console.log('  - Has in-cart class?', button.classList.contains('in-cart'));
+
+                if (button.classList.contains('in-cart')) {
+                    console.error('⚠️ WARNING: in-cart class still exists! Force removing...');
+                    button.classList.remove('in-cart');
+                    console.log('  - classList after force:', Array.from(button.classList));
+                }
+
+                console.log('✅ Button NOT-IN-CART state set successfully');
+                console.log('='.repeat(50));
             }
 
             showLoginAlert() {

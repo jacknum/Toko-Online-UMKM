@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Toko UMKM - Belanja Online')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,8 +19,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand store-brand" href="{{ url('/store') }}">
-                <i class="fas fa-store me-2"></i>
-                Toko UMKM
+                <img src="{{ asset('images/BI_Logo.png') }}" alt="Toko UMKM" class="store-logo">
             </a>
 
             <!-- Mobile Toggle Button -->
@@ -73,35 +73,35 @@
                         <span>Beranda</span>
                     </a>
                     <a href="{{ url('/store/wishlist') }}" class="store-nav-icon" title="Wishlist">
-                    <i class="fas fa-heart"></i>
-                    @php
-                        // Hitung jumlah wishlist dari database
-                        $wishlistCount = 0;
-                        if (auth()->check()) {
-                            // Menggunakan method yang sudah diperbaiki
-                            $wishlistCount = \App\Models\Wishlist::getCountForCurrentUser();
-                        }
-                    @endphp
-                    @if($wishlistCount > 0)
-                        <span class="store-badge">{{ $wishlistCount }}</span>
-                    @endif
-                    <span>Wishlist</span>
-                </a>
-                <a href="{{ url('/store/cart') }}" class="store-nav-icon" title="Keranjang">
-                    <i class="fas fa-shopping-cart"></i>
-                    @php
-                        // Hitung jumlah item keranjang dari database
-                        $cartCount = 0;
-                        if (auth()->check()) {
-                            // Menggunakan method yang sudah diperbaiki
-                            $cartCount = \App\Models\Cart::getTotalQuantityForCurrentUser();
-                        }
-                    @endphp
-                    @if($cartCount > 0)
-                        <span class="store-badge">{{ $cartCount }}</span>
-                    @endif
-                    <span>Keranjang</span>
-                </a>
+                        <i class="fas fa-heart"></i>
+                        @php
+                            // Hitung jumlah wishlist dari database
+                            $wishlistCount = 0;
+                            if (auth()->check()) {
+                                // Menggunakan method yang sudah diperbaiki
+                                $wishlistCount = \App\Models\Wishlist::getCountForCurrentUser();
+                            }
+                        @endphp
+                        @if ($wishlistCount > 0)
+                            <span class="store-badge">{{ $wishlistCount }}</span>
+                        @endif
+                        <span>Wishlist</span>
+                    </a>
+                    <a href="{{ url('/store/cart') }}" class="store-nav-icon" title="Keranjang">
+                        <i class="fas fa-shopping-cart"></i>
+                        @php
+                            // Hitung jumlah item keranjang dari database
+                            $cartCount = 0;
+                            if (auth()->check()) {
+                                // Menggunakan method yang sudah diperbaiki
+                                $cartCount = \App\Models\Cart::getTotalQuantityForCurrentUser();
+                            }
+                        @endphp
+                        @if ($cartCount > 0)
+                            <span class="store-badge">{{ $cartCount }}</span>
+                        @endif
+                        <span>Keranjang</span>
+                    </a>
                     <div class="dropdown">
                         <a href="#" class="store-nav-icon dropdown-toggle" id="userDropdown"
                             data-bs-toggle="dropdown" title="Akun Saya">
@@ -199,7 +199,7 @@
 
             async loadInitialWishlistState() {
                 try {
-                    const response = await fetch('{{ route("store.wishlist.count") }}');
+                    const response = await fetch('{{ route('store.wishlist.count') }}');
                     const data = await response.json();
 
                     // Update badge count
@@ -246,7 +246,7 @@
 
             async toggleWishlist(productId, button) {
                 try {
-                    const response = await fetch('{{ route("store.wishlist.toggle") }}', {
+                    const response = await fetch('{{ route('store.wishlist.toggle') }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -323,7 +323,7 @@
 
             showLoginAlert() {
                 if (confirm('Anda perlu login untuk menambahkan produk ke wishlist. Apakah Anda ingin login?')) {
-                    window.location.href = '{{ route("login") }}';
+                    window.location.href = '{{ route('login') }}';
                 }
             }
 

@@ -17,7 +17,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h3>Nama Perusahaan</h3>
+            <img src="{{ asset('images/BI_Logo.png') }}" alt="Nama Perusahaan" class="sidebar-logo">
         </div>
 
         <div class="sidebar-menu">
@@ -62,7 +62,6 @@
                         data-bs-target="#navbarSupportedContent">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <span class="navbar-brand mb-0 h1 d-none d-md-block">Toko Online UMKM</span>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

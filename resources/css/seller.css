@@ -1266,4 +1266,70 @@ body {
     }
 }
 
+/* Logo Bank Indonesia */
+.sidebar-logo {
+    height: 60px;
+    /* Sesuaikan tinggi sesuai kebutuhan */
+    width: auto;
+    max-width: 180px;
+    /* Batas maksimal lebar */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Optional: Tambahan styling untuk dark mode sidebar */
+.sidebar-dark .sidebar-logo {
+    filter: brightness(0) invert(1);
+    /* Membuat logo putih untuk dark mode */
+}
+
+/* Untuk sidebar yang lebih kecil */
+.sidebar-mini .sidebar-logo {
+    height: 40px;
+    max-width: 40px;
+    /* Logo kecil untuk mini sidebar */
+    border-radius: 8px;
+}
+
+/* Hover effects */
+.sidebar-logo:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Style Sidebar Header Untuk Logo */
+.sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 80px, #1e40af 80px, #1e40af 100%);
+    /* Putih di atas (80px pertama), biru di bawah */
+}
+
+.sidebar-header {
+    background: #ffffff;
+    /* Background putih untuk header */
+    padding: 20px 15px;
+    border-bottom: 2px solid #1e40af;
+    /* Garis pemisah dengan warna biru */
+    height: 100px;
+    /* Tinggi area putih */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-logo {
+    height: 60px;
+    /* Sesuaikan tinggi logo */
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+}
+
+.sidebar-menu {
+    background: transparent;
+    /* Biarkan transparan untuk mengikuti gradient sidebar */
+    margin-top: 0;
+}
+
 /* App Pages End */

@@ -466,8 +466,9 @@ class CartController extends Controller
      */
     public function removeByProduct(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|integer|exists:products,id',
         ]);
 
         try {
@@ -481,31 +482,62 @@ class CartController extends Controller
                 ], 401);
             }
 
+            // Log untuk debugging
+            Log::info('Attempting to remove product from cart', [
+                'user_id' => $userId,
+                'product_id' => $request->product_id
+            ]);
+
             // Cari cart item berdasarkan user_id dan product_id
             $cartItem = Cart::where('user_id', $userId)
                 ->where('product_id', $request->product_id)
                 ->first();
 
             if (!$cartItem) {
+                Log::warning('Cart item not found', [
+                    'user_id' => $userId,
+                    'product_id' => $request->product_id
+                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Produk tidak ditemukan di keranjang'
                 ], 404);
             }
 
+            // Hapus cart item
             $cartItem->delete();
+
+            Log::info('Cart item deleted successfully', [
+                'user_id' => $userId,
+                'product_id' => $request->product_id,
+                'cart_id' => $cartItem->id
+            ]);
+
+            // Get updated cart count
+            $cartCount = Cart::where('user_id', $userId)->sum('quantity');
+            $cartTotal = Cart::where('user_id', $userId)
+                ->get()
+                ->sum(function ($item) {
+                    return $item->price * $item->quantity;
+                });
 
             return response()->json([
                 'success' => true,
                 'message' => 'Produk berhasil dihapus dari keranjang',
-                'cart_count' => Cart::getUserCartCount($userId),
-                'cart_total' => Cart::getUserCartTotal($userId),
+                'cart_count' => $cartCount,
+                'cart_total' => $cartTotal,
             ]);
         } catch (\Exception $e) {
-            Log::error('Cart Remove By Product Error: ' . $e->getMessage());
+            Log::error('Cart Remove By Product Error: ' . $e->getMessage(), [
+                'user_id' => $userId ?? null,
+                'product_id' => $request->product_id ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
             ], 500);
         }
     }
