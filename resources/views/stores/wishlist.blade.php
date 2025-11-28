@@ -127,34 +127,41 @@
                         <!-- Wishlist Items Grid -->
                         <div class="row g-4" id="wishlist-items-container">
                             @foreach ($wishlistItems as $item)
-                                <div class="col-lg-3 col-md-4 col-6 wishlist-item" data-product-id="{{ $item->product_id }}" data-wishlist-id="{{ $item->id }}">
+                                <div class="col-lg-3 col-md-4 col-6 wishlist-item"
+                                    data-product-id="{{ $item->product_id }}" data-wishlist-id="{{ $item->id }}">
                                     <div class="store-product-card">
-                                        <a href="{{ route('store.product.detail', $item->product_id) }}" class="product-link">
+                                        <a href="{{ route('store.product.detail', $item->product_id) }}"
+                                            class="product-link">
                                             <div class="store-product-image">
                                                 <img src="{{ $item->product_image ?: 'https://via.placeholder.com/300x300' }}"
-                                                    alt="{{ $item->product_name }}"
-                                                    class="img-fluid">
-                                                @if($item->product_discount_percent > 0)
-                                                    <div class="store-product-badge discount">-{{ $item->product_discount_percent }}%</div>
+                                                    alt="{{ $item->product_name }}" class="img-fluid">
+                                                @if ($item->product_discount_percent > 0)
+                                                    <div class="store-product-badge discount">
+                                                        -{{ $item->product_discount_percent }}%</div>
                                                 @elseif($item->product_is_trending)
                                                     <div class="store-product-badge">Trending</div>
                                                 @endif
                                             </div>
                                         </a>
                                         <button class="store-wishlist-btn active"
-                                                data-product-id="{{ $item->product_id }}"
-                                                data-wishlist-id="{{ $item->id }}">
+                                            data-product-id="{{ $item->product_id }}"
+                                            data-wishlist-id="{{ $item->id }}">
                                             <i class="fas fa-heart"></i>
                                         </button>
                                         <div class="store-product-info">
-                                            <a href="{{ route('store.product.detail', $item->product_id) }}" class="product-link">
+                                            <a href="{{ route('store.product.detail', $item->product_id) }}"
+                                                class="product-link">
                                                 <h5 class="store-product-title">{{ $item->product_name }}</h5>
-                                                <p class="store-product-desc">{{ Str::limit($item->product_description ?? 'Deskripsi produk tidak tersedia', 60) }}</p>
+                                                <p class="store-product-desc">
+                                                    {{ Str::limit($item->product_description ?? 'Deskripsi produk tidak tersedia', 60) }}
+                                                </p>
                                             </a>
                                             <div class="store-product-price">
-                                                <span class="store-price-current">Rp {{ number_format($item->product_price, 0, ',', '.') }}</span>
-                                                @if($item->product_original_price > $item->product_price)
-                                                    <span class="store-price-original">Rp {{ number_format($item->product_original_price, 0, ',', '.') }}</span>
+                                                <span class="store-price-current">Rp
+                                                    {{ number_format($item->product_price, 0, ',', '.') }}</span>
+                                                @if ($item->product_original_price > $item->product_price)
+                                                    <span class="store-price-original">Rp
+                                                        {{ number_format($item->product_original_price, 0, ',', '.') }}</span>
                                                 @endif
                                             </div>
                                             <div class="store-product-rating">
@@ -165,27 +172,34 @@
                                                     $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                                                 @endphp
 
-                                                @for($i = 0; $i < $fullStars; $i++)
+                                                @for ($i = 0; $i < $fullStars; $i++)
                                                     <i class="fas fa-star"></i>
                                                 @endfor
 
-                                                @if($halfStar)
+                                                @if ($halfStar)
                                                     <i class="fas fa-star-half-alt"></i>
                                                 @endif
 
-                                                @for($i = 0; $i < $emptyStars; $i++)
+                                                @for ($i = 0; $i < $emptyStars; $i++)
                                                     <i class="far fa-star"></i>
                                                 @endfor
 
-                                                <span class="store-rating-count">({{ $item->product_review_count ?? 0 }})</span>
+                                                <span
+                                                    class="store-rating-count">({{ $item->product_review_count ?? 0 }})</span>
                                             </div>
                                             <div class="store-product-meta">
-                                                <span class="store-product-stock {{ $item->product_stock > 0 ? 'in-stock' : 'out-of-stock' }}">
+                                                <span
+                                                    class="store-product-stock {{ $item->product_stock > 0 ? 'in-stock' : 'out-of-stock' }}">
                                                     {{ $item->product_stock > 0 ? 'Tersedia' : 'Habis' }}
                                                 </span>
                                                 <span class="store-product-category">{{ $item->product_category }}</span>
                                             </div>
-                                            <button class="btn store-add-to-cart" data-product-id="{{ $item->product_id }}">
+                                            <button class="btn store-add-to-cart"
+                                                data-product-id="{{ $item->product_id }}"
+                                                data-product-name="{{ $item->product_name }}"
+                                                data-product-price="{{ $item->product_price }}"
+                                                data-product-image="{{ $item->product_image }}"
+                                                data-product-stock="{{ $item->product_stock }}">
                                                 <i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang
                                             </button>
                                         </div>
@@ -337,8 +351,10 @@
                 this.bindWishlistEvents();
                 this.bindCartEvents();
                 this.bindProductCardHover();
-                this.autoHideModals();
                 this.initializeStates();
+
+                // CEK CART STATE DARI BACKEND
+                this.checkCartState();
             }
 
             initializeStates() {
@@ -349,7 +365,7 @@
                 });
 
                 // Initialize cart buttons state
-                document.querySelectorAll('.add-to-cart').forEach(btn => {
+                document.querySelectorAll('.store-add-to-cart, .add-to-cart').forEach(btn => {
                     const productId = btn.dataset.productId;
                     const isInCart = btn.getAttribute('data-in-cart') === 'true';
                     if (isInCart) {
@@ -360,7 +376,7 @@
 
             bindWishlistEvents() {
                 document.addEventListener('click', (e) => {
-                    const wishlistBtn = e.target.closest('.store-wishlist-btn');
+                    const wishlistBtn = e.target.closest('.store-wishlist-btn, .btn-wishlist');
                     if (wishlistBtn) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -370,14 +386,41 @@
             }
 
             bindCartEvents() {
-                document.addEventListener('click', (e) => {
-                    const cartBtn = e.target.closest('.add-to-cart');
-                    if (cartBtn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.toggleCart(cartBtn);
-                    }
+                // CARA 1: Direct binding seperti index.blade.php (LEBIH RELIABLE)
+                const bindButtons = () => {
+                    document.querySelectorAll('.store-add-to-cart, .add-to-cart').forEach(btn => {
+                        // Remove old listener jika ada
+                        btn.removeEventListener('click', btn._cartClickHandler);
+
+                        // Create new handler
+                        btn._cartClickHandler = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log('🎯 Cart button clicked:', btn);
+                            this.addToCart(btn);
+                        };
+
+                        // Add new listener
+                        btn.addEventListener('click', btn._cartClickHandler);
+                        console.log('✅ Cart button bound:', btn.dataset.productId);
+                    });
+                };
+
+                // Bind immediately
+                bindButtons();
+
+                // Re-bind after any DOM changes (untuk pagination, dll)
+                const observer = new MutationObserver(() => {
+                    bindButtons();
                 });
+
+                const container = document.getElementById('wishlist-items-container');
+                if (container) {
+                    observer.observe(container, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
             }
 
             bindProductCardHover() {
@@ -412,7 +455,7 @@
 
             async addToWishlist(productId, button) {
                 try {
-                    const response = await fetch('{{ route("store.wishlist.toggle") }}', {
+                    const response = await fetch('{{ route('store.wishlist.toggle') }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -423,6 +466,11 @@
                         })
                     });
 
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new Error('Server returned non-JSON response');
+                    }
+
                     const data = await response.json();
 
                     if (data.success) {
@@ -432,6 +480,10 @@
                         this.showModal('wishlistModal');
                         this.updateWishlistCount(1);
                     } else {
+                        if (data.login_required) {
+                            this.showLoginAlert();
+                            return;
+                        }
                         throw new Error(data.message);
                     }
                 } catch (error) {
@@ -442,7 +494,6 @@
 
             async removeFromWishlist(productId, wishlistId, button) {
                 try {
-                    // Add removing animation to button
                     button.classList.add('removing');
 
                     const response = await fetch(`/store/wishlist/remove/${wishlistId}`, {
@@ -460,8 +511,6 @@
                         button.classList.remove('active', 'removing');
                         this.showModal('wishlistRemoveModal');
                         this.updateWishlistCount(-1);
-
-                        // Remove item from DOM with smooth animation
                         this.removeWishlistItemWithAnimation(productId);
                     } else {
                         button.classList.remove('removing');
@@ -477,83 +526,250 @@
             removeWishlistItemWithAnimation(productId) {
                 const wishlistItem = document.querySelector(`.wishlist-item[data-product-id="${productId}"]`);
                 if (wishlistItem) {
-                    // Pilih animasi secara random atau gunakan yang pertama
-                    const animationType = this.animationTypes[0]; // Bisa diubah ke random: Math.floor(Math.random() * this.animationTypes.length)
-
-                    // Add animation class
+                    const animationType = this.animationTypes[0];
                     wishlistItem.classList.add(animationType);
 
-                    // Remove from DOM after animation completes
                     setTimeout(() => {
                         wishlistItem.remove();
 
-                        // Check if container is empty
                         const container = document.getElementById('wishlist-items-container');
                         if (container && container.children.length === 0) {
                             setTimeout(() => {
                                 window.location.reload();
                             }, 1000);
                         }
-                    }, 500); // Sesuaikan dengan durasi animasi
+                    }, 500);
                 }
             }
 
-            toggleCart(button) {
+            // GANTI METHOD addToCart() DI WISHLIST.BLADE.PHP DENGAN INI
+            // GANTI METHOD addToCart() - Perbaiki pengecekan state
+
+            async addToCart(button) {
                 const productId = button.dataset.productId;
-                const isInCart = this.cartState.get(productId) || button.getAttribute('data-in-cart') === 'true';
 
-                if (!isInCart) {
-                    this.addToCart(productId, button);
-                } else {
-                    this.removeFromCart(productId, button);
+                // CEK STATE DARI CLASS, BUKAN DARI MAP!
+                const isInCart = button.classList.contains('in-cart');
+
+                console.log('🎯 Button clicked. Product ID:', productId, 'Is in cart:', isInCart);
+                console.log('🎯 Button classes:', button.className);
+
+                if (isInCart) {
+                    // Jika sudah di cart, hapus dari cart
+                    console.log('🗑️ Product is in cart, removing...');
+                    await this.removeFromCart(button, productId);
+                    return;
+                }
+
+                // Jika belum di cart, tambahkan ke cart
+                console.log('➕ Product not in cart, adding...');
+
+                const productName = button.dataset.productName;
+                const productPrice = button.dataset.productPrice;
+                const productImage = button.dataset.productImage;
+                const productStock = button.dataset.productStock;
+
+                if (!productId) {
+                    console.error('❌ Product ID is missing!');
+                    alert('Error: Product ID tidak ditemukan');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    this.setButtonLoading(button, true);
+
+                    const requestData = {
+                        product_id: parseInt(productId),
+                        quantity: 1
+                    };
+
+                    const response = await fetch('/store/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        console.error('❌ Non-JSON response:', text.substring(0, 500));
+
+                        if (text.includes('login') || text.includes('Login')) {
+                            this.showLoginAlert();
+                            this.setButtonLoading(button, false);
+                            return;
+                        }
+
+                        throw new Error('Server returned non-JSON response');
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.success) {
+                        console.error('❌ Request failed:', data.message);
+
+                        if (data.login_required) {
+                            this.showLoginAlert();
+                            this.setButtonLoading(button, false);
+                            return;
+                        }
+                        throw new Error(data.message || 'Gagal menambahkan ke keranjang');
+                    }
+
+                    // SUCCESS!
+                    console.log('✅ Product added to cart successfully');
+
+                    // Update button ke state "Dalam Keranjang" (PERMANEN)
+                    this.setButtonInCart(button);
+
+                    // Update cart count badge
+                    this.updateCartCount(data.cart_count);
+
+                    // Show success modal
+                    this.showModal('cartModal');
+
+                } catch (error) {
+                    console.error('❌ Error adding to cart:', error);
+                    this.showErrorAlert('Error: ' + error.message);
+                    this.setButtonLoading(button, false);
                 }
             }
 
-            addToCart(productId, button) {
-                // Show loading state
-                const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Menambahkan...';
-                button.disabled = true;
+            // PERBAIKI removeFromCart() - Tambahkan lebih banyak log
+            async removeFromCart(button, productId) {
+                console.log('🗑️ === REMOVE FROM CART START ===');
+                console.log('🗑️ Product ID:', productId);
 
-                // Simulate API call
-                setTimeout(() => {
-                    this.cartState.set(productId, true);
-                    button.classList.add('added', 'cart-pulse');
-                    button.setAttribute('data-in-cart', 'true');
-                    button.innerHTML = '<i class="fas fa-check me-2"></i>Dalam Keranjang';
-                    button.disabled = false;
+                try {
+                    // Show loading state
+                    button.classList.add('loading');
+                    button.classList.remove('in-cart'); // Remove in-cart saat loading
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menghapus...';
 
-                    setTimeout(() => {
-                        button.classList.remove('cart-pulse');
-                    }, 500);
+                    console.log('📤 Sending remove request...');
 
-                    this.showModal('cartModal');
-                    this.updateCartCount(1);
-                }, 1000);
+                    const response = await fetch('/store/cart/remove-by-product', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: parseInt(productId)
+                        })
+                    });
+
+                    console.log('📡 Remove response status:', response.status);
+
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        console.error('❌ Non-JSON response:', text.substring(0, 500));
+                        throw new Error('Server returned non-JSON response');
+                    }
+
+                    const data = await response.json();
+                    console.log('📦 Remove response data:', data);
+
+                    if (!data.success) {
+                        console.error('❌ Remove failed:', data.message);
+                        throw new Error(data.message || 'Gagal menghapus dari keranjang');
+                    }
+
+                    console.log('✅ Product removed from cart successfully');
+
+                    // Update button kembali ke "Tambah Keranjang"
+                    this.setButtonNotInCart(button);
+
+                    // Update cart count badge
+                    this.updateCartCount(data.cart_count);
+
+                    // Show remove modal
+                    this.showModal('cartRemoveModal');
+
+                    console.log('🗑️ === REMOVE FROM CART END ===');
+
+                } catch (error) {
+                    console.error('❌ Error removing from cart:', error);
+                    this.showErrorAlert('Error: ' + error.message);
+
+                    // Reset button ke state in-cart jika error
+                    this.setButtonInCart(button);
+                }
             }
 
-            removeFromCart(productId, button) {
-                // Show loading state
-                const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Menghapus...';
-                button.disabled = true;
-
-                // Simulate API call
-                setTimeout(() => {
-                    this.cartState.set(productId, false);
-                    button.classList.remove('added');
-                    button.classList.add('removing');
-                    button.setAttribute('data-in-cart', 'false');
-                    button.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang';
+            setButtonLoading(button, isLoading) {
+                if (isLoading) {
+                    button.classList.add('loading');
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menambahkan...';
+                } else {
+                    button.classList.remove('loading');
                     button.disabled = false;
+                    button.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang';
+                }
+            }
 
-                    setTimeout(() => {
-                        button.classList.remove('removing', 'cart-pulse');
-                    }, 500);
+            // PERBAIKI setButtonInCart() - Pastikan class ditambahkan dengan benar
+            setButtonInCart(button) {
+                console.log('🟢 Setting button to IN CART state');
 
-                    this.showModal('cartRemoveModal');
-                    this.updateCartCount(-1);
-                }, 1000);
+                // Remove semua class lain dulu
+                button.classList.remove('loading', 'added');
+
+                // Add class in-cart
+                button.classList.add('in-cart');
+
+                // Enable button
+                button.disabled = false;
+
+                // Update text dan icon
+                button.innerHTML = '<i class="fas fa-check me-2"></i>Dalam Keranjang';
+
+                // Simpan state di Map juga
+                const productId = button.dataset.productId;
+                this.cartState.set(productId, true);
+
+                // Verify class added
+                console.log('✅ Button classes after setInCart:', button.className);
+                console.log('✅ Has in-cart class:', button.classList.contains('in-cart'));
+            }
+
+            // PERBAIKI setButtonNotInCart()
+            setButtonNotInCart(button) {
+                console.log('🔴 Setting button to NOT IN CART state');
+
+                // Remove semua class
+                button.classList.remove('loading', 'in-cart', 'added');
+
+                // Enable button
+                button.disabled = false;
+
+                // Update text dan icon
+                button.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Tambah Keranjang';
+
+                // Update state di Map
+                const productId = button.dataset.productId;
+                this.cartState.set(productId, false);
+
+                // Verify class removed
+                console.log('✅ Button classes after setNotInCart:', button.className);
+                console.log('✅ Has in-cart class:', button.classList.contains('in-cart'));
+            }
+
+            showLoginAlert() {
+                if (confirm('Anda perlu login untuk menambahkan produk ke keranjang. Apakah Anda ingin login?')) {
+                    window.location.href = '/login';
+                }
+            }
+
+            showErrorAlert(message) {
+                alert(message);
             }
 
             showModal(modalId) {
@@ -566,11 +782,22 @@
                         modal.show();
                         console.log(`✅ Modal ${modalId} shown successfully`);
 
-                        // Auto hide after 3 seconds
+                        // Auto hide setelah 2 detik - TANPA conflict
                         setTimeout(() => {
-                            modal.hide();
-                            console.log(`✅ Modal ${modalId} auto-hidden`);
-                        }, 3000);
+                            try {
+                                modal.hide();
+                                // Force remove backdrop jika masih ada
+                                document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                                    backdrop.remove();
+                                });
+                                document.body.classList.remove('modal-open');
+                                document.body.style.removeProperty('overflow');
+                                document.body.style.removeProperty('padding-right');
+                                console.log(`✅ Modal ${modalId} auto-hidden and cleaned up`);
+                            } catch (e) {
+                                console.error('Error hiding modal:', e);
+                            }
+                        }, 2000);
                     } catch (error) {
                         console.error(`❌ Error showing modal ${modalId}:`, error);
                     }
@@ -579,17 +806,87 @@
                 }
             }
 
-            showErrorAlert(message) {
-                alert(message);
+            // PERBAIKI checkCartState() - Pastikan button di-update dengan benar
+            async checkCartState() {
+                console.log('🔍 === CHECKING CART STATE FROM BACKEND ===');
+
+                try {
+                    const response = await fetch('/store/cart/items', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        console.warn('⚠️ Could not fetch cart items, status:', response.status);
+                        return;
+                    }
+
+                    const data = await response.json();
+                    console.log('📦 Cart items from backend:', data);
+
+                    if (data.success && data.items && data.items.length > 0) {
+                        console.log(`✅ Found ${data.items.length} items in cart`);
+
+                        // Update button state berdasarkan data cart
+                        data.items.forEach(cartItem => {
+                            const button = document.querySelector(
+                                `.store-add-to-cart[data-product-id="${cartItem.product_id}"]`
+                            );
+
+                            if (button) {
+                                console.log(`🔄 Updating button for product ${cartItem.product_id}`);
+                                this.setButtonInCart(button);
+                            } else {
+                                console.warn(`⚠️ Button not found for product ${cartItem.product_id}`);
+                            }
+                        });
+
+                        console.log('✅ All cart buttons updated');
+                    } else {
+                        console.log('ℹ️ No items in cart or empty response');
+                    }
+
+                    console.log('🔍 === CART STATE CHECK COMPLETE ===');
+
+                } catch (error) {
+                    console.error('❌ Error checking cart state:', error);
+                }
             }
 
-            updateCartCount(increment) {
-                this.updateBadgeCount('.store-nav-icon[href*="cart"] .store-badge', increment);
+            updateCartCount(count) {
+                const badge = document.querySelector('.store-nav-icon[href*="cart"] .store-badge');
+                const navIcon = document.querySelector('.store-nav-icon[href*="cart"]');
+
+                if (count > 0) {
+                    if (!badge) {
+                        const newBadge = document.createElement('span');
+                        newBadge.className = 'store-badge';
+                        newBadge.textContent = count;
+                        navIcon.appendChild(newBadge);
+                    } else {
+                        badge.textContent = count;
+                    }
+                    this.animateBadge(badge || navIcon.querySelector('.store-badge'));
+                } else {
+                    if (badge) {
+                        badge.remove();
+                    }
+                }
             }
 
             updateWishlistCount(increment) {
                 // Update badge count
-                this.updateBadgeCount('.store-nav-icon[href*="wishlist"] .store-badge', increment);
+                const badge = document.querySelector('.store-nav-icon[href*="wishlist"] .store-badge');
+                if (badge) {
+                    const current = parseInt(badge.textContent) || 0;
+                    const newCount = Math.max(0, current + increment);
+                    badge.textContent = newCount;
+                    badge.style.display = newCount > 0 ? 'flex' : 'none';
+                    this.animateBadge(badge);
+                }
 
                 // Update wishlist count text
                 const wishlistCountElement = document.getElementById('wishlist-count');
@@ -607,31 +904,11 @@
                 }
             }
 
-            updateBadgeCount(selector, increment) {
-                const badge = document.querySelector(selector);
-                if (badge) {
-                    const current = parseInt(badge.textContent) || 0;
-                    const newCount = Math.max(0, current + increment);
-                    badge.textContent = newCount;
-                    badge.style.display = newCount > 0 ? 'flex' : 'none';
-                    this.animateBadge(badge);
-                }
-            }
-
             animateBadge(badge) {
-                badge.style.animation = 'none';
-                setTimeout(() => badge.style.animation = 'badgePulse 0.6s ease', 10);
-            }
-
-            autoHideModals() {
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.addEventListener('shown.bs.modal', () => {
-                        setTimeout(() => {
-                            const bsModal = bootstrap.Modal.getInstance(modal);
-                            if (bsModal) bsModal.hide();
-                        }, 3000);
-                    });
-                });
+                if (badge) {
+                    badge.style.animation = 'none';
+                    setTimeout(() => badge.style.animation = 'badgePulse 0.6s ease', 10);
+                }
             }
         }
 
@@ -642,15 +919,21 @@
             // Initialize product manager
             window.storeManager = new StoreProductManager();
 
+            document.querySelectorAll('.store-add-to-cart').forEach(btn => {
+                console.log('🔗 Binding cart button:', btn.dataset.productId);
+            });
+
             // Add product card navigation
             document.addEventListener('click', (e) => {
                 if (e.target.closest('.store-product-card') &&
                     !e.target.closest('.store-wishlist-btn') &&
-                    !e.target.closest('.store-add-to-cart')) {
+                    !e.target.closest('.store-add-to-cart') &&
+                    !e.target.closest('.btn-wishlist') &&
+                    !e.target.closest('.add-to-cart')) {
                     const productCard = e.target.closest('.store-product-card');
-                    const productId = productCard.querySelector('.store-wishlist-btn')?.dataset.productId;
-                    if (productId) {
-                        window.location.href = `/store/product/${productId}`;
+                    const productLink = productCard.querySelector('.product-link');
+                    if (productLink) {
+                        window.location.href = productLink.href;
                     }
                 }
             });

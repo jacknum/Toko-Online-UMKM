@@ -56,6 +56,10 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
     Route::get('/cart/summary', [CartController::class, 'getCartSummary'])->name('cart.summary');
+    // Di dalam group route store
+    Route::post('/cart/add-from-wishlist', [CartController::class, 'addFromWishlist'])->name('cart.addFromWishlist');
+    Route::post('/cart/remove-by-product', [CartController::class, 'removeByProduct'])->name('cart.removeByProduct');
+    Route::get('/cart/items', [CartController::class, 'getItems'])->name('cart.items');
     // Wishlist Routes
     Route::post('/wishlist/toggle', [App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::get('/wishlist/count', [App\Http\Controllers\WishlistController::class, 'getCount'])->name('wishlist.count');

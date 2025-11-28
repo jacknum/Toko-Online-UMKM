@@ -368,4 +368,176 @@ class CartController extends Controller
             ]);
         }
     }
+
+    /**
+     * Add product to cart from wishlist
+     * Menghandle perbedaan struktur kolom antara wishlist dan cart
+     */
+    public function addFromWishlist(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'integer|min:1',
+        ]);
+
+        try {
+            $userId = Auth::id();
+            if (!$userId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Silakan login terlebih dahulu untuk menambahkan ke keranjang',
+                    'login_required' => true
+                ], 401);
+            }
+
+            $quantity = $request->quantity ?? 1;
+            $product = Product::find($request->product_id);
+
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Produk tidak ditemukan'
+                ], 404);
+            }
+
+            // Cek stok produk
+            if ($product->stock < $quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stok produk tidak mencukupi. Stok tersedia: ' . $product->stock
+                ], 400);
+            }
+
+            // Cek apakah produk sudah ada di cart
+            $existingCart = Cart::where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($existingCart) {
+                // Jika sudah ada, update quantity
+                $newQuantity = $existingCart->quantity + $quantity;
+
+                if ($product->stock < $newQuantity) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stok tidak mencukupi. Produk ini sudah ada ' . $existingCart->quantity . ' di keranjang. Stok tersedia: ' . $product->stock
+                    ], 400);
+                }
+
+                $existingCart->quantity = $newQuantity;
+                $existingCart->save();
+
+                $message = 'Jumlah produk di keranjang berhasil diperbarui';
+            } else {
+                // Jika belum ada, tambahkan baru
+                Cart::addToCart(
+                    $userId,
+                    $product->id,
+                    $product->name,
+                    $product->price,
+                    $product->image,
+                    $quantity
+                );
+
+                $message = 'Produk berhasil ditambahkan ke keranjang';
+            }
+
+            // Get updated cart count
+            $cartCount = Cart::getUserCartCount($userId);
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'cart_count' => $cartCount,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Cart Add From Wishlist Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Tambahkan di CartController.php
+
+    /**
+     * Remove item from cart by product_id
+     */
+    public function removeByProduct(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+        ]);
+
+        try {
+            $userId = Auth::id();
+
+            if (!$userId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Silakan login terlebih dahulu',
+                    'login_required' => true
+                ], 401);
+            }
+
+            // Cari cart item berdasarkan user_id dan product_id
+            $cartItem = Cart::where('user_id', $userId)
+                ->where('product_id', $request->product_id)
+                ->first();
+
+            if (!$cartItem) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Produk tidak ditemukan di keranjang'
+                ], 404);
+            }
+
+            $cartItem->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil dihapus dari keranjang',
+                'cart_count' => Cart::getUserCartCount($userId),
+                'cart_total' => Cart::getUserCartTotal($userId),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Cart Remove By Product Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get cart items for current user (untuk cek state button)
+     */
+    public function getItems()
+    {
+        try {
+            $userId = Auth::id();
+
+            if (!$userId) {
+                return response()->json([
+                    'success' => true,
+                    'items' => []
+                ]);
+            }
+
+            $cartItems = Cart::where('user_id', $userId)
+                ->get(['product_id', 'quantity']);
+
+            return response()->json([
+                'success' => true,
+                'items' => $cartItems
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Cart Items Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'items' => []
+            ]);
+        }
+    }
 }
