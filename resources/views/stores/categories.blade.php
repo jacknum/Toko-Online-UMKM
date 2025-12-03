@@ -21,22 +21,29 @@
         </div>
 
         <div class="row">
-            @foreach($categories as $category)
+            @forelse($categories as $category)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{{ route('store.category-products', $category['id']) }}" class="category-page-link">
+                <a href="{{ route('store.category-products', $category->slug) }}" class="category-page-link">
                     <div class="store-category-page-card">
-                        <div class="store-category-page-icon">
-                            <i class="{{ $category['icon'] }}"></i>
-                        </div>
                         <div class="store-category-page-content">
-                            <h5>{{ $category['name'] }}</h5>
-                            <p>{{ $category['description'] }}</p>
-                            <span class="store-category-count">{{ $category['product_count'] }} produk</span>
+                            <h5>{{ $category->name }}</h5>
+                            <p>{{ $category->description ?? 'Kategori produk ' . $category->name }}</p>
+                            <span class="store-category-count">{{ $category->product_count ?? 0 }} produk</span>
                         </div>
                     </div>
                 </a>
             </div>
-            @endforeach
+            @empty
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Belum Ada Kategori</h5>
+                        <p class="text-muted">Kategori produk akan segera tersedia</p>
+                    </div>
+                </div>
+            </div>
+            @endforelse
         </div>
     </div>
 </section>

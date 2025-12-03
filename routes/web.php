@@ -43,6 +43,7 @@ Route::prefix('store')->name('store.')->group(function () {
 
     // Categories - MENGGUNAKAN SLUG
     Route::get('/categories', [StoreController::class, 'categories'])->name('categories');
+    Route::get('/categories/search', [StoreController::class, 'searchCategories'])->name('categories.search');
     Route::get('/category/{slug}', [StoreController::class, 'categoryProducts'])->name('category-products');
 
     // Product Detail
@@ -68,6 +69,21 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
+    // Route langsung untuk profile dan addresses (tanpa /account)
+    Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile')->middleware(['auth']);
+    Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses')->middleware(['auth']);
+    Route::get('/security', [StoreAccountController::class, 'security'])->name('security')->middleware(['auth']);
+
+    // Akun pengguna - butuh login
+    Route::prefix('account')->name('account.')->middleware(['auth'])->group(function () {
+        Route::get('/profile', [StoreAccountController::class, 'profile'])->name('profile');
+        Route::get('/addresses', [StoreAccountController::class, 'addresses'])->name('addresses');
+        Route::get('/security', [StoreAccountController::class, 'security'])->name('security');
+        Route::post('/profile/update', [StoreAccountController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/password/update', [StoreAccountController::class, 'updatePassword'])->name('password.update');
+        Route::post('/address/add', [StoreAccountController::class, 'addAddress'])->name('address.add');
+        Route::delete('/address/{id}/delete', [StoreAccountController::class, 'deleteAddress'])->name('address.delete');
+    });
 
     // Checkout & Orders (Butuh login)
     Route::middleware(['auth'])->group(function () {

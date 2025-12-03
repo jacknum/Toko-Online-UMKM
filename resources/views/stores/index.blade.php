@@ -29,12 +29,19 @@
     <div class="modal fade" id="wishlistModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body text-center py-4">
-                    <div class="heart-animation">
-                        <i class="fas fa-heart"></i>
+                <div class="modal-body text-center p-5">
+                    <div class="mb-4">
+                        <div class="heart-animation">
+                            <i class="fas fa-heart"></i>
+                        </div>
                     </div>
-                    <h5 class="mt-3">Ditambahkan ke Wishlist!</h5>
-                    <p class="text-muted">Produk berhasil ditambahkan ke daftar keinginan Anda</p>
+                    <h4 class="modal-title mb-3 text-danger">Ditambahkan ke Wishlist!</h4>
+                    <p class="text-muted mb-4">Produk telah disimpan ke daftar keinginan Anda</p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Lanjut
+                            Belanja</button>
+                        <a href="{{ route('store.wishlist') }}" class="btn btn-danger">Lihat Wishlist</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,19 +50,25 @@
     <div class="modal fade" id="wishlistRemoveModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body text-center py-4">
-                    <div class="heart-remove-animation">
-                        <i class="fas fa-heart"></i>
+                <div class="modal-body text-center p-5">
+                    <div class="mb-4">
+                        <div class="heart-remove-animation">
+                            <i class="fas fa-heart-broken"></i>
+                        </div>
                     </div>
-                    <h5 class="mt-3">Dihapus dari Wishlist</h5>
-                    <p class="text-muted">Produk dihapus dari daftar keinginan Anda</p>
+                    <h4 class="modal-title mb-3 text-secondary">Dihapus dari Wishlist!</h4>
+                    <p class="text-muted mb-4">Produk telah dihapus dari daftar keinginan Anda</p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <a href="{{ route('store.wishlist') }}" class="btn btn-secondary">Lihat Wishlist</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Hero Section -->
-    <section class="store-hero">
+    <section class="store-hero mt-4">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
@@ -306,6 +319,148 @@
             </div>
         </div>
     </section>
+
+    <style>
+        /* Animation Base */
+        .success-animation,
+        .heart-animation,
+        .heart-remove-animation {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-animation i {
+            font-size: 4rem;
+            color: #28a745;
+            animation: successPop 0.6s ease;
+        }
+
+        .heart-animation i {
+            font-size: 4rem;
+            color: #dc3545;
+            animation: heartBeat 0.6s ease;
+        }
+
+        .heart-remove-animation i {
+            font-size: 4rem;
+            color: #6c757d;
+            animation: heartBreak 0.8s ease;
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            75% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes heartBreak {
+            0% {
+                transform: scale(1) rotate(0deg);
+                color: #dc3545;
+            }
+
+            25% {
+                transform: scale(1.2) rotate(-15deg);
+                color: #ff6b7a;
+            }
+
+            50% {
+                transform: scale(1.1) rotate(15deg);
+                color: #ff6b7a;
+            }
+
+            75% {
+                transform: scale(0.8) rotate(-10deg);
+                color: #6c757d;
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                color: #6c757d;
+                opacity: 1;
+            }
+        }
+
+        /* Button States */
+        .store-wishlist-btn.active i {
+            color: #dc3545 !important;
+            animation: heartPop 0.3s ease;
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Modal Enhancements */
+        .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-body {
+            padding: 2.5rem !important;
+        }
+
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 
     <script>
         class ProductManager {
@@ -571,7 +726,7 @@
                             setTimeout(() => {
                                 const modalInstance = bootstrap.Modal.getInstance(modalElement);
                                 if (modalInstance) modalInstance.hide();
-                            }, 2000);
+                            }, 3000); // Auto hide setelah 3 detik
                         });
                     }
                 });

@@ -3,7 +3,7 @@
 @section('title', 'Keranjang Belanja - Toko UMKM')
 
 @section('content')
-    <div class="container-fluid bg-light py-4">
+    <div class="container-fluid bg-light py-4 mt-4">
         <div class="container">
             <!-- Header yang Lebih Profesional -->
             <div class="row align-items-center mb-4">
@@ -19,7 +19,7 @@
                 <div class="col-auto">
                     <div class="d-flex align-items-center gap-3">
                         @if ($cartCount > 0)
-                            <button class="btn btn-outline-danger btn-sm px-3 py-2 d-flex align-items-center" 
+                            <button class="btn btn-outline-danger btn-sm px-3 py-2 d-flex align-items-center"
                                     onclick="clearCart()"
                                     style="border-radius: 8px; transition: all 0.3s ease;">
                                 <i class="fas fa-trash-alt me-2"></i>
@@ -842,10 +842,10 @@
             const currentPanel = document.querySelector('.step-panel.active');
             if (currentPanel) {
                 currentPanel.classList.remove('active');
-                
+
                 // Update progress steps
                 updateProgressSteps(stepNumber);
-                
+
                 const newPanel = document.querySelector(`.step-panel[data-step="${stepNumber}"]`);
                 if (newPanel) {
                     newPanel.classList.add('active');

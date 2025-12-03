@@ -3,7 +3,7 @@
 @section('title', 'Alamat Saya - Toko UMKM')
 
 @section('content')
-    <div class="container-fluid bg-light">
+    <div class="container-fluid bg-light mt-4">
         <div class="container">
             <!-- Header yang Minimalis dan Informatif -->
             <div class="row align-items-center py-4">

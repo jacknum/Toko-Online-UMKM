@@ -3,7 +3,7 @@
 @section('title', 'Profil Akun - Toko UMKM')
 
 @section('content')
-    <div class="container-fluid bg-light py-4">
+    <div class="container-fluid bg-light py-4 mt-4">
         <div class="container">
             <!-- Header yang Minimalis dan Informatif -->
             <div class="row align-items-center mb-4">

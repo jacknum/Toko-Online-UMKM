@@ -203,41 +203,27 @@ class StoreController extends Controller
      */
     private function getCategories()
     {
-        // Ambil semua category yang unique dari tabel products
-        $categoryNames = Product::select('category')
-            ->distinct()
+        // Ambil semua category yang unique dari tabel products dengan jumlah produk
+        $categories = Product::select('category as name')
+            ->selectRaw('COUNT(*) as products_count')
             ->whereNotNull('category')
             ->where('category', '!=', '')
-            ->orderBy('category')
-            ->pluck('category');
+            ->where('stock', '>', 0)
+            ->groupBy('category')
+            ->orderBy('products_count', 'desc')
+            ->get()
+            ->map(function ($item) {
+                $slug = \Illuminate\Support\Str::slug($item->name);
+                return (object)[
+                    'id' => $slug,
+                    'name' => $item->name,
+                    'slug' => $slug,
+                    'product_count' => $item->products_count,
+                    'description' => 'Kategori produk ' . $item->name
+                ];
+            });
 
-        Log::info('Category names from DB:', $categoryNames->toArray());
-
-        // Mapping icon untuk setiap kategori
-        $categoryIcons = [
-            'Sepatu & Sandal' => 'fas fa-shoe-prints',
-            'Pakaian' => 'fas fa-tshirt',
-            'Elektronik' => 'fas fa-laptop',
-            'Aksesoris' => 'fas fa-watch',
-            'Makanan & Minuman' => 'fas fa-utensils',
-            'Kesehatan & Kecantikan' => 'fas fa-heart',
-            'Olahraga' => 'fas fa-basketball-ball',
-            'Hobi & Gaming' => 'fas fa-gamepad',
-        ];
-
-        // Convert ke collection of objects
-        $categories = collect();
-
-        foreach ($categoryNames as $index => $name) {
-            $slug = \Illuminate\Support\Str::slug($name);
-
-            $categories->push((object)[
-                'id' => $index + 1,
-                'name' => $name,
-                'icon' => $categoryIcons[$name] ?? 'fas fa-box',
-                'slug' => $slug
-            ]);
-        }
+        Log::info('Categories with count:', $categories->toArray());
 
         return $categories;
     }
@@ -435,5 +421,31 @@ class StoreController extends Controller
                 // No review for this order (to show review button)
             ]
         ]);
+    }
+
+    /**
+     * Search categories
+     */
+    public function searchCategories(Request $request)
+    {
+        $keyword = $request->input('q');
+
+        $categories = Product::select('category as name')
+            ->selectRaw('COUNT(*) as products_count')
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->where('stock', '>', 0)
+            ->where('category', 'LIKE', "%{$keyword}%")
+            ->groupBy('category')
+            ->orderBy('products_count', 'desc')
+            ->get()
+            ->map(function ($item) {
+                $slug = \Illuminate\Support\Str::slug($item->name);
+                $item->description = 'Kategori produk ' . $item->name;
+                $item->slug = $slug;
+                return $item;
+            });
+
+        return view('stores.categories', compact('categories', 'keyword'));
     }
 }
